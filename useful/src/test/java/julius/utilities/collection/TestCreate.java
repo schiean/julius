@@ -21,12 +21,27 @@ import java.util.List;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
-import julius.utilities.collection.Numbered;
 
 
 
 // TODO LOW: should use proper given/when/then
 public class TestCreate extends BDDTestCase {
+	
+	
+	public void testList(){
+		note("list should return a mutable linkedList");
+			List<Integer> l1 = CollectionHelper.list();
+			assertNotNull(l1);
+			assertTrue(l1.isEmpty());
+			l1.add(5);
+			assertTrue(l1.getClass().equals(LinkedList.class));
+		note("createList should return a mutable LinkedList");
+			List<Integer> l2 = CollectionHelper.createLinkedList();
+			assertNotNull(l2);
+			assertTrue(l2.isEmpty());
+			l2.add(12);
+			assertTrue(l2.getClass().equals(LinkedList.class));
+	}
 
 	public void testCreate() {
         note("createList() without params (or null param) should return empty list");
