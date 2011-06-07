@@ -26,7 +26,7 @@ import julius.validation.Assertions;
  * This class would be an alternative that does not involve extra threads
  * 
  * TimeCountdown countdown = TimeCountdown.toSeconds(10);
- * 
+ * countdown.start();
  * while(someCondition()){
  * 
  * 		if(countdown.isCompleted()){
@@ -44,26 +44,53 @@ public class TimeCountdown {
 	private final long milliseconds;
 	private final StopWatch stopwatch;
 	
+	/**
+	 * factory method that initializes a countdown on seconds
+	 * @param seconds
+	 * @return
+	 */
 	public static TimeCountdown toSeconds(final long seconds){
 		return new TimeCountdown(1000 * seconds);
 	}	
 	
-	public static TimeCountdown toMinutes(final long seconds){
-		return toSeconds(60 * seconds);
-	}
+	/**
+	 * factory method that initializes a countdown on ms
+	 * @param ms
+	 * @return
+	 */
+	public static TimeCountdown toMilliseconds(final long ms){
+		return new TimeCountdown(ms);
+	}	
 	
+	/**
+	 * @param milliseconds > 0
+	 */
 	public TimeCountdown(final long milliseconds){
 		this.milliseconds = milliseconds;
 		Assertions.argument.assertTrue(milliseconds > 0 , "the countdown time should be > 0");
 		this.stopwatch = new StopWatch();
 	}
 	
-	public void restart(){
-		stopwatch.reset();
+	/**
+	 * starts the countdown (alias for restart)
+	 */
+	public void start(){
+		restart();
 	}
 	
+	/**
+	 * resets the countdown to the original countdown time, and starts the countdown again
+	 */
+	public void restart(){
+		stopwatch.reset();
+		stopwatch.start();
+	}
+	
+	/**
+	 * @return true when the time since the last (re)start is larger then the given countdown period
+	 */
 	public boolean isCompleted(){
-		return stopwatch.elapsedInMillis() > milliseconds;
+		return stopwatch.currentProgress() > milliseconds;
 	}
 	
 }

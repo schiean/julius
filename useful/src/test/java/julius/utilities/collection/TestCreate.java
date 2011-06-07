@@ -16,8 +16,10 @@
 
 package julius.utilities.collection;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
@@ -27,6 +29,36 @@ import julius.utilities.CollectionHelper;
 // TODO LOW: should use proper given/when/then
 public class TestCreate extends BDDTestCase {
 	
+	public void testSet(){
+		note("set should return a mutable hashset");
+			Set<Integer> l1 = CollectionHelper.set();
+			assertNotNull(l1);
+			assertTrue(l1.isEmpty());
+			l1.add(5);
+			assertTrue(l1.getClass().equals(HashSet.class));
+		}
+
+	public void testCreateSet() {
+        note("createSet() without params (or null param) should return empty set");
+        	assertTrue(CollectionHelper.set().isEmpty());
+        	String[] a = null;
+        	assertTrue(CollectionHelper.set(a).isEmpty());
+        	assertTrue(CollectionHelper.set(new String[] {}).isEmpty());
+        note("createSet() with '1','2' should return list{1,2}");
+        	Set<Integer> i = CollectionHelper.set(1, 2);
+        	assertTrue(i.size() == 2);
+        	assertTrue(i.contains(1));
+        	assertTrue(i.contains(2));
+        note("createSet() with '1','2',null should return set{1,2, null}");
+        	Set<Integer> j = CollectionHelper.set(1, 2, null);
+        	assertTrue(j.size() == 3);
+        	assertTrue(j.contains(1));
+        	assertTrue(j.contains(2));
+        	assertTrue(j.contains(null));
+      	successFullStory();
+
+    }
+
 	
 	public void testList(){
 		note("list should return a mutable linkedList");
@@ -43,7 +75,7 @@ public class TestCreate extends BDDTestCase {
 			assertTrue(l2.getClass().equals(LinkedList.class));
 	}
 
-	public void testCreate() {
+	public void testCreateList() {
         note("createList() without params (or null param) should return empty list");
         	assertTrue(CollectionHelper.createList().isEmpty());
         	String[] a = null;

@@ -33,6 +33,7 @@ public class JavaType {
 
     /**
      * Use this constructor for normal (non-generic types)
+     * @param claszObject Integer, String
      */
     public JavaType(final Class claszObject) {
         this(claszObject, null);
@@ -83,12 +84,15 @@ public class JavaType {
     }
 
     /**
-     * @return Returns the genericClasz.
+     * @return  the genericClasz.
      */
     public Class getGenericClasz() {
         return this.genericClasz;
     }
     
+    /**
+     * @return true if this type has generic type info
+     */
     public boolean isGeneric(){
     	return this.genericClasz != null;
     }

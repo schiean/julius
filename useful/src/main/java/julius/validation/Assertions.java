@@ -37,9 +37,11 @@ public class Assertions {
 	protected Assertions(){
 		super();
 	}
-	
+	/** useful for static import of members */
 	public static final CheckedAsserter checked =  new CheckedAsserter();
+	/** useful for static import of members */
 	public static final IllegalArgumentAsserter argument = new IllegalArgumentAsserter();
+	/** useful for static import of members */
 	public static final IllegalStateAsserter state = new IllegalStateAsserter();
 	
 }

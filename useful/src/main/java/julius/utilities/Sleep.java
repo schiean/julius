@@ -24,9 +24,11 @@ import org.apache.log4j.Logger;
  * 
  * This class makes the code easier and better readable
  * 
- * Sleep.seconds(52);
- * Sleep.minutes(2);
- * Sleep.minutes(2).and().seconds(30);
+ * import static julius.Sleep.sleep;
+ * 
+ * sleep.seconds(52);
+ * sleep.minutes(2);
+ * sleep.minutes(2).and().seconds(30);
  * 
  * TODO add reference to ibm article about interrupted
  */
@@ -34,10 +36,11 @@ public class Sleep {
 	
 	private static Logger log = Logger.getLogger(Sleep.class);
 	
+	/** static instance which is useful for static imports **/
 	public static final Sleep sleep = new Sleep();
 	
 	/**
-	 * @param millis to sleep
+	 * @param milliseconds to sleep
 	 * @return self
 	 */
 	public Sleep milliseconds(final long milliseconds){

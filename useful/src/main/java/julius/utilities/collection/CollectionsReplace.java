@@ -22,7 +22,10 @@ import java.util.Set;
 
 import julius.validation.Assertions;
 
-
+/**
+ * Contains methods to replace the contents of a collection
+ * This is useful for Hibernate collections
+ */
 public class CollectionsReplace {
 
     /**
@@ -57,7 +60,7 @@ public class CollectionsReplace {
      * will clear the current collection and add all items from the newCollection.
      * @param <T>
      * @param currentCollection not null mutable Collection
-     * @param newCollectino Collection or 'null' (when the newCollection is null, the original will be cleared)
+     * @param newCollection Collection or 'null' (when the newCollection is null, the original will be cleared)
      */    
     public <T> void replace(final Collection<T> currentCollection, final Collection<T> newCollection){
     	Assertions.argument.assertTrue(currentCollection!=null, "cannot replace a null reference");

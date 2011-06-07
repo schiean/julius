@@ -22,11 +22,12 @@ package julius.test;
  * 
  * Implements the BDD method pattern for given / when / then but does not extend Junit 3 TestCase.
  * 
- * @see BDDTestcase
+ * @see julius.test.BDDTestCase
  */
 public class BDDTestCase4 {
 
 	/**
+	 * @param precondition 
 	 * @see julius.test.BDDTestCase#given(String)
 	 */
     public void given(final String precondition) {
@@ -36,6 +37,7 @@ public class BDDTestCase4 {
 
 
 	/**
+	 * @param action 
 	 * @see julius.test.BDDTestCase#when(String)
 	 */
     public void when(final String action) {
@@ -44,6 +46,7 @@ public class BDDTestCase4 {
 
 
 	/**
+	 * @param action 
 	 * @see julius.test.BDDTestCase#and(String)
 	 */
     public void and(final String action) {
@@ -52,6 +55,7 @@ public class BDDTestCase4 {
 
 
 	/**
+	 * @param postcondition 
 	 * @see julius.test.BDDTestCase#then(String)
 	 */
     public void then(final String postcondition) {
@@ -69,6 +73,7 @@ public class BDDTestCase4 {
 
 
 	/**
+	 * @param note 
 	 * @see julius.test.BDDTestCase#note(String)
 	 */
     public void note(final String note) {

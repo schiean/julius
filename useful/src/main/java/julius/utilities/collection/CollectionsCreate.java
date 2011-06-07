@@ -18,12 +18,16 @@ package julius.utilities.collection;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import julius.utilities.CollectionHelper;
 
-
+/**
+ * utilities to create collections
+ */
 public class CollectionsCreate {
 	
 	/**
@@ -76,8 +80,50 @@ public class CollectionsCreate {
             return Collections.emptyList();
         }
     }
+    
+	/**
+     * Will create a new hash set, useful because this does type inference meaning you don't have
+     * to declare the type twice per collection.
+     * 
+     * Set<Integer> l = new HashSet<Integer>();
+     * 
+     * becomes
+     * 
+     * Set<Integer> l = createHashSet();
+     * 
+     * @param <T>
+     * @return
+     */
+    public  <T> Set<T> createHashSet() {
+        return new HashSet<T>();
+    }
+    
+    /**
+     * useful to create immutable set in a DSL style
+     * 
+     * Set<Integer> dutchColors = createSet(Color.Red, Color.White, Color.Blue); 
+     * 
+     * @param <T>
+     * @param vars 0...x elements
+     * @return new Set with 0..x elements
+     */
+    public <T> Set<T> createSet(final T... vars) {
+        if (vars != null && vars.length > 0) {
+        	Set<T> set = createHashSet();
+        	set.addAll(createList(vars));
+            return Collections.unmodifiableSet(set);
+        } else {
+            return Collections.emptySet();
+        }
+    }
 
     // TODO seems a bit unuseful, better have something like    List withoutNulls(List);
+    /**
+     * @param vars 
+     * @param <T> 
+     * @return 
+     * @see julius.utilities.collection.CollectionsCreate#createList(Object...) but this one won't add 'nulls' 
+     */
     public <T> List<T> createListWithoutNulls(final T... vars) {
         if (vars != null && vars.length > 0) {
             List<T> result = new LinkedList<T>();

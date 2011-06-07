@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Contains methods to query a collection
+ */
 public class CollectionsQuery {
 
     /**

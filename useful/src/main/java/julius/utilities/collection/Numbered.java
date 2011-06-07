@@ -18,12 +18,20 @@ package julius.utilities.collection;
 
 import julius.validation.Assertions;
 
+/**
+ * Class wrapper to bind a Number with another data type
+ * @param <T> 
+ */
 public class Numbered<T> {
 
 	private final T value;
 	private final int position;
 
-
+	/**
+	 * Constructor, both fields are mandatory
+	 * @param value
+	 * @param position
+	 */
 	public Numbered(final T value, final int position) {
 		super();
 		this.value = value;
@@ -32,11 +40,16 @@ public class Numbered<T> {
 		Assertions.argument.assertNotNull(this.position, "Numbered.position");
 	}
  
-	
+	/**
+	 * @return the value
+	 */
 	public T getValue() {
 		return value;
 	}
 
+	/**
+	 * @return position
+	 */
 	public int getPosition() {
 		return position;
 	}

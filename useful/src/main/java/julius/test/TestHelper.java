@@ -50,9 +50,10 @@ public final class TestHelper {
      * null
      * 
      * this is useful to test (generated) mappers for their handling of null params in an easy way
+     * @param testableObject 
      */
-    public static void testAllNullSafeMethods(final Object c) {
-        List<Method> ms = reflectionHelper.getAllDeclaredMethods(c.getClass());
+    public static void testAllNullSafeMethods(final Object testableObject) {
+        List<Method> ms = reflectionHelper.getAllDeclaredMethods(testableObject.getClass());
         boolean failures = false;
         for (Method m : ms) {
             try {
@@ -60,14 +61,14 @@ public final class TestHelper {
 
                     // should return empty list/set
                     if (m.getParameterTypes().length == 1) {
-                        Object returnVal = m.invoke(c, new Object[] { null }); // map, result = null and no exception
+                        Object returnVal = m.invoke(testableObject, new Object[] { null }); // map, result = null and no exception
                         if (returnVal != null) {
                             throw new RuntimeException(
                                     "Error: this method didn't return a 'null result reference' for input 'null'");
                         }
                         System.out.println("succes:" + m);
                     } else if (m.getParameterTypes().length == 2) {
-                        m.invoke(c, new Object[] { null, null }); // map into, no exception
+                        m.invoke(testableObject, new Object[] { null, null }); // map into, no exception
                         System.out.println("succes:" + m);
                     }
                 }

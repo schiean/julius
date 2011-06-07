@@ -40,6 +40,8 @@ public class TestMemoryHelper extends BDDTestCase{
 		
 		assertTrue(some3 <= some2);
 		
+		assertNotNull(mh.getFullReport());
+		
 	}
 	
 }

@@ -20,7 +20,9 @@ import java.util.Collection;
 
 import julius.validation.Validatable;
 
-
+/**
+ * Defines the methods for the assertions
+ */
 public interface Asserter {
 
 	/**

@@ -33,7 +33,7 @@ public class MemoryHelper {
 	/**
 	 * The amount of memory used in MB
 	 * @param afterCleanUp (true => call System.GC)
-	 * @return used MB: XXX
+	 * @return used MB: XX
 	 */
 	public String getReport(final boolean afterCleanUp){
 		if(afterCleanUp){

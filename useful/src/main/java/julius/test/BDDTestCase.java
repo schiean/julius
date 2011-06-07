@@ -74,6 +74,9 @@ public abstract class BDDTestCase extends TestCase {
         System.out.println("When " + action);
     }
 
+    /**
+     * @param action
+     */
     public void and(final String action) {
         System.out.println("and " + action);
     }

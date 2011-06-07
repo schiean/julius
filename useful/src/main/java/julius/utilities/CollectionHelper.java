@@ -56,6 +56,27 @@ public final class CollectionHelper {
     }
 
     /**
+     * @see CollectionsCreate#createList(Object...)
+     */
+    public static <T> List<T> list(final T... vars) {
+        return create.createList(vars);
+    }
+
+    /**
+     * @see CollectionsCreate#createHashSet()
+     */
+    public static <T> Set<T> set() {
+        return create.createHashSet();
+    }
+
+    /**
+     * @see CollectionsCreate#createSet(Object...)
+     */
+    public static <T> Set<T> set(final T... vars) {
+        return create.createSet(vars);
+    }
+    
+    /**
      * @see CollectionsCreate#createNumberedList(List)
      */
     public static <T> List<Numbered<T>> numbered(final List<T> original){

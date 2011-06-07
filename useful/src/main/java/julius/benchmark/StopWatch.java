@@ -21,7 +21,9 @@ import julius.validation.Assertions;
 /**
  * simple stopwatch implementation
  * 
- * supports multiple start/stop sequences to  the elapsed time 
+ * supports multiple start/stop sequences to accumulate the elapsed time 
+ * this can be useful to measure the total amount of time in a method or block
+ * FEATURE Calculate the average for multiple start/stop sequences
  */
 public class StopWatch {
 
@@ -29,6 +31,9 @@ public class StopWatch {
 	private long stop;
 	private long elapsed;
 	
+	/**
+	 * Constructor it is without auto-start
+	 */
 	public StopWatch(){
 		reset();
 	}
@@ -50,22 +55,37 @@ public class StopWatch {
 	}
 	
 	/**
+	 * Convenience method/alias for start, because start() is already usable for resuming
+	 */
+	public void resume(){
+		start();
+	}
+	
+	/**
 	 * stop or pause the timing
 	 * @return the time between start and stop (or the total time between start1-stop1, start2-stop2 etc.)
 	 */
 	public long stop(){
 		stop = System.currentTimeMillis();
 		Assertions.state.assertTrue(start > 0, "first call start, then stop");
-		elapsed = stop - start + elapsed;
+		elapsed = calculateProgress(stop);
 		return elapsed;
+	}
+
+	/**
+	 * @return time between 'start' and 'now' (+ elapsed in case the timer was resumed)
+	 */
+	public long currentProgress(){
+		return calculateProgress(System.currentTimeMillis());
 	}
 	
 	/**
 	 * call after stop to get the elapsed time in millis
+	 * or use currentProgress
 	 * @return
 	 */
 	public long elapsedInMillis(){
-		Assertions.state.assertTrue(elapsed>0, "first call start, then stop, then elapsed");
+		Assertions.state.assertTrue(elapsed>0, "first call 'start', then 'stop', then 'elapsed'");
 		return elapsed;
 	}
 	
@@ -75,6 +95,10 @@ public class StopWatch {
 	 */
 	public long elapsedInSeconds(){
 		return elapsedInMillis() / 1000;
+	}
+	
+	private long calculateProgress(final long end) {
+		return end - start + elapsed;
 	}
 	
 }

@@ -31,8 +31,17 @@ import julius.validation.ValidationException;
  */
 public final class CheckedAsserter {
 
-    public static final BaseAsserter asserter = new IllegalArgumentAsserter();
+    private static final BaseAsserter asserter = new IllegalArgumentAsserter();
 	
+    /**
+     * 
+	 * @see Asserter#assertAllNotNull(Collection, String)
+     * 
+     * @param <T>
+     * @param collection
+     * @param objectName
+     * @throws ValidationException
+     */
 	public <T> void assertAllNotNull(final Collection<T> collection, final String objectName) throws ValidationException{
 		try{
 			asserter.assertAllNotNull(collection, objectName);
@@ -41,6 +50,15 @@ public final class CheckedAsserter {
 		}
 	}
 	
+	/**
+	 * 
+	 * @see Asserter#assertAllValidNotNull(Collection, String)
+	 * 
+	 * @param <T>
+	 * @param collection
+	 * @param objectName
+	 * @throws ValidationException
+	 */
 	public <T extends Validatable> void assertAllValidNotNull(final Collection<T> collection, final String objectName) throws ValidationException{
 		try{
 			asserter.assertAllValidNotNull(collection, objectName);
@@ -49,6 +67,14 @@ public final class CheckedAsserter {
 		}
 	}
 	
+	/**
+	 * @see Asserter#assertNotEmpty(Collection, String)
+	 * 
+	 * @param <T>
+	 * @param collection
+	 * @param objectName
+	 * @throws ValidationException
+	 */
 	public <T> void assertNotEmpty(final Collection<T> collection, final String objectName) throws ValidationException{
 		try{
 			asserter.assertNotEmpty(collection, objectName);
@@ -57,6 +83,13 @@ public final class CheckedAsserter {
 		}
 	}
 
+	/**
+	 * @see Asserter#assertNotNull(Object, String)
+	 * 
+	 * @param object
+	 * @param objectName
+	 * @throws ValidationException
+	 */
 	public void assertNotNull(final Object object, final String objectName) throws ValidationException{
 		try{
 			asserter.assertNotNull(object, objectName);
@@ -65,6 +98,13 @@ public final class CheckedAsserter {
 		}
 	}
 	
+	/**
+	 * @see Asserter#assertTrue(boolean, String)
+	 * 
+	 * @param condition
+	 * @param msg
+	 * @throws ValidationException
+	 */
 	public void assertTrue(final boolean condition, final String msg) throws ValidationException{
 		try{
 			asserter.assertTrue(condition, msg);

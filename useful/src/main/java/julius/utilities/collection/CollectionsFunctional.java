@@ -20,7 +20,9 @@ import java.util.List;
 
 import julius.validation.Assertions;
 
-
+/**
+ * contains methods to support a more functional programming style approach to collections
+ */
 public class CollectionsFunctional {
 	
 	private final CollectionsCreate create = new CollectionsCreate();
