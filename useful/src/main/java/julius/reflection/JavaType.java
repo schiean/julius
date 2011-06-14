@@ -71,7 +71,7 @@ public class JavaType {
 			clasz = Class.forName(typeDescr);
 			genericClasz = Class.forName(genericType);
 		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e.getMessage());
+			throw new IllegalArgumentException(e);
 		}
         
     }
@@ -116,15 +116,19 @@ public class JavaType {
             return false;
         JavaType other = (JavaType) obj;
         if (clasz == null) {
-            if (other.clasz != null)
+            if (other.clasz != null){
                 return false;
-        } else if (!clasz.equals(other.clasz))
+            }
+        } else if (!clasz.equals(other.clasz)){
             return false;
+        }
         if (genericClasz == null) {
-            if (other.genericClasz != null)
+            if (other.genericClasz != null){
                 return false;
-        } else if (!genericClasz.equals(other.genericClasz))
+            }
+        } else if (!genericClasz.equals(other.genericClasz)){
             return false;
+        }
         return true;
     }
 

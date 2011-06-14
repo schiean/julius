@@ -49,8 +49,7 @@ public class MemoryHelper {
 	public long getUsedMB() {
 		long totalBytes = Runtime.getRuntime().totalMemory() ;
 		long freeWithinTotalBytes = Runtime.getRuntime().freeMemory();
-		long used = (totalBytes - freeWithinTotalBytes) / 1024 / 1024 ; // bytes => kilobytes => megabytes
-		return used;
+		return (totalBytes - freeWithinTotalBytes) / 1024 / 1024 ; // bytes => kilobytes => megabytes		
 	}
 	
 	/**

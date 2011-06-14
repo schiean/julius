@@ -41,7 +41,7 @@ public class StopWatch {
 	/**
 	 * resets the stopwatch for new measurements
 	 */
-	public void reset() {
+	public final void reset() {
 		start = 0;
 		stop = 0;
 		elapsed = 0;

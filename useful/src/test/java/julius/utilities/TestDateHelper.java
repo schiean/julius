@@ -27,6 +27,8 @@ import julius.test.BDDTestCase;
 
 public class TestDateHelper extends BDDTestCase {
 
+    private static final String GREGFORMAT = "yyyy-MM-dd";
+    
     public void testCopy() {
         given("a valid date");
         	Date currentDate = new Date();
@@ -55,24 +57,53 @@ public class TestDateHelper extends BDDTestCase {
         successFullStory();
     }
 
+
     public void testDate2Gregorian() {
-        	final Date d = new Date();
+        Date currentDate = new Date();
 
-        given("a normal date:" + d);
+        given("a normal date object with current time:" + currentDate);
 
-        when("converted to gregorian format (yyyy-mm-dd)");
-        	XMLGregorianCalendar cal = DateHelper.dateToGregorian(d);
+        when("converted to date in gregorian format (" + GREGFORMAT + ")");
+        	XMLGregorianCalendar cal = DateHelper.dateToXMLGregorian(currentDate);
 
-        	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        	String gregStr = formatter.format(d);
+        	DateFormat formatter = new SimpleDateFormat(GREGFORMAT);
+        	String gregStr = formatter.format(currentDate);
 
         then("we expect the calendar to contain the gregorian value " + gregStr);
-        	assertTrue(cal.toString().startsWith(gregStr));
 
-        and("reverse should return original date");
+        	assertEquals(gregStr, cal.toString());
 
-        	Date d2 = DateHelper.gregorianToDate(cal);
-        	assertEquals(d, d2);
+        when("we supply timezone UTC");
+        	XMLGregorianCalendar calZ = DateHelper.dateToXMLGregorian(currentDate, DateHelper.getUTC());
+        then("we expect the pattern " + GREGFORMAT + "Z");
+        	assertEquals(gregStr + "Z", calZ.toString());
+
+        successFullStory();
+    }
+
+    public void testDateTime2Gregorian() {
+        	Date currentDate = new Date();
+
+        given("a normal datetime object with current time:" + currentDate);
+
+        when("converted to datetime in gregorian format (" + GREGFORMAT + ")");
+        	XMLGregorianCalendar cal = DateHelper.datetimeToXMLGregorian(currentDate, DateHelper.getUTC());
+
+        	DateFormat formatter = new SimpleDateFormat(GREGFORMAT + "'T'HH:mm:ss.SSS'Z'");
+        	formatter.setTimeZone(DateHelper.getUTC());
+        	String gregStr = formatter.format(currentDate);
+
+        then("we expect the calendar to contain the gregorian value " + gregStr);
+
+        	assertEquals(gregStr, cal.toString());
+
+        when("called without timezone UTC");
+        	XMLGregorianCalendar cal2 = DateHelper.datetimeToXMLGregorian(currentDate);
+
+        then("we expect a +x:xx");
+        	DateFormat formatter2 = new SimpleDateFormat(GREGFORMAT + "'T'HH:mm:ss.SSS");
+        	String gregStr2 = formatter2.format(currentDate)+"+02:00";
+        	assertEquals(gregStr2, cal2.toString());
 
         successFullStory();
     }
@@ -99,4 +130,17 @@ public class TestDateHelper extends BDDTestCase {
     	
     	successFullStory();
     }
+    
+    
+    public void testNullSafe(){
+    	assertNull(DateHelper.getDateString(null));
+    	assertNull(DateHelper.copy(null));
+    	assertNull(DateHelper.datetimeToXMLGregorian(null));
+    	assertNull(DateHelper.datetimeToXMLGregorian(null, null));
+    	assertNull(DateHelper.dateToXMLGregorian(null));
+    	assertNull(DateHelper.dateToXMLGregorian(null,null));
+    	assertNull(DateHelper.gregorianToDate(null));
+    	
+    }
+    
 }

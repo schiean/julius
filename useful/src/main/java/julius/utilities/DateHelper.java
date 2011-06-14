@@ -21,8 +21,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -66,27 +68,6 @@ public final class DateHelper {
         return date;
     }
 
-    /**
-     * Transform a date in a long to a GregorianCalendar
-     * 
-     * @param date
-     *            (null safe)
-     * @return
-     */
-    public static XMLGregorianCalendar dateToGregorian(final Date date) {
-        if (date == null) {
-            return null;
-        }
-        DatatypeFactory dataTypeFactory;
-        try {
-            dataTypeFactory = DatatypeFactory.newInstance();
-        } catch (final DatatypeConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTimeInMillis(date.getTime());
-        return dataTypeFactory.newXMLGregorianCalendar(gc);
-    }
 
     
 	/**
@@ -111,5 +92,88 @@ public final class DateHelper {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US );
 		return dateFormat.format(date);
 	}
+
+	/**
+	 * @return TimeZone object for UTC, which is Zulu by convention
+	 */
+    public static TimeZone getUTC() {
+        return TimeZone.getTimeZone("Zulu");
+    }
+
+    /**
+     * Translate a date (WITH TIME) to XML GregorianCalendar
+     * @param date (or null)
+     * @return XMLGregorianCalendar (or null if the date was null)
+     */
+    public static XMLGregorianCalendar datetimeToXMLGregorian(final Date date, final TimeZone zone) {
+        if (date == null) {
+            return null;
+        }
+        return createFactory().newXMLGregorianCalendar(toGregorian(date, zone));
+    }
+
+
+    /**
+     * Translate a date (WITH TIME) to XML GregorianCalendar
+     * @param date (or null)
+     * @return XMLGregorianCalendar (or null if the date was null)
+     */
+    public static XMLGregorianCalendar datetimeToXMLGregorian(final Date date) {
+        return datetimeToXMLGregorian(date, null);
+    }
+
+    /**
+     * Translate a date (NO TIME) to XML GregorianCalendar
+     * @param date (or null)
+     * @param zone (or null)
+     * @return XMLGregorianCalendar (or null if the date was null)
+     */
+    public static XMLGregorianCalendar dateToXMLGregorian(final Date date, final TimeZone zone) {
+        if (date == null) {
+            return null;
+        }
+        XMLGregorianCalendar xmlGC = createFactory().newXMLGregorianCalendar(toGregorian(date, zone));
+        // @XmlSchemaType(name = "date")
+        // http://blog.jonasbandi.net/2009/05/jaxb-quicktip-xmlgregoriancalendar.html
+        if (zone == null) {
+            xmlGC.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+        }
+        xmlGC.setTime(DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED);
+        return xmlGC;
+    }
+
+    /**
+     * Transform a date(NO TIME) to XML GregorianCalendar
+     * @param date (or null)
+     * @return XMLGregorianCalendar (or null if the date was null)
+     */
+    public static XMLGregorianCalendar dateToXMLGregorian(final Date date) {
+        return dateToXMLGregorian(date, null);
+    }
+
+    /**
+     * creates a gregorian calendar with optional timezone
+     * @param date (required !=null)
+     * @param zone (optional)
+     * @return GregorianCalendar
+     */
+    private static GregorianCalendar toGregorian(final Date date, final TimeZone zone) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(date.getTime());
+        if (zone != null) {
+            gc.setTimeZone(zone);
+        }
+        return gc;
+    }
+
+    private static DatatypeFactory createFactory() {
+        DatatypeFactory dataTypeFactory;
+        try {
+            dataTypeFactory = DatatypeFactory.newInstance();
+        } catch (final DatatypeConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+        return dataTypeFactory;
+    }
 
 }

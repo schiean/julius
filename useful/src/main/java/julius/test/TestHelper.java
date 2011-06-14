@@ -63,7 +63,7 @@ public final class TestHelper {
                     if (m.getParameterTypes().length == 1) {
                         Object returnVal = m.invoke(testableObject, new Object[] { null }); // map, result = null and no exception
                         if (returnVal != null) {
-                            throw new RuntimeException(
+                            throw new IllegalArgumentException(
                                     "Error: this method didn't return a 'null result reference' for input 'null'");
                         }
                         System.out.println("succes:" + m);
@@ -79,7 +79,7 @@ public final class TestHelper {
             }
         }
         if (failures) {
-            throw new RuntimeException("Error: some methods have a problem handling 'null-params'");
+            throw new IllegalArgumentException("Error: some methods have a problem handling 'null-params'");
         }
     }
 
@@ -131,7 +131,7 @@ public final class TestHelper {
         }
         if (!filteredError.isEmpty()) {
             // junit.framework.Assert.fail("Error: some fields are null");
-            throw new RuntimeException("Error: some fields are null");
+            throw new IllegalArgumentException("Error: some fields are null");
         }
     }
 

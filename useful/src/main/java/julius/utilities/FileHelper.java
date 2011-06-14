@@ -199,8 +199,7 @@ public final class FileHelper {
 
 	private static OutputStreamWriter createOutputStreamReaderForCharset(final FileOutputStream fileOutputStream, final String charset)
 			throws UnsupportedEncodingException {
-		OutputStreamWriter osw = (charset != null && charset.length() > 0) ? new OutputStreamWriter(fileOutputStream, charset) :new OutputStreamWriter(fileOutputStream) ;
-		return osw;
+		return (charset != null && charset.length() > 0) ? new OutputStreamWriter(fileOutputStream, charset) :new OutputStreamWriter(fileOutputStream) ;
 	}
 	
 

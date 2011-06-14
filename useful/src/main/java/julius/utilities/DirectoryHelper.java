@@ -80,20 +80,21 @@ public class DirectoryHelper {
 	 * @param succes (initial state of success)
 	 * @return true if success was true and all worked out, false if it was false, or deletion did not succeed
 	 */
-	private static boolean cleanUpContents(final File fPath, boolean succes) {
+	private static boolean cleanUpContents(final File fPath, final boolean succes) {
+		boolean retVal = succes;
 		for(File file: fPath.listFiles()) {
 			if(file.isDirectory()) {
 				if(!removeDirectory(file.getAbsolutePath())){
-					succes = false;
+					retVal = false;
 		    	}      	 		        	 
 		    }
 		    else {
 		    	if(!file.delete()){
-		    		succes = false;		        		
+		    		retVal = false;		        		
 		    	}		           
 		    }
 		}
-		return succes;
+		return retVal;
 	}	
 	
 	/**
