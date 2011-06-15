@@ -51,7 +51,7 @@ public final class FileHelper {
 	public static InputStream getInputStream(final String filename){
 		InputStream inputStream = null;
 		try{
-			inputStream = new FileHelper().getClass().getClassLoader().getResourceAsStream(filename);
+			inputStream = log.getClass().getClassLoader().getResourceAsStream(filename);
 		}catch(Exception e){ 
 			/* not interesting */
 			log.trace("unable to load from resource stream "+filename);
@@ -135,9 +135,9 @@ public final class FileHelper {
 				list.add(strLine);
 			}
 		} catch (FileNotFoundException e) {
-			log.error("error ",e);
+			logError(e);
 		} catch (IOException e) {
-			log.error("error ",e);
+			logError(e);
 		}
 		finally{
 			handleCloseReader(br);
@@ -177,17 +177,22 @@ public final class FileHelper {
 			writer.close();
 			success = true;
 		} catch (IOException e) {
-			log.error("error ",e);
+			logError(e);
 		}finally{
 			if(writer!=null){
 				try {
 					writer.close();
 				} catch (IOException e) {
-					log.error("error ",e);
+					logError(e);
 				}
 			}
 		}
 		return success;
+	}
+
+
+	private static void logError(final IOException e) {
+		log.error("error ",e);
 	}
 
 
@@ -208,7 +213,7 @@ public final class FileHelper {
 			try {
 				in.close();
 			} catch (IOException e) {
-				log.error("error ",e);
+				logError(e);
 			}
 		}
 	}
@@ -218,7 +223,7 @@ public final class FileHelper {
 			try {
 				br.close();
 			} catch (IOException e) {
-				log.error("error ",e);
+				logError(e);
 			}
 		}
 	}

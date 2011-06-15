@@ -32,7 +32,7 @@ public interface ReflectionHelper {
 	 * @param setterMethodName
 	 * @return getterName
 	 */
-    public String getGetterName(final String setterMethodName);
+     String getGetterName(final String setterMethodName);
 
     /**
      * Will return true for methods with one argument of abstract type

@@ -25,14 +25,16 @@ package julius.test;
  * @see julius.test.BDDTestCase
  */
 public class BDDTestCase4 {
+	
+	private static final class BDDTestCase3 extends BDDTestCase {}
+	private static final BDDTestCase parent = new BDDTestCase3();
 
 	/**
 	 * @param precondition 
 	 * @see julius.test.BDDTestCase#given(String)
 	 */
     public void given(final String precondition) {
-        System.out.println("--------------------------------------");
-        System.out.println("Given " + precondition);
+        parent.given(precondition);
     }
 
 
@@ -41,7 +43,7 @@ public class BDDTestCase4 {
 	 * @see julius.test.BDDTestCase#when(String)
 	 */
     public void when(final String action) {
-        System.out.println("When " + action);
+        parent.when(action);
     }
 
 
@@ -50,7 +52,7 @@ public class BDDTestCase4 {
 	 * @see julius.test.BDDTestCase#and(String)
 	 */
     public void and(final String action) {
-        System.out.println("and " + action);
+        parent.and(action);
     }
 
 
@@ -59,7 +61,7 @@ public class BDDTestCase4 {
 	 * @see julius.test.BDDTestCase#then(String)
 	 */
     public void then(final String postcondition) {
-        System.out.println("Then " + postcondition);
+        parent.then(postcondition);
     }
 
 
@@ -67,8 +69,7 @@ public class BDDTestCase4 {
 	 * @see julius.test.BDDTestCase#successFullStory()
 	 */
     public void successFullStory() {
-        System.out.println("(implemented)");
-        System.out.println("--------------------------------------");
+    	parent.successFullStory();
     }
 
 
@@ -77,7 +78,7 @@ public class BDDTestCase4 {
 	 * @see julius.test.BDDTestCase#note(String)
 	 */
     public void note(final String note) {
-        System.out.println("(Note: " + note + " )");
+        parent.note(note);
     }
 
 }

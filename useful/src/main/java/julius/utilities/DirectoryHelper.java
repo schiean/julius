@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 /**
  * methods to create or remove directories
  */
-public class DirectoryHelper {
+public final class DirectoryHelper {
 	
 	private static final Logger log = Logger.getLogger(DirectoryHelper.class);
 	

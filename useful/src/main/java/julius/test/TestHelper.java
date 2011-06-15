@@ -16,6 +16,8 @@
 
 package julius.test;
 
+import static julius.test.JuliusTestOut.print;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -29,7 +31,6 @@ import java.util.Set;
 import julius.reflection.ReflectionHelper;
 import julius.reflection.ReflectionHelperImpl;
 import julius.utilities.CollectionHelper;
-
 
 /**
  * TODO needs some clean up and should support more then just "nl.*"
@@ -66,15 +67,15 @@ public final class TestHelper {
                             throw new IllegalArgumentException(
                                     "Error: this method didn't return a 'null result reference' for input 'null'");
                         }
-                        System.out.println("succes:" + m);
+                        print("succes:" + m);
                     } else if (m.getParameterTypes().length == 2) {
                         m.invoke(testableObject, new Object[] { null, null }); // map into, no exception
-                        System.out.println("succes:" + m);
+                        print("succes:" + m);
                     }
                 }
-            } catch (Throwable e) {
-                System.out.println("FAIL:" + m);
-                System.out.println("=>" + e);
+            } catch (Exception e) {
+                print("FAIL:" + m);
+                print("=>" + e);
                 failures = true;
             }
         }
@@ -106,7 +107,7 @@ public final class TestHelper {
                 assertNotNullRecursive(o, nullReturningMethods);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new IllegalArgumentException(e);
         }
         handleResults(allowed, nullReturningMethods);
     }
@@ -123,11 +124,11 @@ public final class TestHelper {
         }
         for (String methodName : filteredInfo) {
             int count = Collections.frequency(nullReturningMethods, methodName);
-            System.out.println("Info: null/empty (or collection containing 'null') method:" + methodName + "(" + count + ")");
+            print("Info: null/empty (or collection containing 'null') method:" + methodName + "(" + count + ")");
         }
         for (String methodName : filteredError) {
             int count = Collections.frequency(nullReturningMethods, methodName);
-            System.out.println("Error: null/empty (or collection containing 'null') method:" + methodName + "(" + count + ")");
+            print("Error: null/empty (or collection containing 'null') method:" + methodName + "(" + count + ")");
         }
         if (!filteredError.isEmpty()) {
             // junit.framework.Assert.fail("Error: some fields are null");
@@ -146,7 +147,7 @@ public final class TestHelper {
         assertNotNullRecursiveWithAllowed(o, new String[0]);
     }
 
-    private static void assertNotNullRecursive(final Object o, final List<String> listOfNullReturningMethods) throws IllegalArgumentException,
+    private static void assertNotNullRecursive(final Object o, final List<String> listOfNullReturningMethods) throws 
             IllegalAccessException,
             InvocationTargetException {
     	if(o.getClass().getPackage()==null){ // classes loaded by a different class loader have no package

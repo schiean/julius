@@ -36,8 +36,7 @@ public interface Asserter {
 	 * @throws RuntimeException
 	 *             if one of the list elements is null
 	 */
-	public abstract <T> void assertAllNotNull(final Collection<T> collection,
-			final String objectName);
+	 <T> void assertAllNotNull(final Collection<T> collection, final String objectName);
 
 	/**
 	 * check all elements on the list to be valid
@@ -50,8 +49,7 @@ public interface Asserter {
 	 * @throws RuntimeException
 	 *             if one of the list elements is null
 	 */
-	public abstract <T extends Validatable> void assertAllValidNotNull(
-			final Collection<T> collection, final String objectName);
+	<T extends Validatable> void assertAllValidNotNull(final Collection<T> collection, final String objectName);
 
 	/**
 	 * check for empty collections
@@ -65,8 +63,7 @@ public interface Asserter {
 	 * @throws RuntimeException
 	 *             for null or empty collections
 	 */
-	public abstract <T> void assertNotEmpty(final Collection<T> collection,
-			final String objectName);
+	<T> void assertNotEmpty(final Collection<T> collection, final String objectName);
 
 	/**
 	 * check for null value
@@ -77,8 +74,7 @@ public interface Asserter {
 	 * @throws RuntimeException
 	 *             for null values
 	 */
-	public abstract void assertNotNull(final Object object,
-			final String objectName);
+	void assertNotNull(final Object object, final String objectName);
 	
 	/**
 	 * check for true
@@ -87,7 +83,7 @@ public interface Asserter {
 	 * @throws RuntimeException
 	 * 				for false values
 	 */
-    public abstract void assertTrue(final boolean condition, final String msg);
+    void assertTrue(final boolean condition, final String msg);
 
 
 }

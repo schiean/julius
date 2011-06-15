@@ -16,7 +16,9 @@
 
 package julius.test;
 
+import static julius.test.JuliusTestOut.print;
 import junit.framework.TestCase;
+
 
 /**
  * JUNIT 3
@@ -62,8 +64,8 @@ public abstract class BDDTestCase extends TestCase {
 	 * @param precondition
 	 */
     public void given(final String precondition) {
-        System.out.println("--------------------------------------");
-        System.out.println("Given " + precondition);
+        print("--------------------------------------");
+        print("Given " + precondition);
     }
 
     /**
@@ -71,14 +73,14 @@ public abstract class BDDTestCase extends TestCase {
      * @param action
      */
     public void when(final String action) {
-        System.out.println("When " + action);
+        print("When " + action);
     }
 
     /**
      * @param action
      */
     public void and(final String action) {
-        System.out.println("and " + action);
+        print("and " + action);
     }
 
     /**
@@ -87,15 +89,15 @@ public abstract class BDDTestCase extends TestCase {
      * @param postcondition
      */
     public void then(final String postcondition) {
-        System.out.println("Then " + postcondition);
+        print("Then " + postcondition);
     }
 
     /**
      * prints a nice separator and notice of test success (useful if you read the test output)
      */
     public void successFullStory() {
-        System.out.println("(implemented)");
-        System.out.println("--------------------------------------");
+        print("(implemented)");
+        print("--------------------------------------");
     }
 
     /**
@@ -103,7 +105,7 @@ public abstract class BDDTestCase extends TestCase {
      * @param note
      */
     public void note(final String note) {
-        System.out.println("(Note: " + note + " )");
+        print("(Note: " + note + " )");
     }
 
 }
