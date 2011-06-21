@@ -23,6 +23,13 @@ import julius.validation.Assertions;
  * 
  * supports multiple start/stop sequences to accumulate the elapsed time 
  * this can be useful to measure the total amount of time in a method or block
+ * 
+ * keep in mind that these are easier to use then profiling tools, but also
+ * far less exact (it does not support accumulation spanning over multiple threads)
+ * nor does it support the difference between time spent and 'own time' per method.
+ * (if you measure a method you only know the total time of the method and its children 
+ * in the call-graph) 
+ * 
  * FEATURE Calculate the average for multiple start/stop sequences
  */
 public class StopWatch {

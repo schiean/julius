@@ -31,6 +31,18 @@ import julius.validation.internal.IllegalStateAsserter;
  * assertNotNull(someObj,"someName");
  * ....
  *
+ * Alternatives:
+ *  - Spring Assert
+ *  - Commons.lang.Validate
+ *  - Hibernate Validator
+ *
+ * This one is more flexible then spring and commons because of the exception factory.
+ * On the other hand Hibernate Validator will be a reference implementation for the JSR Bean Validation
+ * Which uses annotations for declarative bean validation. It is better suited for class hierarchies
+ * but on the other hand is a bit more invasive to use. Yet it does support localization through resource bundles.
+ * If a lot of business rules will be implemented Hibernate Validate could assist the functionality of this class.
+ * This class is more useful when for pre-post condition validation
+ *
  */
 public class Assertions {
 	
