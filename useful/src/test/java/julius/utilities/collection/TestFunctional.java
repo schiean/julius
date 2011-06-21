@@ -25,6 +25,37 @@ import julius.utilities.CollectionHelper;
 
 public class TestFunctional extends BDDTestCase {
 	
+	public void testFirstLast(){
+		given("list (1,2,3,4)");
+    	
+			List<Integer> l = new LinkedList<Integer>();
+			l.add(1);l.add(2);l.add(3);l.add(4);
+	
+		when("first is called");
+	
+			Integer result = CollectionHelper.first(l);
+	
+		then("we expect 1");
+			assertEquals(Integer.valueOf(1),result);
+			
+		note("should be alias to head");
+	
+			result = CollectionHelper.head(l);
+	
+			assertEquals(Integer.valueOf(1),result);
+			
+		when("last is called");
+			
+			result = CollectionHelper.last(l);
+	
+		then("we expect 4");
+			assertEquals(Integer.valueOf(4),result);
+					
+			
+		successFullStory();
+	}
+	
+	
     public void testAllExceptFirst(){
     	given("list (1,2,3,4)");
     	
@@ -76,6 +107,76 @@ public class TestFunctional extends BDDTestCase {
     	successFullStory();
     	
     }
+    
+    public void testAllExceptLastEmptyOrOne(){
+    	given("an empty colleciont");
+    		List<String> s = CollectionHelper.createLinkedList();
+    	when("allExceptLast is called");
+    		List<String> r = CollectionHelper.allExceptLast(s);
+    	then("we expect an empty collection");
+    		assertNotNull(r);
+    		assertTrue(r.isEmpty());
+    		
+    	given("a singleton collection");
+    		s.add("a");
+    	when("allExceptLast is called");
+    		r = CollectionHelper.allExceptLast(s);    		
+    	then("we expect an empty collection");
+    		assertNotNull(r);
+    		assertTrue(r.isEmpty());
+		successFullStory();
+    }
+    
+
+    public void testAllExceptFirstEmptyOrOne(){
+    	given("an empty collection");
+    		List<String> s = CollectionHelper.createLinkedList();
+    	when("allExceptFirst is called");
+    		List<String> r = CollectionHelper.allExceptFirst(s);
+    	then("we expect an empty collection");
+    		assertNotNull(r);
+    		assertTrue(r.isEmpty());
+    		
+    	given("a singleton collection");
+    		s.add("a");
+    	when("allExceptFirst is called");
+    		r = CollectionHelper.allExceptFirst(s);    		
+    	then("we expect an empty collection");
+    		assertNotNull(r);
+    		assertTrue(r.isEmpty());
+		successFullStory();
+    }
+
+    
+    public void testFirstLastEmptyOrOne(){
+    	given("an empty collection");
+    		List<String> s = CollectionHelper.createLinkedList();
+    	when("last is called");
+    		String r = CollectionHelper.last(s);
+    	then("we expect null");
+    		assertNull(r);
+    	when("first is called");
+    		r = CollectionHelper.first(s);
+    	then("we expect null");
+    		assertNull(r);
+    			
+    		
+    	given("a singleton collection");
+    		s.add("a");
+    	when("last is called");
+    		r = CollectionHelper.last(s);    		
+    	then("we expect the single item");
+    		assertNotNull(r);
+    		assertTrue(r.equals("a"));
+    	when("first is called");
+    		r = CollectionHelper.first(s);    		
+    	then("we expect the single item");
+    		assertNotNull(r);
+    		assertTrue(r.equals("a"));
+    			
+    }
+
+    
     
     // TODO LOW: should use proper given/when/then
     public void testSplitFlatten() {

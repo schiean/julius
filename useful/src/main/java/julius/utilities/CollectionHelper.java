@@ -206,5 +206,26 @@ public final class CollectionHelper {
     	return functional.allExceptLast(original);
     }
     
+///
+    /**
+     * @see CollectionsFunctional#first(List)
+     */
+    public static <T> T first(final List<T> original){
+    	return functional.first(original);
+    }
+
+    /**
+     * @see CollectionsFunctional#first(List)
+     */
+    public static <T> T head(final List<T> original){
+    	return first(original);
+    }
     
+    /**
+     * @see CollectionsFunctional#last(List)
+     */
+    public static <T> T last(final List<T> original){
+    	return functional.last(original);
+    }
+
 }

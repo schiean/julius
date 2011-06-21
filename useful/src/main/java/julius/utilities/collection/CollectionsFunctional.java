@@ -16,6 +16,7 @@
 
 package julius.utilities.collection;
 
+import java.util.Collections;
 import java.util.List;
 
 import julius.validation.Assertions;
@@ -78,12 +79,17 @@ public class CollectionsFunctional {
 	 * 		
 	 * }
 	 * 
+	 *  will return an empty list if the collection has less then 2 items (a singleton list has only one item which is both first & last)
+	 * 
      * @param <T>
      * @param fullList
      * @return a list with all items except the first/head
      */
     public <T> List<T> allExceptFirst(final List<T> fullList){
-    	return fullList.subList(1,fullList.size());
+    	if(fullList.size() < 2){
+    		return Collections.emptyList();
+    	}
+    	return Collections.unmodifiableList(fullList.subList(1,fullList.size()));
     }
 
     /**
@@ -94,12 +100,45 @@ public class CollectionsFunctional {
 	 * }  
 	 * Element last = list.last();  
 	 * 
+	 * will return an empty list if the collection has less then 2 items  (a singleton list has only one item which is both first & last)
+	 * 
      * @param <T>
      * @param fullList
-     * @return a list with all items except the last
+     * @return a immutable list with all items except the last
      */
     public <T> List<T> allExceptLast(final List<T> fullList){
-    	return fullList.subList(0,fullList.size()-1);
+    	if(fullList.size() < 2){
+    		return Collections.emptyList();
+    	}
+    	return Collections.unmodifiableList(fullList.subList(0,fullList.size()-1));
+    }
+    
+    /**
+     * the first item (or null if the list is empty)
+     * if the list has one item it is both the first and last of the list
+     * @param <T>
+     * @param fullList
+     * @return
+     */
+    public <T> T first(final List<T> fullList){
+    	if(fullList.isEmpty()){
+    		return null;
+    	}
+    	return fullList.get(0);// could use iterator instead to support more then list
+    }
+    
+    /**
+     * the first item (or null if the list is empty)
+     * if the list has one item it is both the first and last of the list
+     * @param <T>
+     * @param fullList
+     * @return
+     */
+    public <T> T last(final List<T> fullList){
+    	if(fullList.isEmpty()){
+    		return null;
+    	}
+    	return fullList.get(fullList.size()-1);
     }
 
 }
