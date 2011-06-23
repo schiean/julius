@@ -22,6 +22,7 @@ import java.util.List;
 
 import nl.testclasses.Child;
 import nl.testclasses.CustomTypeWithLangTypeList;
+import nl.testclasses.Cycle;
 import nl.testclasses.MapperNOK1;
 import nl.testclasses.MapperNOK2;
 import nl.testclasses.MapperOK;
@@ -31,6 +32,41 @@ import nl.testclasses.Parent;
 
 public class TestTestHelper extends BDDTestCase {
 
+	public void testAssertNotNullRecursiveCyclic(){
+		Cycle c1 = new Cycle(1);
+		assertTrue(failed(c1));
+		c1.setCycle(c1);
+		assertTrue(pass(c1));
+		
+		Cycle c2 =new Cycle(2);
+		c2.setCycle(c1);
+		assertTrue(pass(c2));
+		
+		Cycle c3 = new Cycle(3);
+		Cycle c4 = new Cycle(4);
+		Cycle c5 = new Cycle(5);
+		c3.setCycle(c4);
+		c4.setCycle(c5);
+		assertTrue(failed(c3));
+		assertTrue(failed(c4));
+		assertTrue(failed(c5));
+		
+		c5.setCycle(c3);
+		assertTrue(pass(c3));
+		assertTrue(pass(c4));
+		assertTrue(pass(c5));
+		
+		c5.setCycle(c1);
+		assertTrue(pass(c1));
+		assertTrue(pass(c2));
+		assertTrue(pass(c3));
+		assertTrue(pass(c4));
+		assertTrue(pass(c5));
+		
+		
+	}
+	
+	
     public void testAssertNotNullRecursive() {
         note("a partial filled object should fail");
 

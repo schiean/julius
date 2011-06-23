@@ -36,7 +36,7 @@ import julius.utilities.CollectionHelper;
  * TODO needs some clean up and should support more then just "nl.*"
  * 
  * Some smarter 'not null'-assert methods for junit
- * 
+ * NOT THREAD SAFE since there is a static object container
  */
 public final class TestHelper {
 
@@ -46,6 +46,8 @@ public final class TestHelper {
 
     private static ReflectionHelper reflectionHelper = new ReflectionHelperImpl();
 
+    private static List<Object> processed = new LinkedList<Object>();
+    
     /**
      * this will call all 1 or 2 param accepting methods on the provided object with a null param and checks if the result is also
      * null
@@ -96,7 +98,8 @@ public final class TestHelper {
      *            0 or more methodnames for which no error will be thrown in case their return value == null
      */
     public static void assertNotNullRecursiveWithAllowed(final Object o, final String... allowedItems) {
-        List<String> allowed = CollectionHelper.getOrEmpty(Arrays.asList(allowedItems));
+    	processed.clear();
+    	List<String> allowed = CollectionHelper.getOrEmpty(Arrays.asList(allowedItems));
         List<String> nullReturningMethods = new LinkedList<String>();
         try {
             if (o == null) {
@@ -150,6 +153,11 @@ public final class TestHelper {
     private static void assertNotNullRecursive(final Object o, final List<String> listOfNullReturningMethods) throws 
             IllegalAccessException,
             InvocationTargetException {
+    	if(CollectionHelper.containsObjectByRef(processed, o)){
+    		return;
+    	}else{
+    		processed.add(o);
+    	}
     	if(o.getClass().getPackage()==null){ // classes loaded by a different class loader have no package
     		return;
     	}
