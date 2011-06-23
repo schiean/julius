@@ -26,6 +26,24 @@ import java.util.Set;
  */
 public class CollectionsQuery {
 
+	/**
+	 * Will check if the exact object instance is in the collection
+	 * @param <T>
+	 * @param collection
+	 * @param item
+	 * @return true if at least one object in the collection has (item == collectionItem)
+	 */
+	public <T> boolean containsObjectByRef(final Collection<T> collection, final T item) {
+        for (T t : collection) {
+            if (item == t) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+	
+	
     /**
      * will either return the original collection or an empty immutable collection.
      * 

@@ -31,6 +31,52 @@ import julius.utilities.CollectionHelper;
 //TODO LOW: should use proper given/when/then
 public class TestQuery extends BDDTestCase {
 	
+	public static class Item{
+		private final int i; 
+		public Item(final int j){
+			i=j;
+		}
+		
+		@Override
+		public boolean equals(final Object o){
+			return ((Item)o).i == i;
+		}
+		
+		@Override
+		public String toString(){
+			return "val:"+i;
+		}
+	}
+	
+	public void testContainsObjectByRef(){
+		Item i1 = new Item(1);
+		Item i2 = new Item(2);
+		Collection<Item> col = CollectionHelper.createList(i1,i2);
+		
+		given("collection:"+col);
+		when("queried for exact same object == ");
+		then("return true");
+			assertTrue(CollectionHelper.containsObjectByRef(col, i1));
+			assertTrue(CollectionHelper.containsObjectByRef(col, i2));
+		
+		when("queried for not exact same object ==, but equal ");
+		then("return false");
+		
+			Item i3 = new Item(1);
+			assertTrue(i1.equals(i3));
+			assertFalse(CollectionHelper.containsObjectByRef(col, i3));
+		
+		
+		when("queried for not exact same object ==, also not equal ");
+		then("return false");
+		
+			Item i4 = new Item(4);
+			assertFalse(CollectionHelper.containsObjectByRef(col, i4));
+	
+		successFullStory();
+	}
+	
+	
     public void testGetNullIfEmptyList() {
         note("when provided null, return null");
         	List<String> o = null;

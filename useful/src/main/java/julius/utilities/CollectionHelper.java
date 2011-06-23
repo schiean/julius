@@ -172,6 +172,14 @@ public final class CollectionHelper {
     }
 
     /**
+     * @see CollectionsQuery#containsObjectByRef(Collection, Object)
+     */
+    public static <T> boolean containsObjectByRef(final Collection<T> collection, final T item) {
+    	   return query.containsObjectByRef(collection,item);
+    	    
+    }
+
+    /**
      * @see CollectionsFunctional#split(List, int)
 	 */
     public static <T> List<List<T>> split(final List<T> original, final int size) {
