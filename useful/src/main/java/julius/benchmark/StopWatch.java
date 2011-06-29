@@ -30,6 +30,8 @@ import julius.validation.Assertions;
  * (if you measure a method you only know the total time of the method and its children 
  * in the call-graph) 
  * 
+ * alternatively apache commons and spring also have a stopwatch
+ * 
  * FEATURE Calculate the average for multiple start/stop sequences
  */
 public class StopWatch {

@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import julius.validation.Assertions;
@@ -146,7 +148,34 @@ public final class FileHelper {
         return list;
 	}
 
-
+	/**
+	 * reads the data from the inputstream and closes it afterwards
+	 * @param in
+	 * @param charset
+	 * @return
+	 */
+	public static List<String> readToString(final InputStream in, final String charset) {
+		List<String> list = CollectionHelper.createLinkedList();
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(createInpuStreamReaderForCharset(in,charset));
+			
+			String strLine;
+			while ((strLine = br.readLine()) != null)   {
+				list.add(strLine);
+			}
+		} catch (FileNotFoundException e) {
+			logError(e);
+		} catch (IOException e) {
+			logError(e);
+		}
+		finally{
+			handleCloseReader(br);
+			handleCloseStream(in);
+		}
+        return list;
+	}
+	
 	
 	/**
 	 * write contents to filename
@@ -189,6 +218,24 @@ public final class FileHelper {
 		}
 		return success;
 	}
+	
+	/**
+	 * Download url to string
+	 * @param sUrl
+	 * @return file content
+	 */
+	public static List<String> readFromUrlAsString(final String sUrl) {
+		try {
+			URL url = new URL(sUrl);
+			URLConnection urlc = url.openConnection();
+			urlc.setRequestProperty("User-Agent", "Mozilla 5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.11) ");
+			InputStream is = urlc.getInputStream();
+			return readToString(is,null);
+		} catch (IOException e) {
+			throw new IllegalArgumentException("unable to download file",e);				
+		}				
+	}
+
 
 
 	private static void logError(final IOException e) {

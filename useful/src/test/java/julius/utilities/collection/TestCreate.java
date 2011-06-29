@@ -131,8 +131,21 @@ public class TestCreate extends BDDTestCase {
     			assertEquals(i, val.getPosition());
     			i++;
     		}
+    		
     	successFullStory();
     	
     }
 
+    public void testUnnumbered(){
+    	note("should support normal -> numbered -> normal' where normal equals normal'");
+    	List<String> l = new LinkedList<String>();
+		l.add("a");l.add("b");l.add("c");l.add("d");l.add("e");
+		List<Numbered<String>> temp = CollectionHelper.numbered(l);
+		List<String> res = CollectionHelper.unnumbered(temp);
+		assertEquals(l.size(),res.size());
+		for(int i=0;i<l.size();i++){
+			assertEquals(l.get(i),res.get(i));
+		}
+	    
+    }
 }

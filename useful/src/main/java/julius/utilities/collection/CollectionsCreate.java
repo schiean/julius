@@ -45,7 +45,20 @@ public class CollectionsCreate {
 		}
 		return target;
 	}
-	
+
+	/**
+	 * this method will unwrap the collection that was created by {@link #createNumberedList(List)}
+	 * @param <T>
+	 * @param original List({0,a},{1,b},{2,c},{3,d},{4,e},{5,f})
+	 * @return  List(a,b,c,d,e,f)
+	 */
+	public <T> List<T> createUnnumberedList(final List<Numbered<T>> original){
+		List<T> target = createLinkedList();
+		for(Numbered<T> item:CollectionHelper.getOrEmpty(original)){
+			target.add(item.getValue());
+		}
+		return target;
+	}
 	
 	/**
      * Will create a new linked list, useful because this does type inference meaning you don't have

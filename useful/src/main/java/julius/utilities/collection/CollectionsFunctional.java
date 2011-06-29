@@ -128,7 +128,7 @@ public class CollectionsFunctional {
     }
     
     /**
-     * the first item (or null if the list is empty)
+     * the last item (or null if the list is empty)
      * if the list has one item it is both the first and last of the list
      * @param <T>
      * @param fullList

@@ -84,6 +84,13 @@ public final class CollectionHelper {
     }
     
     /**
+     * @see CollectionsCreate#createUnnumberedList(List)
+     */
+    public static <T> List<T> unnumbered(final List<Numbered<T>> original){
+    	return create.createUnnumberedList(original);
+    }
+    
+    /**
      * @see CollectionsCreate#createLinkedList()
      */
     public static <T> List<T> createLinkedList() {

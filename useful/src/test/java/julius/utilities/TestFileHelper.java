@@ -107,5 +107,26 @@ public class TestFileHelper extends BDDTestCase {
 
 		successFullStory();
 	}
+	
+	public void testDownload(){
+		given("we are able to connect to google.com");
+		when("the website is read to URL");
+			List<String> lines = FileHelper.readFromUrlAsString("http://www.google.com/");
+		then("we should be able read it and get multiple lines");
+			assertNotNull(lines);
+			assertFalse(lines.isEmpty());
+		when("an invalid URL is read");
+			try{
+				FileHelper.readFromUrlAsString("asdasd");
+				fail("should fail on incorrect url");
+			}catch(IllegalArgumentException e){}
+			try{
+				FileHelper.readFromUrlAsString("http://www.wwwwwwwwwwwwwwwaaaaaa.com");
+				fail("should fail on non existing url");
+			}catch(IllegalArgumentException e){}
+		then("we receive an exception");
+		
+		successFullStory();
+	}
 
 }
