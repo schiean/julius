@@ -18,9 +18,11 @@ package julius.utilities.collection;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import julius.utilities.CollectionHelper;
@@ -61,7 +63,7 @@ public class CollectionsCreate {
 	}
 	
 	/**
-     * Will create a new linked list, useful because this does type inference meaning you don't have
+     * Will create a new mutable linked list, useful because this does type inference meaning you don't have
      * to declare the type twice per collection.
      * 
      * List<Integer> l = new LinkedList<Integer>();
@@ -78,7 +80,7 @@ public class CollectionsCreate {
     }
     
     /**
-     * useful to create immutable list in a DSL style
+     * useful to create an immutable list in a DSL style
      * 
      * List<Integer> dutchColors = createList(Color.Red, Color.White, Color.Blue); 
      * 
@@ -95,7 +97,7 @@ public class CollectionsCreate {
     }
     
 	/**
-     * Will create a new hash set, useful because this does type inference meaning you don't have
+     * Will create a new mutable hash set, useful because this does type inference meaning you don't have
      * to declare the type twice per collection.
      * 
      * Set<Integer> l = new HashSet<Integer>();
@@ -112,7 +114,7 @@ public class CollectionsCreate {
     }
     
     /**
-     * useful to create immutable set in a DSL style
+     * useful to create an immutable set in a DSL style
      * 
      * Set<Integer> dutchColors = createSet(Color.Red, Color.White, Color.Blue); 
      * 
@@ -128,6 +130,70 @@ public class CollectionsCreate {
         } else {
             return Collections.emptySet();
         }
+    }
+    
+    /**
+     * Will create a new mutable hash map, useful because this does type inference meaning you don't have
+     * to declare the type twice per collection.
+     * 
+     * Map<String,Integer> l = new HashMap<String,Integer>();
+     * 
+     * becomes
+     * 
+     * Map<String,Integer> l = createHashMap();
+     * 
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public <K, V> Map<K,V> createHashMap(){
+    	return new HashMap<K,V>();
+    }
+    
+    /**
+     * Create an immutable hashmap in DSL Style
+     * 
+     * Map<Color,Integer> dutchColors = createMap( entry(Color.Red, 1), entry(Color.White, 2), entry(Color.Blue, 3) ); 
+     * 
+     * @param <K>
+     * @param <V>
+     * @param entries
+     * @return new hashmap with copy of entries
+     */
+    public <K, V> Map<K, V> createMap(final Map.Entry<? extends K, ? extends V>... entries) {
+        if (entries != null && entries.length > 0) {
+        	Map<K, V> result = createHashMap();            
+        	for (Map.Entry<? extends K, ? extends V> entry : entries){
+        		result.put(entry.getKey(), entry.getValue());
+        	}
+        	return Collections.unmodifiableMap(result);
+        }else{
+        	return Collections.emptyMap();
+        }
+    }
+
+    /**
+     * creates an immutable Map.Entry
+     * @param <K>
+     * @param <V>
+     * @param key
+     * @param value
+     * @return
+     */
+    public <K, V> Map.Entry<K, V> entry(final K key, final V value) {
+        return pair(key, value);
+    }
+    
+    /**
+     * creates an immutable Pair-object
+     * @param <K>
+     * @param <V>
+     * @param first value (for instance key)
+     * @param second value (for instance value)
+     * @return
+     */
+    public <K, V> Pair<K, V> pair(final K first, final V second){
+    	return new Pair<K,V>(first,second);
     }
 
     // TODO seems a bit unuseful, better have something like    List withoutNulls(List);

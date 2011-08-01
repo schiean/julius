@@ -18,6 +18,7 @@ package julius.utilities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import julius.utilities.collection.CollectionsCreate;
@@ -25,6 +26,7 @@ import julius.utilities.collection.CollectionsFunctional;
 import julius.utilities.collection.CollectionsQuery;
 import julius.utilities.collection.CollectionsReplace;
 import julius.utilities.collection.Numbered;
+import julius.utilities.collection.Pair;
 
 
 
@@ -32,6 +34,11 @@ import julius.utilities.collection.Numbered;
  * class with methods that could have been on the collection classes of the jdk.
  * most of them are in functional programming style and therefore all methods are
  * static, which is also useful for static imports
+ * 
+ * it also contains some mini dsl for map set list initialization which are an 
+ * alternative to the collection literals of Java 8 and the type inference of the 
+ * diamond operator of Java 7. The ideas for this can be found on numerous online
+ * websites with tutorials or QA's.  
  * 
  * the algorithms themselves are in separate classes, since we provide
  * a lot of overloaded versions List/Set/Collection which are more or less equal
@@ -74,6 +81,41 @@ public final class CollectionHelper {
      */
     public static <T> Set<T> set(final T... vars) {
         return create.createSet(vars);
+    }
+    
+    /**
+     * @see CollectionsCreate#createHashMap()
+     */
+    public static <K, V> Map<K,V> createHashMap(){
+    	return create.createHashMap();
+    }
+    
+    /**
+     * @see CollectionsCreate#createHashMap()
+     */
+    public static <K, V> Map<K,V> map(){
+    	return createHashMap();
+    }
+    
+    /**
+     * @see CollectionsCreate#createMap(java.util.Map.Entry...)
+     */
+    public static <K, V> Map<K, V> map(final Map.Entry<? extends K, ? extends V>... entries) {
+        return create.createMap(entries);
+    }
+
+    /**
+     * @see CollectionsCreate#entry(Object, Object)
+     */
+    public static <K, V> Map.Entry<K, V> entry(final K key, final V value) {
+        return create.entry(key, value);
+    }
+    
+    /**
+     * @see CollectionsCreate#pair(Object, Object)
+     */
+    public static <K, V> Pair<K, V> pair(final K first, final V second){
+    	return create.pair(first,second);
     }
     
     /**

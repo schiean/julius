@@ -16,18 +16,54 @@
 
 package julius.utilities.collection;
 
+import static julius.utilities.CollectionHelper.entry;
+import static julius.utilities.CollectionHelper.pair;
+
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
 
 
-
 // TODO LOW: should use proper given/when/then
 public class TestCreate extends BDDTestCase {
+
+	public void testMap(){
+		note("map should return a mutable hashmap");
+			Map<String, Integer> l1 = CollectionHelper.map();
+			assertNotNull(l1);
+			assertTrue(l1.isEmpty());
+			l1.put("a",5);// no exception
+			assertTrue(l1.getClass().equals(HashMap.class));
+		}
+
+	public void testCreateMap() {
+        note("createMap() without params (or null param) should return empty Map");
+        	assertTrue(CollectionHelper.map().isEmpty());
+        	Pair[] a = null;
+        	assertTrue(CollectionHelper.map(a).isEmpty());
+        	assertTrue(CollectionHelper.map(new Pair[] {}).isEmpty());
+        note("createMap() with entry(a,'1'),entry(c,3) should return map{(a,1),(c,3)}");
+        	Map<String, Integer> i = CollectionHelper.map(entry("a", 1), entry("c", 3));
+        	assertTrue(i.size() == 2);
+        	assertEquals(Integer.valueOf(1), i.get("a"));
+        	assertEquals(Integer.valueOf(3), i.get("c"));
+        note("createMap() with entry(a,'1'),entry(c,3), entry(null,null) should return map{(a,1),(c,3),(null,null)}");
+            String strNull = null;
+			Integer intNull = null;
+			Map<String, Integer> j = CollectionHelper.map(pair("a", 1), pair("c", 3), pair(strNull, intNull));
+            assertTrue(j.size() == 3);
+            assertEquals(Integer.valueOf(1), i.get("a"));
+            assertEquals(Integer.valueOf(3), i.get("c"));
+            assertEquals(null, i.get(null));
+      	successFullStory();
+
+    }
 	
 	public void testSet(){
 		note("set should return a mutable hashset");
