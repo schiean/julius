@@ -17,6 +17,7 @@
 package julius.utilities.collection;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -196,7 +197,23 @@ public class CollectionsCreate {
     	return new Pair<K,V>(first,second);
     }
 
-    // TODO seems a bit unuseful, better have something like    List withoutNulls(List);
+    
+    /**
+     * 
+     * @param <T>
+     * @param original
+     * @return a new list with all values of original except 'null's
+     */
+    public <T> List<T> createListCopyWithoutNulls(final Collection<T> original){
+    	List<T> result = createLinkedList();
+    	for (T element : CollectionHelper.getOrEmpty(original)) {
+            if (element != null) {
+                result.add(element);
+            }
+        }
+    	return result;
+    }
+    
     /**
      * @param vars 
      * @param <T> 
@@ -204,15 +221,8 @@ public class CollectionsCreate {
      * @see julius.utilities.collection.CollectionsCreate#createList(Object...) but this one won't add 'nulls' 
      */
     public <T> List<T> createListWithoutNulls(final T... vars) {
-        if (vars != null && vars.length > 0) {
-            List<T> result = new LinkedList<T>();
-            List<T> ori = Arrays.asList(vars);
-            for (T element : ori) {
-                if (element != null) {
-                    result.add(element);
-                }
-            }
-            return result;
+        if (vars != null && vars.length > 0) {            
+            return createListCopyWithoutNulls(Arrays.asList(vars));
         } else {
             return new LinkedList<T>();
         }

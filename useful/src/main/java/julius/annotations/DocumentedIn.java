@@ -14,20 +14,16 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.annotations;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+/**
+ * can be used to document where in the documentation this code fragment is documented
+ */
+public @interface DocumentedIn {
 
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
+	/**
+	 * @return the location
+	 */
+	String value(); 
+	 
 }

@@ -16,12 +16,17 @@
 
 package julius.benchmark;
 
+import julius.Constants;
 import julius.utilities.Sleep;
 
 /**
  * utility class to enable logging of memory usage
+ * 
+ * KEEP IN MIND THAT USING THIS CLASS DOES INTERFERE WITH THE GARBAGE COLLECTOR AND MIGHT HURT PERFORMANCE
+ * DON'T USE IN PRODUCTION WHERE PERFORMANCE IS IMPORTANT
  */
 public class MemoryHelper {
+	
 
 	/**
 	 * @return a string telling the amount of used memory (in MB) before and after GC
@@ -49,7 +54,7 @@ public class MemoryHelper {
 	public long getUsedMB() {
 		long totalBytes = Runtime.getRuntime().totalMemory() ;
 		long freeWithinTotalBytes = Runtime.getRuntime().freeMemory();
-		return (totalBytes - freeWithinTotalBytes) / 1024 / 1024 ; // bytes => kilobytes => megabytes		
+		return (totalBytes - freeWithinTotalBytes) / Constants.BYTES_IN_KILOBYTE / Constants.KILOBYTES_IN_MEGABYTE ; // bytes => kilobytes => megabytes		
 	}
 	
 	/**

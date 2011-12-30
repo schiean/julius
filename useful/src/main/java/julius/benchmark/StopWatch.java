@@ -16,6 +16,7 @@
 
 package julius.benchmark;
 
+import julius.Constants;
 import julius.validation.Assertions;
 
 /**
@@ -35,6 +36,7 @@ import julius.validation.Assertions;
  * FEATURE Calculate the average for multiple start/stop sequences
  */
 public class StopWatch {
+
 
 	private long start;
 	private long stop;
@@ -103,7 +105,7 @@ public class StopWatch {
 	 * @return
 	 */
 	public long elapsedInSeconds(){
-		return elapsedInMillis() / 1000;
+		return elapsedInMillis() / Constants.MILLIS_IN_SEC;
 	}
 	
 	private long calculateProgress(final long end) {

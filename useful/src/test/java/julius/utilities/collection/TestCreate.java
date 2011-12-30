@@ -31,6 +31,8 @@ import julius.utilities.CollectionHelper;
 
 
 // TODO LOW: should use proper given/when/then
+
+@SuppressWarnings({"unchecked","rawtypes"})
 public class TestCreate extends BDDTestCase {
 
 	public void testMap(){
@@ -41,6 +43,7 @@ public class TestCreate extends BDDTestCase {
 			l1.put("a",5);// no exception
 			assertTrue(l1.getClass().equals(HashMap.class));
 		}
+
 
 	public void testCreateMap() {
         note("createMap() without params (or null param) should return empty Map");

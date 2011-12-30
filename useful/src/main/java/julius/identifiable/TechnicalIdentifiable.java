@@ -16,18 +16,18 @@
 
 package julius.identifiable;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
 
-	Long id;
+/**
+ * For a lot of classes it makes sense to have a technical identifier of the type long
+ * Hibernate classes have a common practice for this.
+ * 
+ * This interface and IdentifiableBase help to implement this practice
+ */
+public interface TechnicalIdentifiable extends Identifiable<Long> {
 
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
+	/**
+	 * @return Unique number identifying the object
+	 */
 	@Override
-	public Long getId() {
-		return id;
-	}
-	
+	Long getId();
 }

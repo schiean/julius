@@ -31,10 +31,15 @@ public final class StringHelper {
 	}
 	
 	// some string constants which are used a lot (some are also on StringUtils)
+	/** empty = ''; */
 	public static final String EMPTY = "";
+	/** single whitespace ' '*/
 	public static final String SPACE = " ";
+	/** 'J' */
 	public static final String J = "J";
+	/** 'Y' */
 	public static final String Y = "Y";
+	/** 'N' */
 	public static final String N = "N";
 	
 	/**
@@ -60,7 +65,7 @@ public final class StringHelper {
 	}
 	
 	/**
-	 * takes the substring between the Nth occurence of startExpression and the next endExpression
+	 * takes the substring between the Nth occurrence of startExpression and the next endExpression
 	 * 
 	 * example
 	 * 

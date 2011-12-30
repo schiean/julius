@@ -21,6 +21,10 @@ public class Cycle {
 	private Cycle p;
 	private final int i;
 	
+	public int getI() {
+		return i;
+	}
+
 	public Cycle(final int j){
 		i = j;
 	}

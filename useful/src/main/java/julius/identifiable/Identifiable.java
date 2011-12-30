@@ -16,16 +16,30 @@
 
 package julius.identifiable;
 
+import julius.lambda.Operation;
+
 /**
- * For a lot of classes it makes sense to have a technical identifier of the type long
- * Hibernate classes have a common practice for this.
+ * For a lot of classes it makes sense to have an identifier.
+ * Hibernate classes have a common practice for this to use Long.
+ * for Hibernate most of the time TechnicalIdentifiable should be used, but NaturalIdentifiable allows for NaturalKey identification
  * 
  * This interface and IdentifiableBase help to implement this practice
  */
-public interface Identifiable {
+public interface Identifiable<U> {
 
 	/**
-	 * @return Unique number identifying the object
+	 * @return Unique identifier identifying the object
 	 */
-	Long getId();
+	U getId();
+	
+	/**
+	 * function object for extracting an Id from a Item useful in combination with Functional.map to turn a collection of Identifiable into a collection of their identifiers
+	 */
+	public static class IdExtracter<T extends Identifiable<U>,U> implements Operation<T,U>{
+		@Override
+		public  U apply(final T val) {			
+			return val.getId();
+		}
+	};	
+
 }

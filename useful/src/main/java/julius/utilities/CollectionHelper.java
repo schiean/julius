@@ -133,6 +133,12 @@ public final class CollectionHelper {
     }
     
     /**
+     * @see CollectionsCreate#createUnnumberedList(List)
+     */
+    public static <T> Set<T> createHashSet(){
+    	return create.createHashSet();
+    }
+    /**
      * @see CollectionsCreate#createLinkedList()
      */
     public static <T> List<T> createLinkedList() {
@@ -153,7 +159,12 @@ public final class CollectionHelper {
         return create.createListWithoutNulls(vars);
     }    
     
-    
+    /**
+     * @see CollectionsCreate#createListCopyWithoutNulls(Collection) 
+     */
+    public static <T> List<T> createListCopyWithoutNulls(final Collection<T> original){
+    	return create.createListCopyWithoutNulls(original);
+    }
     
     /**
 	 * @see CollectionsReplace#replace(Set, Set)
@@ -236,11 +247,27 @@ public final class CollectionHelper {
     }
 
     /**
-     * @see CollectionsFunctional#flatten(List)
+     * @see CollectionsFunctional#flattenToList(Collection)
      */
-    public static <T> List<T> flatten(final List<List<T>> original) {
-        return functional.flatten(original);
+    public static <T,U extends Collection<T>> List<T> flatten(final Collection<U> multiDimensionCollection) {
+        return functional.flattenToList(multiDimensionCollection);
     }
+ 
+    /**
+     * @see CollectionsFunctional#flattenToList(Collection)
+     */
+    public static <T,U extends Collection<T>> List<T> flattenToList(final Collection<U> multiDimensionCollection) {
+        return functional.flattenToList(multiDimensionCollection);
+    }
+    
+    /**
+     * @see CollectionsFunctional#flattenToSet(Collection)
+     */
+    public static <T,U extends Collection<T>> Set<T> flattenToSet(final Collection<U> multiDimensionCollection) {
+        return functional.flattenToSet(multiDimensionCollection);
+    }
+    
+    
 
     /**
      * @see CollectionsFunctional#allExceptFirst(List)

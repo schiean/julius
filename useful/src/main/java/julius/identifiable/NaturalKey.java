@@ -16,18 +16,7 @@
 
 package julius.identifiable;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+/** Marker interface to indicate something is a NaturalKey to some Object */
+public interface NaturalKey {
 
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
 }

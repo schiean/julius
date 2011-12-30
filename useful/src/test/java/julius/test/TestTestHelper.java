@@ -32,6 +32,32 @@ import nl.testclasses.Parent;
 
 public class TestTestHelper extends BDDTestCase {
 
+	public void testallmostequals(){
+		note("exact equal numbers should go alongs fine");
+		TestHelper.allmostEquals(10, 10, 10);
+		TestHelper.allmostEquals(10l, 10l, 10);
+		
+		note("not exactly equal numbers, but within range, should go alongs fine");
+		TestHelper.allmostEquals(100000,   100008,  10);
+		TestHelper.allmostEquals(100000l,  100008l, 10);
+		
+		note("out of range numbers, should raise exception");
+		try{
+			TestHelper.allmostEquals(100000,   10,  10);
+			fail("should raise exception");
+		}catch(IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		try{
+			TestHelper.allmostEquals(100000l,  10l, 10);			
+			fail("should raise exception");
+		}catch(IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	
+	
 	public void testAssertNotNullRecursiveCyclic(){
 		Cycle c1 = new Cycle(1);
 		assertTrue(failed(c1));

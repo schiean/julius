@@ -16,9 +16,12 @@
 
 package julius.utilities.collection;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import julius.utilities.CollectionHelper;
 import julius.validation.Assertions;
 
 /**
@@ -33,17 +36,35 @@ public class CollectionsFunctional {
      * Will merge a list of lists by taking all elements of the provided lists into a new list.
      * Works only only level deep, but could be used multiple times for multiple levels of flattening.
      * @param <T>
-     * @param original List of List (null safe for original and part lists)
+     * @param multiDimensionCollection List of List (null safe for original and part lists)
      * @return List with all elements of the parts of the original
      */
-    public <T> List<T> flatten(final List<List<T>> original) {
-        List<T> fullList = create.createLinkedList();
-        for (List<T> lPart : query.getOrEmpty(original)) {
-            fullList.addAll(query.getOrEmpty(lPart));
-        }
-        return fullList;
+    public <T,U extends Collection<T>> List<T> flattenToList(final Collection<U> multiDimensionCollection) {
+        List<T> target = create.createLinkedList();
+    	flattenCollection(multiDimensionCollection, target);
+    	return target;    
     }
 
+    /**
+     * Will merge a list of lists by taking all elements of the provided lists into a new list.
+     * Works only only level deep, but could be used multiple times for multiple levels of flattening.
+     * @param <T>
+     * @param multiDimensionCollection List of List (null safe for original and part lists)
+     * @return Set with all elements of the parts of the original
+     */
+    public <T,U extends Collection<T>> Set<T> flattenToSet(final Collection<U> multiDimensionCollection){
+    	Set<T> target = CollectionHelper.createHashSet();
+    	flattenCollection(multiDimensionCollection, target);
+    	return target;
+    }
+    
+    private <T,U extends Collection<T>> void flattenCollection(final Collection<U> source, final Collection<T> target){
+    	for(U u:query.getOrEmpty(source)){
+    		target.addAll(query.getOrEmpty(u));
+    	}    	
+    }
+    
+    
     /**
      * Will split a list into multiple parts of the provided size (where the last part is between 1 and size elements)
      * @param <T>

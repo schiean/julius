@@ -14,20 +14,19 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.lambda;
+/**
+ * declares a function object that turns an T into U 
+ */
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
-
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
+public interface FoldOperation<T,U> extends Lambda {
 	
+	/**
+	 * this method should calculate a new U based on the Current U and T t
+	 * @param t
+	 * @param current
+	 * @return
+	 */
+	U apply(T t, U current);
+
 }

@@ -14,20 +14,22 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+/**
+ * class containing constants that don;t really belong to any single class (yet)
+ */
+public interface Constants {
 
-	Long id;
+	/** number of milliseconds in a second*/
+	public static final int MILLIS_IN_SEC = 1000;
+	/** number of seconds per minute */
+	public static final int SEC_IN_MIN = 60;
+	/** number of minutes per hour */
+	public static final int MIN_IN_HOUR = 60;
 
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
+	/** number of bytes in a kilobyte */
+	public static final int BYTES_IN_KILOBYTE = 1024;
+	/** number of kilobytes in a megabyte */
+	public static final int KILOBYTES_IN_MEGABYTE = 1024;
 }

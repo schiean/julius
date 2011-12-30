@@ -31,6 +31,7 @@ import java.util.Set;
 import julius.reflection.ReflectionHelper;
 import julius.reflection.ReflectionHelperImpl;
 import julius.utilities.CollectionHelper;
+import julius.utilities.NumberHelper;
 
 /**
  * TODO needs some clean up and should support more then just "nl.*"
@@ -47,6 +48,24 @@ public final class TestHelper {
     private static ReflectionHelper reflectionHelper = new ReflectionHelperImpl();
 
     private static List<Object> processed = new LinkedList<Object>();
+    private static NumberHelper numberHelper = new NumberHelper();
+    
+    /**
+     * Allows for comparisons where the result should be in the range of some value not particular exactly the expected value.
+     * This makes sense for heuristic algorithms or benchmark tests.
+     * 
+     * (expected - percentage) <= actual => (expected + percentage) 
+     * 
+     * @param expected
+     * @param actual
+     * @param percentage
+     * 
+     */
+    public static void allmostEquals(final long expected, final long actual, final int percentage){
+    	if(!numberHelper.almostEqual(expected, actual, percentage)){
+    		throw new IllegalArgumentException("We expected:"+numberHelper.toString(expected)+" with an offset of "+percentage+"% but got: "+numberHelper.toString(actual));
+    	}
+    }
     
     /**
      * this will call all 1 or 2 param accepting methods on the provided object with a null param and checks if the result is also

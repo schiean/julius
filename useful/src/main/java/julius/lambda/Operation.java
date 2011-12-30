@@ -14,20 +14,18 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.lambda;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
-
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
+/**
+ * declares a function object that turns an T into U 
+ */
+public interface Operation<T,U> extends Lambda {
 	
+	/**
+	 * Should create a U for T 
+	 * @param T
+	 * @return some U
+	 */
+	U apply(T t);
+
 }

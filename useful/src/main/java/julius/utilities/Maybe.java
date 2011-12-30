@@ -14,20 +14,19 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.utilities;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+/**
+ * Alias for Optional
+ */
+public class Maybe<T> extends Optional<T>{
 
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
+	/**
+	 * 
+	 * @param value
+	 */
+	public Maybe(final T value) {
+		super(value);
 	}
-	
+
 }

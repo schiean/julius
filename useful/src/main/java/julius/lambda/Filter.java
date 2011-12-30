@@ -14,20 +14,17 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.lambda;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
-
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
+/**
+ * interface for Lambda like uses where filtering is requested
+ */
+public interface Filter<T> extends Lambda{
+	
+	/**
+	 * @param val
+	 * @return true means it should be used
+	 */
+	boolean applicable(T val);
 	
 }

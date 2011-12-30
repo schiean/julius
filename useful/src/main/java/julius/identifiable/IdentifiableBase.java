@@ -28,7 +28,7 @@ import static julius.identifiable.IdentifiableHelper.helper;
  * 
  * more on equals/hashcode http://www.ibm.com/developerworks/java/library/j-jtp05273/index.html
  */
-public abstract class IdentifiableBase implements Identifiable{
+public abstract class IdentifiableBase<T> implements Identifiable<T>{
 
 	@Override
 	public boolean equals(final Object obj){

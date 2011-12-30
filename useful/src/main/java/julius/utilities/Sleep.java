@@ -16,11 +16,14 @@
 
 package julius.utilities;
 
+import julius.Constants;
+
 import org.apache.log4j.Logger;
 
 /**
- * In java the code needed to let a thread sleep aint pretty.
- * It needs a checked exception, the interface is in milliseconds, most of the time the catch block is empty
+ * In java the code needed to let a thread sleep ain't pretty.
+ * It needs a checked exception, the interface is in milliseconds, most of the time the catch block is empty (although this
+ * might not be the best way to handle interupted exceptions see http://www.ibm.com/developerworks/java/library/j-jtp05236/index.html)
  * 
  * This class makes the code easier and better readable
  * 
@@ -30,7 +33,7 @@ import org.apache.log4j.Logger;
  * sleep.minutes(2);
  * sleep.minutes(2).and().seconds(30);
  * 
- * TODO add reference to ibm article about interrupted
+ * for use in loops a scheduleAtFixedTime might be an alternative
  */
 public class Sleep {
 	
@@ -57,7 +60,7 @@ public class Sleep {
 	 * @return self
 	 */
 	public Sleep seconds(final long seconds){
-		milliseconds(1000*seconds);
+		milliseconds(Constants.MILLIS_IN_SEC * seconds);
 		return this;
 	}
 	
@@ -66,7 +69,7 @@ public class Sleep {
 	 * @return self
 	 */
 	public Sleep minutes(final long minutes){
-		seconds(60*minutes);
+		seconds(Constants.SEC_IN_MIN * minutes);
 		return this;
 	}
 	

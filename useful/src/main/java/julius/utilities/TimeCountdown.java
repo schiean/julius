@@ -16,6 +16,7 @@
 
 package julius.utilities;
 
+import julius.Constants;
 import julius.benchmark.StopWatch;
 import julius.validation.Assertions;
 
@@ -50,7 +51,7 @@ public class TimeCountdown {
 	 * @return
 	 */
 	public static TimeCountdown toSeconds(final long seconds){
-		return new TimeCountdown(1000 * seconds);
+		return new TimeCountdown(Constants.MILLIS_IN_SEC * seconds);
 	}	
 	
 	/**

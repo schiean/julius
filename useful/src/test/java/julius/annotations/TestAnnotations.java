@@ -14,20 +14,16 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.annotations;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+public class TestAnnotations {
 
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
+	@DocumentedIn("Some Doc paragraph X")
+	@Experimental("this feature is not done yet/ might be removed later on")	
+	public static class Example{
+		
 	}
+	
+	
 	
 }

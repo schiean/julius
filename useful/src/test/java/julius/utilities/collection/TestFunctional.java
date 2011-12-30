@@ -18,11 +18,12 @@ package julius.utilities.collection;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
 
-
+@SuppressWarnings("unchecked")
 public class TestFunctional extends BDDTestCase {
 	
 	public void testFirstLast(){
@@ -204,4 +205,31 @@ public class TestFunctional extends BDDTestCase {
         	assertEquals(l2.size(), r2.size());
         	assertEquals(l2, r2);
     }
+    
+
+	public void testFlattenSet() {
+        note("(1,2),null,(3,4,5) should become (1,2,3,4,5)");
+        	Set<Integer> l1 = CollectionHelper.set(1, 2);
+        	Set<Integer> l2 = CollectionHelper.set(3, 4, 5);
+        	Set<Set<Integer>> splitted = CollectionHelper.set(l1, null, l2);
+        	Set<Integer> r1 = CollectionHelper.flattenToSet(splitted);
+        	assertEquals(l1.size() + l2.size(), r1.size());
+        	assertEquals(CollectionHelper.set(1,2,3,4,5), r1);
+        	
+        	// more complex with set/list combinations
+        	List<Integer> r2 = CollectionHelper.flattenToList(splitted);
+        	assertEquals(l1.size() + l2.size(), r2.size());
+        	assertEquals(CollectionHelper.list(1,2,3,4,5), r2);
+        	
+        	List<Set<Integer>> splitted2 = CollectionHelper.list(l1,null,l2);
+        	Set<Integer> r3 = CollectionHelper.flattenToSet(splitted2);
+        	assertEquals(l1.size() + l2.size(), r3.size());
+        	assertEquals(CollectionHelper.set(1,2,3,4,5), r3);
+        	
+    }
+    
+    
+
+    
+    
 }

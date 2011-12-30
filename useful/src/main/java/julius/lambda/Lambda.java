@@ -14,20 +14,17 @@
  *  limitations under the License.
  */
 
-package julius.identifiable;
+package julius.lambda;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+/** 
+ * Java does not contain a construction for lambda;s or function pointers.
+ * These classes/interfaces declare a simple method to allow anonymous inner-classes as a workaround for function pointers and lambda's
+ *  
+ * Marker interface to declare other interfaces that implement some kind of function-object
+ * 
+ * NOTE: keep in mind that anonymous classes are not extremely expensive, but still it is better to declare them as static class member
+ * then as inline-method body member. (for cases where they are heavily used)  
+ */
+public interface Lambda {
 
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
 }

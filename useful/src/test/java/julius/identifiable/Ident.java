@@ -16,10 +16,14 @@
 
 package julius.identifiable;
 
-public class Ident extends IdentifiableBase{
+public class Ident  extends IdentifiableBase<Long> implements TechnicalIdentifiable{
 	private final Long id;
 	private final String name;
 	
+	public String getName() {
+		return name;
+	}
+
 	public Ident(final Long id) {
 		super();
 		this.id = id;

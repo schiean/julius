@@ -102,9 +102,10 @@ public class TestDateHelper extends BDDTestCase {
 
         then("we expect a +x:xx");
         	DateFormat formatter2 = new SimpleDateFormat(GREGFORMAT + "'T'HH:mm:ss.SSS");
-        	String gregStr2 = formatter2.format(currentDate)+"+02:00";
-        	assertEquals(gregStr2, cal2.toString());
-
+        	String gregStr2_zomer = formatter2.format(currentDate)+"+02:00";
+        	String gregStr2_winter = formatter2.format(currentDate)+"+01:00";
+        	assertTrue(gregStr2_zomer.equals(cal2.toString()) || gregStr2_winter.equals(cal2.toString()));
+        	
         successFullStory();
     }
 

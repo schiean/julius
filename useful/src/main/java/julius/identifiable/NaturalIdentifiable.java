@@ -16,18 +16,15 @@
 
 package julius.identifiable;
 
-public class Ident2 extends IdentifiableBase<Long> implements TechnicalIdentifiable{
+/**
+ * declares an interface declaring a method getId that returns an instance of NaturalKey
+ * see TechnicalIdentifiable for the simple Long key variant
+ */
+public interface NaturalIdentifiable<T extends NaturalKey> extends Identifiable<T>{
 
-	Long id;
-
-	public Ident2(final Long id) {
-		super();
-		this.id = id;
-	} 
-
+	/**
+	 * @return Unique NaturalKey identifying the object
+	 */
 	@Override
-	public Long getId() {
-		return id;
-	}
-	
+	T getId();
 }

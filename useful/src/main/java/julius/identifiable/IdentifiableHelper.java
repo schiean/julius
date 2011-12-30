@@ -26,7 +26,9 @@ package julius.identifiable;
  */
 public class IdentifiableHelper {
 	
+	/** static instance */
 	public static final IdentifiableHelper helper = new IdentifiableHelper();
+	
 	
 	/**
 	 * implements a generic hashcode method, where hashcode is based on getId()
@@ -35,7 +37,7 @@ public class IdentifiableHelper {
 	 * @param original		  most likely called with 'this'
 	 * @return
 	 */
-	public int hashCode(final Identifiable original) {
+	public <T> int hashCode(final Identifiable<T> original) {
 		int prime = 31;
 		if (original.getId() != null) {
 			return prime + original.getId().hashCode();
@@ -57,7 +59,7 @@ public class IdentifiableHelper {
 	 * @param obj
 	 * @return
 	 */
-	public boolean equals(final Identifiable original, final Object obj) {
+	public <T> boolean equals(final Identifiable<T> original, final Object obj) {
 		if (original == obj){
 			return true;
 		}
@@ -67,7 +69,8 @@ public class IdentifiableHelper {
 		if (original.getClass() != obj.getClass()){
 			return false;
 		}
-		Identifiable other = (Identifiable) obj;
+		@SuppressWarnings("unchecked")
+		Identifiable<T> other = (Identifiable<T>) obj;
 		if (original.getId() == null) {
 			return false;
 		} else {
@@ -80,7 +83,7 @@ public class IdentifiableHelper {
 	 * @param original
 	 * @return
 	 */
-	public String toString(final Identifiable original) {
+	public <T> String toString(final Identifiable<T> original) {
 		return original.getClass().getName()+"(" + original.getId() + ")";
 	}
 
