@@ -25,7 +25,7 @@ import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
 
 
-public class TestReplace extends BDDTestCase {
+public class TestCollectionsReplace extends BDDTestCase {
 	   
 	public final void testReplaceSet() {
 	    	// normal

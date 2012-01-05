@@ -21,10 +21,12 @@ import java.util.List;
 import java.util.Set;
 
 import julius.test.BDDTestCase;
+import julius.test.TestHelperCollections;
 import julius.utilities.CollectionHelper;
+import julius.utilities.collection.CollectionsFunctional.Window;
 
 @SuppressWarnings("unchecked")
-public class TestFunctional extends BDDTestCase {
+public class TestCollectionsFunctional extends BDDTestCase {
 	
 	public void testFirstLast(){
 		given("list (1,2,3,4)");
@@ -228,8 +230,21 @@ public class TestFunctional extends BDDTestCase {
         	
     }
     
+	public void testMovingWindow(){
+		note("(a,b,c,d,e) => (a,b)(b,c)(c,d)(d,e)");
+		
+		List<String> items = CollectionHelper.list("a","b","c","d","e");
+		List<Window<String>> exp = CollectionHelper.list(window("a","b"),window("b","c"),window("c","d"),window("d","e"));
+		
+		List<Window<String>> res = CollectionHelper.getMovingWindow(items);
+		System.out.println(res);
+		TestHelperCollections.assertSameOrderAndSize(exp,res);
+		
+	}
     
-
+	private Window<String> window(final String a,final String b){
+		return new Window<String>(a,b);
+	}
     
     
 }

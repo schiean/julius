@@ -16,8 +16,6 @@
 
 package julius.utilities;
 
-import julius.Constants;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -60,7 +58,7 @@ public class Sleep {
 	 * @return self
 	 */
 	public Sleep seconds(final long seconds){
-		milliseconds(Constants.MILLIS_IN_SEC * seconds);
+		milliseconds( DateHelper.secondsToMillis(seconds) );
 		return this;
 	}
 	
@@ -69,7 +67,7 @@ public class Sleep {
 	 * @return self
 	 */
 	public Sleep minutes(final long minutes){
-		seconds(Constants.SEC_IN_MIN * minutes);
+		seconds(DateHelper.minutesToSeconds(minutes));
 		return this;
 	}
 	

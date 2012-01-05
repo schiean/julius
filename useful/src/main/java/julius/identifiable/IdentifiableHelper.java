@@ -16,6 +16,8 @@
 
 package julius.identifiable;
 
+import julius.utilities.GeneralObjectHelper;
+
 /**
  * Reusable equals, hashCode and toString for Identifiables
  * 
@@ -60,7 +62,7 @@ public class IdentifiableHelper {
 	 * @return
 	 */
 	public <T> boolean equals(final Identifiable<T> original, final Object obj) {
-		if (original == obj){
+		if (GeneralObjectHelper.areSameInstance(original, obj)){
 			return true;
 		}
 		if (obj == null){

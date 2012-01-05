@@ -28,6 +28,8 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import julius.Constants;
+
 /**
  * useful methods for java util date.
  * Alternatively use Joda Time
@@ -152,6 +154,41 @@ public final class DateHelper {
     }
 
     /**
+     * @param seconds
+     * @return a rounded amount of minutes based on the provided seconds
+     */
+    public static long secondsToMinutes(final long seconds){
+		// add half a minute to make sure the number is rounded instead of 'cut of'
+		return (seconds + ( Constants.SEC_IN_MIN / 2 ) ) /  Constants.SEC_IN_MIN;
+    }
+    
+
+    /**
+     * @param minutes
+     * @return amount of seconds based on the provided minutes
+     */
+    public static long minutesToSeconds(final long minutes){
+    	return minutes * Constants.SEC_IN_MIN;
+    }
+    
+    /**
+     * @param millis
+     * @return a rounded amount of seconds based on the provided millis
+     */
+	public static long millisToSeconds(final long millis) {
+		// add half a sec to make sure the number is rounded instead of 'cut of'
+		return (millis + ( Constants.MILLIS_IN_SEC / 2 ) ) /  Constants.MILLIS_IN_SEC;
+	}
+
+    /**
+     * @param seconds
+     * @return amount of millis based on the provided seconds
+     */
+	public static long secondsToMillis(final long seconds) {
+		return seconds * Constants.MILLIS_IN_SEC;
+	}
+    
+    /**
      * creates a gregorian calendar with optional timezone
      * @param date (required !=null)
      * @param zone (optional)
@@ -175,5 +212,7 @@ public final class DateHelper {
         }
         return dataTypeFactory;
     }
+
+ 
 
 }

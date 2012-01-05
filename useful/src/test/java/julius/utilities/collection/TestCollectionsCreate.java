@@ -27,14 +27,45 @@ import java.util.Map;
 import java.util.Set;
 
 import julius.test.BDDTestCase;
+import julius.test.TestHelperCollections;
 import julius.utilities.CollectionHelper;
 
 
 // TODO LOW: should use proper given/when/then
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class TestCreate extends BDDTestCase {
+public class TestCollectionsCreate extends BDDTestCase {
 
+	public void testUnique(){
+		note("turning a list unique should keep order");
+		
+		List<Integer> list = CollectionHelper.list(1,3,4,5,5,3,6,7,3,8);
+		List<Integer> exp = CollectionHelper.list(1,3,4,5,6,7,8);
+		
+		List<Integer> res = CollectionHelper.unique(list);
+		TestHelperCollections.assertSameOrderAndSize(exp, res);
+		TestHelperCollections.assertContainsAll(res, new HashSet<Integer>(list));
+		TestHelperCollections.assertSameSize(res, new HashSet<Integer>(list));
+		
+
+		res = CollectionHelper.createListWithoutDoubleValues(list);
+		TestHelperCollections.assertSameOrderAndSize(exp, res);
+		TestHelperCollections.assertContainsAll(res, new HashSet<Integer>(list));
+		TestHelperCollections.assertSameSize(res, new HashSet<Integer>(list));
+	}
+	
+	public void testWithoutNulls(){
+		note("list with nulls should have them removed, but all remains the same order");
+		List<Integer> integer = CollectionHelper.list(1,2,3,null,4,5);
+		List<Integer> exp = CollectionHelper.list(1,2,3,4,5);
+		List<Integer> result = CollectionHelper.createListCopyWithoutNulls(integer);
+		
+		assertFalse(result.contains(null));
+		
+		TestHelperCollections.assertSameOrderAndSize(exp, result);			
+	}
+	
+	
 	public void testMap(){
 		note("map should return a mutable hashmap");
 			Map<String, Integer> l1 = CollectionHelper.map();

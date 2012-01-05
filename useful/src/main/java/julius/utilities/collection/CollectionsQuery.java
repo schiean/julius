@@ -16,15 +16,71 @@
 
 package julius.utilities.collection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import julius.annotations.Experimental;
 
 /**
  * Contains methods to query a collection
  */
 public class CollectionsQuery {
+	
+	/**
+	 * contains all Class objects for the immutable collection types
+	 */
+	@SuppressWarnings("rawtypes")
+	private final Set<Class> immutableCollections;
+	
+	/**
+	 * constructor
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public CollectionsQuery(){
+		// since the JDK does not publish unmodifiable collection types we extract them,
+		// one minor problem is that we cannot use instanceOf UnmoddifiableCollection 
+		// but have to check all of them
+		immutableCollections = new HashSet<Class>();
+		immutableCollections.add(Collections.unmodifiableCollection(new LinkedList()).getClass());
+		immutableCollections.add(Collections.unmodifiableList(new ArrayList()).getClass());
+		immutableCollections.add(Collections.unmodifiableList(new LinkedList()).getClass());
+		immutableCollections.add(Collections.unmodifiableMap(new HashMap()).getClass());
+		immutableCollections.add(Collections.unmodifiableSet(new HashSet()).getClass());
+		immutableCollections.add(Collections.unmodifiableSortedMap(new TreeMap()).getClass());
+		immutableCollections.add(Collections.unmodifiableSortedSet(new TreeSet()).getClass());
+	}
+	
+	/**
+	 * The JDK has some methods to wrap collections to unmodifiable ones.  this method detects if it is wrapped by such wrapper
+	 * @param <T>
+	 * @param collection
+	 * @return true if wrapped
+	 */	
+	@Experimental("workaround for JDK problem, not sure if it works for all types")
+	public <T> boolean isMutable(final Collection<T> collection){
+		return !isImmutable(collection);
+	}	
+	
+	/**
+	 * The JDK has some methods to wrap collections to unmodifiable ones.  this method detects if it is wrapped by such wrapper
+	 * @param <T>
+	 * @param collection
+	 * @return true if wrapped
+	 */
+	@Experimental("workaround for JDK problem, not sure if it works for all types")
+	public <T> boolean isImmutable(final Collection<T> collection){
+		return immutableCollections.contains(collection.getClass());
+	}
+	
+	
 
 	/**
 	 * Will check if the exact object instance is in the collection
@@ -40,7 +96,6 @@ public class CollectionsQuery {
             }
         }
         return false;
-
     }
 	
 	
@@ -154,6 +209,6 @@ public class CollectionsQuery {
      */
     public <E> boolean isEmpty(final Collection<E> list) {
         return list == null || list.isEmpty();
-    }
+    }    
 
 }

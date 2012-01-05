@@ -17,14 +17,21 @@
 package julius.utilities;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import julius.annotations.Experimental;
 import julius.utilities.collection.CollectionsCreate;
 import julius.utilities.collection.CollectionsFunctional;
+import julius.utilities.collection.CollectionsFunctional.Window;
+import julius.utilities.collection.CollectionsLogical;
 import julius.utilities.collection.CollectionsQuery;
 import julius.utilities.collection.CollectionsReplace;
+import julius.utilities.collection.CollectionsTransform;
+import julius.utilities.collection.Histogram;
 import julius.utilities.collection.Numbered;
 import julius.utilities.collection.Pair;
 
@@ -50,16 +57,18 @@ public final class CollectionHelper {
 	private static CollectionsCreate create = new CollectionsCreate();
 	private static CollectionsQuery query = new CollectionsQuery();
 	private static CollectionsFunctional functional = new CollectionsFunctional();
+	private static CollectionsLogical logical = new CollectionsLogical();
+	private static CollectionsTransform transform = new CollectionsTransform();
 	
     private CollectionHelper() {
         // only static methods
     }
 
     /**
-     * @see CollectionsCreate#createLinkedList()
+     * @see CollectionsCreate#createDefaultListType()
      */
     public static <T> List<T> list() {
-        return create.createLinkedList();
+        return create.createDefaultListType();
     }
 
     /**
@@ -70,10 +79,10 @@ public final class CollectionHelper {
     }
 
     /**
-     * @see CollectionsCreate#createHashSet()
+     * @see CollectionsCreate#createDefaultSetType()
      */
     public static <T> Set<T> set() {
-        return create.createHashSet();
+        return create.createDefaultSetType();
     }
 
     /**
@@ -167,6 +176,22 @@ public final class CollectionHelper {
     }
     
     /**
+     * @see CollectionsCreate#createListWithoutDoubleValues(Collection) 
+     */    
+    public static <T> List<T> createListWithoutDoubleValues(final Collection<T> collection){
+    	return create.createListWithoutDoubleValues(collection);
+	}
+    
+	/**
+     * @see CollectionsCreate#createListWithoutDoubleValues(Collection) 
+     */    
+	public static <T> List<T> unique(final Collection<T> collection){
+		return create.createListWithoutDoubleValues(collection);
+	}
+		
+    
+    
+    /**
 	 * @see CollectionsReplace#replace(Set, Set)
      */
     public static <T> void replace(final Set<T> currentSet, final Set<T> newSet) {
@@ -187,7 +212,22 @@ public final class CollectionHelper {
     public static <T> void replace(final Collection<T> currentCollection, final Collection<T> newCollection){
     	replace.replace(currentCollection, newCollection);
     }
+
+    /**
+     * @see CollectionsQuery#isImmutable(Collection) 
+     */
+    @Experimental("JDK Hack")
+    public static <T> boolean isImmutable(final Collection<T> collection){
+    	return query.isImmutable(collection);
+    }
     
+    /**
+     * @see CollectionsQuery#isMutable(Collection)
+     */
+    @Experimental("JDK Hack")
+    public static <T> boolean isMutable(final Collection<T> collection){
+    	return query.isMutable(collection);
+    }
 
     /**
      * @see CollectionsQuery#getOrEmpty(Collection)
@@ -290,7 +330,7 @@ public final class CollectionHelper {
     	return functional.allExceptLast(original);
     }
     
-///
+
     /**
      * @see CollectionsFunctional#first(List)
      */
@@ -311,5 +351,98 @@ public final class CollectionHelper {
     public static <T> T last(final List<T> original){
     	return functional.last(original);
     }
+    
+    /**
+     * @see CollectionsFunctional#getMovingWindow(List)
+     */    
+    public static <T> List<Window<T>> getMovingWindow(final List<T> collection){
+    	return functional.getMovingWindow(collection);
+	}
+    
+    /**
+     * @see CollectionsLogical#union(Collection...)
+     */
+    public static <T> List<T> union(final Collection<T>... others){
+		return logical.union(others);
+	}
+	
+	/**
+     * @see CollectionsLogical#unionAsSet(Collection...)
+     */
+    public static <T> Set<T> unionAsSet(final Collection<T>... others){
+		return logical.unionAsSet(others);
+	}
+	
+	/**
+     * @see CollectionsLogical#intersection(Collection...)
+     */
+    public static <T> List<T> intersection(final Collection<T>... others){
+		return logical.intersection(others);
+	}
+	
+	/**
+     * @see CollectionsLogical#intersectionAsSet(Collection...)
+     */
+    public static <T> Set<T> intersectionAsSet(final Collection<T>... others){
+		return logical.intersectionAsSet(others);
+	}
+	
+	/**
+     * @see CollectionsLogical#cardinality(Collection)
+     */
+    public static <T> Histogram<T> histogram(final Collection<T> items){
+		return logical.cardinality(items);
+	}	
+	
+	/**
+     * @see CollectionsLogical#relativeComplement(Collection, Collection)
+     */
+    public static <T> List<T> relativeComplement(final Collection<T> original, final Collection<T> other){
+		return logical.relativeComplement(original, other);
+	}
+	
+	/**
+     * @see CollectionsLogical#symetricDifference(Collection...)
+     */
+    public static <T> Collection<T> symetricDifference(final Collection<T>... others){
+		return logical.symetricDifference(others);
+	}
 
+    
+    /**
+     * @see CollectionsTransform#asList(Collection)
+     */    
+	public static <T> List<T> asList(final Collection<T> collection){
+		return transform.asList(collection); 
+	}
+	
+	/**
+     * @see CollectionsTransform#asSet(Collection)
+     */    
+	public static <T> Set<T> asSet(final Collection<T> collection){
+		return transform.asSet(collection);
+	}
+
+	/**
+     * @see CollectionsTransform#asLinkedList(Collection)
+     */    
+	public static <T> LinkedList<T> asLinkedList(final Collection<T> collection){
+		return transform.asLinkedList(collection);
+	}
+	
+	/**
+     * @see CollectionsTransform#asHashSet(Collection)
+     */    
+	public static <T> HashSet<T> asHashSet(final Collection<T> collection){
+		return transform.asHashSet(collection);
+	}
+	
+	/**
+     * @see CollectionsTransform#asCollection(Object[])
+     */    
+	public static <T> Collection<T> asCollection(final T[] objArr){
+		return transform.asCollection(objArr);
+	}
+	
+    
 }

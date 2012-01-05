@@ -17,11 +17,11 @@
 package julius.lambda;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import julius.test.BDDTestCase;
+import julius.test.TestHelperCollections;
 import julius.utilities.CollectionHelper;
 @SuppressWarnings("unchecked")
 public class TestFunctional extends BDDTestCase{
@@ -112,9 +112,9 @@ public class TestFunctional extends BDDTestCase{
 	
 		Collection<Integer> res = functional.filter(numbers, new Even());
 		
-		assertSameSize(res, even);
-		assertContainsAll(res, even);
-		assertInSameOrder(res, even);
+		TestHelperCollections.assertSameSize(res, even);
+		TestHelperCollections.assertContainsAll(res, even);
+		TestHelperCollections.assertInSameOrder(res, even);
 	}
 	
 	public void testMap(){
@@ -128,9 +128,9 @@ public class TestFunctional extends BDDTestCase{
 	
 		Collection<Integer> res = functional.map(numbers, new Doubler());
 
-		assertSameSize(res, numDoub);
-		assertContainsAll(res, numDoub);
-		assertInSameOrder(res, numDoub);
+		TestHelperCollections.assertSameSize(res, numDoub);
+		TestHelperCollections.assertContainsAll(res, numDoub);
+		TestHelperCollections.assertInSameOrder(res, numDoub);
 		
 	}
 
@@ -143,7 +143,7 @@ public class TestFunctional extends BDDTestCase{
 		when("takeWhile even");
 		then("expect empty");
 		
-			assertEmpty(functional.takeWhile(oddThenEven, new Even()));
+			TestHelperCollections.assertEmpty(functional.takeWhile(oddThenEven, new Even()));
 		
 		given("numbers "+even);
 		when("takeWhile even");
@@ -151,9 +151,9 @@ public class TestFunctional extends BDDTestCase{
 		
 			Collection<Integer> r1 =  functional.takeWhile(even, new Even());
 
-			assertSameSize(r1, even);
-			assertContainsAll(r1, even);
-			assertInSameOrder(r1, even);
+			TestHelperCollections.assertSameSize(r1, even);
+			TestHelperCollections.assertContainsAll(r1, even);
+			TestHelperCollections.assertInSameOrder(r1, even);
 		
 		List<Integer> evenThenOdd = new LinkedList<Integer>(even);
 		evenThenOdd.addAll(odd);
@@ -165,9 +165,9 @@ public class TestFunctional extends BDDTestCase{
 			Collection<Integer> r2 =  functional.takeWhile(evenThenOdd, new Even());
 
 		
-			assertSameSize(r2, even);
-			assertContainsAll(r2, even);
-			assertInSameOrder(r2, even);
+			TestHelperCollections.assertSameSize(r2, even);
+			TestHelperCollections.assertContainsAll(r2, even);
+			TestHelperCollections.assertInSameOrder(r2, even);
 		
 	}
 	
@@ -197,54 +197,5 @@ public class TestFunctional extends BDDTestCase{
 	}
 	
 	
-	/**
-	 * asserts that all elements of all parts are contained in all (possibly more)
-	 * @param <T>
-	 * @param all
-	 * @param parts
-	 */
-	private <T> void assertContainsAll(final Collection<T> all, final Collection<T>... parts){
-		for(Collection<T> part:parts){
-			for(T val: part){
-				assertTrue(all.contains(val));
-			}
-		}		
-	}
-	
-	/**
-	 * asserts that all (starts with) the values from parts in the same order as provided
-	 * @param <T>
-	 * @param all
-	 * @param parts
-	 */
-	private <T> void assertInSameOrder(final Collection<T> all, final Collection<T>... parts){
-		Iterator<T> iterator = all.iterator();
-		for(Collection<T> part:parts){
-			for(T val: part){
-				T allVal = iterator.next();
-				assertEquals( val,allVal);
-			}
-		}		
-	}
-	
-
-	private <T> void assertSameSize(final Collection<T> res,final Collection<T>... parts) {
-		int size = 0;
-		for(Collection<T> part:parts){
-			size += part.size();
-		}
-		assertEquals(size, res.size());
-	}
-	
-
-	private <T> void assertEmpty(final Collection<T> union) {
-		assertNotNull(union);
-		assertTrue("should be empty, not "+union,union.isEmpty());
-	}
-	
-//	private <T> void assertNotEmpty(final Collection<T> union) {
-//		assertNotNull(union);
-//		assertTrue("should not be empty", !union.isEmpty());
-//	}
 	
 }

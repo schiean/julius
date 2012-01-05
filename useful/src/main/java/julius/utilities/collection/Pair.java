@@ -33,11 +33,11 @@ public class Pair<K, V> extends AbstractMap.SimpleImmutableEntry<K, V> {
 	private static final long serialVersionUID = -3524114719977454198L;
 
 	/**
-	 * @param key
-	 * @param value
+	 * @param first
+	 * @param second
 	 */
-	public Pair(final K key, final V value){
-		super(key,value);
+	public Pair(final K first, final V second){
+		super(first,second);
 	}
 	
 	/**
@@ -54,4 +54,8 @@ public class Pair<K, V> extends AbstractMap.SimpleImmutableEntry<K, V> {
 		return getValue();
 	}
 
+	@Override
+	public String toString() {
+		return "{"+getFirst()+","+getSecond()+"}";
+	}
 }

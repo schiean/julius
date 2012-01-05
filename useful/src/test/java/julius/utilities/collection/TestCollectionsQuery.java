@@ -23,13 +23,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
 
 
 //TODO LOW: should use proper given/when/then
-public class TestQuery extends BDDTestCase {
+public class TestCollectionsQuery extends BDDTestCase {
 	
 	public static class Item{
 		private final int i; 
@@ -76,6 +77,34 @@ public class TestQuery extends BDDTestCase {
 		successFullStory();
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void testModifiable(){
+		note("normal collections should be mutable");
+		
+		assertTrue(CollectionHelper.isMutable(new LinkedList()));
+		assertTrue(CollectionHelper.isMutable(new ArrayList()));
+		assertTrue(CollectionHelper.isMutable(new HashSet()));
+		assertTrue(CollectionHelper.isMutable(new TreeSet()));
+		
+		assertFalse(CollectionHelper.isImmutable(new LinkedList()));
+		assertFalse(CollectionHelper.isImmutable(new ArrayList()));
+		assertFalse(CollectionHelper.isImmutable(new HashSet()));
+		assertFalse(CollectionHelper.isImmutable(new TreeSet()));		
+		
+		note("wrapped collections should be immutable");
+		
+		assertFalse(CollectionHelper.isMutable(Collections.unmodifiableCollection(new LinkedList())));
+		assertFalse(CollectionHelper.isMutable(Collections.unmodifiableList(new ArrayList())));
+		assertFalse(CollectionHelper.isMutable(Collections.unmodifiableSet(new HashSet())));
+		assertFalse(CollectionHelper.isMutable(Collections.unmodifiableSortedSet(new TreeSet())));
+		assertFalse(CollectionHelper.isMutable(CollectionHelper.list(1,2,3,4,5)));
+		
+		assertTrue(CollectionHelper.isImmutable(Collections.unmodifiableCollection(new LinkedList())));
+		assertTrue(CollectionHelper.isImmutable(Collections.unmodifiableList(new ArrayList())));
+		assertTrue(CollectionHelper.isImmutable(Collections.unmodifiableSet(new HashSet())));
+		assertTrue(CollectionHelper.isImmutable(Collections.unmodifiableSortedSet(new TreeSet())));
+		assertTrue(CollectionHelper.isImmutable(CollectionHelper.list(1,2,3,4,5)));
+	}
 	
     public void testGetNullIfEmptyList() {
         note("when provided null, return null");

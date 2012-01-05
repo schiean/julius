@@ -18,13 +18,13 @@ package julius.utilities.collection;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import julius.test.BDDTestCase;
+import julius.test.TestHelperCollections;
 import julius.utilities.CollectionHelper;
 
 @SuppressWarnings("unchecked")
@@ -33,7 +33,6 @@ public class TestCollectionsLogical extends BDDTestCase{
 	private static final Set<Integer> NULL_SET = null;
 	private static final List<Integer> NULL_LIST = null;
 	
-	CollectionsLogical logical = new CollectionsLogical();
 	List<Integer> l1 = CollectionHelper.list(1,2,3,4,5);
 	List<Integer> l2 = CollectionHelper.list(6,7,8,9);
 	List<Integer> l3 = CollectionHelper.list(10, 11);
@@ -47,13 +46,13 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 		when("merged");
 		
-			List<Integer> res = logical.union(l1,l2);
+			List<Integer> res = CollectionHelper.union(l1,l2);
 		
 		then("we expect a result with the contents of both lists");
 		
-			assertSameSize(res, l1,l2);
-			assertContainsAll(res, l1,l2);
-		
+			TestHelperCollections.assertSameSize(res, l1,l2);
+			TestHelperCollections.assertContainsAll(res, l1,l2);
+			System.out.println(l1.getClass());
 		successFullStory();		
 	}
 	
@@ -62,15 +61,15 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 		when("merged");
 		
-			List<Integer> res = logical.union(l1,l2);
+			List<Integer> res = CollectionHelper.union(l1,l2);
 		
 		then("we expect a result with the contents of both lists");
-			assertSameSize(res ,l1 , l2);
-			assertContainsAll(res, l1,l2);
+			TestHelperCollections.assertSameSize(res ,l1 , l2);
+			TestHelperCollections.assertContainsAll(res, l1,l2);
 	
 		and("the order remained");
 			
-			assertInSameOrder(res, l1,l2);
+			TestHelperCollections.assertInSameOrder(res, l1,l2);
 			
 		successFullStory();
 
@@ -81,10 +80,10 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 		when("merged");
 		
-			List<Integer> res = logical.union(l1,l1and3);
+			List<Integer> res = CollectionHelper.union(l1,l1and3);
 		
 		then("we expect a result with the contents of both lists, including double values");
-			assertContainsAll(res, l1,l1and3);
+			TestHelperCollections.assertContainsAll(res, l1,l1and3);
 			
 		successFullStory();
 		
@@ -95,7 +94,7 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 		when("merged");
 		
-			Set<Integer> res = logical.unionAsSet(l1,l1and3);
+			Set<Integer> res = CollectionHelper.unionAsSet(l1,l1and3);
 		
 		then("we expect a result with the contents of both lists, excluding double values");
 		
@@ -103,37 +102,37 @@ public class TestCollectionsLogical extends BDDTestCase{
 			exp.addAll(l1);
 			exp.addAll(l1and3);
 		
-			assertSameSize(res, exp);
-			assertContainsAll(res, l1,l1and3);
+			TestHelperCollections.assertSameSize(res, exp);
+			TestHelperCollections.assertContainsAll(res, l1,l1and3);
 			
 		successFullStory();
 	}
 
 	public void testNullUnion(){
 		note("should support null union");
-		assertEmpty(logical.union(NULL_LIST));
-		assertEmpty(logical.union(NULL_LIST,NULL_LIST));
-		assertEmpty(logical.union(NULL_LIST,new LinkedList<Integer>()));
-		assertEmpty(logical.unionAsSet(NULL_SET));
-		assertEmpty(logical.unionAsSet(NULL_SET,NULL_SET));
-		assertEmpty(logical.unionAsSet(NULL_SET,new LinkedList<Integer>()));
+		TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST,NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST,new LinkedList<Integer>()));
+		TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET));
+		TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET,NULL_SET));
+		TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET,new LinkedList<Integer>()));
 		
-		assertEmpty(logical.intersection(NULL_LIST));
-		assertEmpty(logical.intersection(NULL_LIST,NULL_LIST));
-		assertEmpty(logical.intersection(NULL_LIST,new LinkedList<Integer>()));
-		assertEmpty(logical.intersectionAsSet(NULL_LIST));
-		assertEmpty(logical.intersectionAsSet(NULL_LIST,NULL_LIST));
-		assertEmpty(logical.intersectionAsSet(NULL_LIST,new LinkedList<Integer>()));
+		TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST,NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST,new LinkedList<Integer>()));
+		TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST,NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST,new LinkedList<Integer>()));
 		
-		assertEmpty(logical.relativeComplement(NULL_LIST,NULL_LIST));
-		assertEmpty(logical.relativeComplement(NULL_LIST,new LinkedList<Integer>()));
+		TestHelperCollections.assertEmpty(CollectionHelper.relativeComplement(NULL_LIST,NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.relativeComplement(NULL_LIST,new LinkedList<Integer>()));
 		
-		assertEmpty(logical.symetricDifference(NULL_LIST));
-		assertEmpty(logical.symetricDifference(NULL_LIST,NULL_LIST));
-		assertEmpty(logical.symetricDifference(NULL_LIST,new LinkedList<Integer>()));
+		TestHelperCollections.assertEmpty(CollectionHelper.symetricDifference(NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.symetricDifference(NULL_LIST,NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.symetricDifference(NULL_LIST,new LinkedList<Integer>()));
 		
-		assertNotNull(logical.cardinality(NULL_LIST));
-		assertNotNull(logical.cardinality(CollectionHelper.list(NULL_LIST)));
+		assertNotNull(CollectionHelper.histogram(NULL_LIST));
+		assertNotNull(CollectionHelper.histogram(CollectionHelper.list(NULL_LIST)));
 	}
 	
 
@@ -142,32 +141,32 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 		when("the intersection is called for "+l1);
 		
-			Collection<Integer> res = logical.intersection(l1and3,l1);
+			Collection<Integer> res = CollectionHelper.intersection(l1and3,l1);
 		
 		then("we expect "+l1);
 		
-			assertSameSize(res, l1);
-			assertContainsAll(res, l1);
+			TestHelperCollections.assertSameSize(res, l1);
+			TestHelperCollections.assertContainsAll(res, l1);
 		
 		when("the intersection is called for "+l2);
 			
-			res = logical.intersection(l1and3,l2);
+			res = CollectionHelper.intersection(l1and3,l2);
 		
 		then("we expect []");
 		
-			assertEmpty(res);
+			TestHelperCollections.assertEmpty(res);
 		
 			Collection<Integer> vals = CollectionHelper.list(l1.get(0),l3.get(0));			
 			Collection<Integer> valsExtra = CollectionHelper.list(l1.get(0),l3.get(0), 99999);
 			
 		when("the intersection is called for "+valsExtra);
 			
-			res = logical.intersection(l1and3,valsExtra);
+			res = CollectionHelper.intersection(l1and3,valsExtra);
 		
 		then("we expect "+vals);
 		
-			assertSameSize(res, vals);
-			assertContainsAll(res, vals);
+			TestHelperCollections.assertSameSize(res, vals);
+			TestHelperCollections.assertContainsAll(res, vals);
 	
 		successFullStory();
 	}
@@ -180,12 +179,12 @@ public class TestCollectionsLogical extends BDDTestCase{
 		given("the collection "+c1);
 		when("intersected with "+c2);
 		
-			Collection<Integer> res = logical.intersection(c1,c2);
+			Collection<Integer> res = CollectionHelper.intersection(c1,c2);
 		
 		then("we expect "+l );
 		
-			assertSameSize(res, l);
-			assertContainsAll(res, l);
+			TestHelperCollections.assertSameSize(res, l);
+			TestHelperCollections.assertContainsAll(res, l);
 		
 		successFullStory();
 		
@@ -199,13 +198,13 @@ public class TestCollectionsLogical extends BDDTestCase{
 			
 		when("the intersection is called for "+valsExtra);
 			
-			Collection<Integer> res = logical.intersection(l1and3,valsExtra);
+			Collection<Integer> res = CollectionHelper.intersection(l1and3,valsExtra);
 		
 		then("we expect "+vals);
 		
-			assertSameSize(res, vals);
-			assertContainsAll(res, vals);
-			assertInSameOrder(res, vals);
+			TestHelperCollections.assertSameSize(res, vals);
+			TestHelperCollections.assertContainsAll(res, vals);
+			TestHelperCollections.assertInSameOrder(res, vals);
 	
 	
 		successFullStory();
@@ -220,12 +219,12 @@ public class TestCollectionsLogical extends BDDTestCase{
 		given("the collection "+c1);
 		when("intersected with "+c2);
 		
-			Collection<Integer> res = logical.intersectionAsSet(c1,c2);
+			Collection<Integer> res = CollectionHelper.intersectionAsSet(c1,c2);
 		
 		then("we expect "+l );
 		
-			assertSameSize(res, l);
-			assertContainsAll(res, l);
+			TestHelperCollections.assertSameSize(res, l);
+			TestHelperCollections.assertContainsAll(res, l);
 		
 		successFullStory();
 		
@@ -250,7 +249,7 @@ public class TestCollectionsLogical extends BDDTestCase{
 		given("the collection "+l);
 		when("cardinality is retrieved");
 		
-			Map<Integer, Integer> map = logical.cardinality(l);
+			Map<Integer, Integer> map = CollectionHelper.histogram(l);
 		
 		then("we expect 1*" +ones +" 3*"+threes+" null*"+nulls);
 		
@@ -268,18 +267,18 @@ public class TestCollectionsLogical extends BDDTestCase{
 		given("the collections "+l1+" "+l1and3);
 		when("the difference is created");
 		
-			Collection<Integer> dif = logical.relativeComplement( l1, l1and3);
+			Collection<Integer> dif = CollectionHelper.relativeComplement( l1, l1and3);
 		
 		then("we expect only "+l3);
 		
-			assertSameSize(dif, l3);
-			assertContainsAll(dif, l3);
+			TestHelperCollections.assertSameSize(dif, l3);
+			TestHelperCollections.assertContainsAll(dif, l3);
 		
 		and("an empty collection for the otherway arround");
 		
-			dif = logical.relativeComplement( l1and3, l1);
+			dif = CollectionHelper.relativeComplement( l1and3, l1);
 			
-			assertEmpty(dif);		
+			TestHelperCollections.assertEmpty(dif);		
 		
 		successFullStory();
 		
@@ -289,67 +288,24 @@ public class TestCollectionsLogical extends BDDTestCase{
 		given("the collections "+l1and2+" "+l1and3);
 		when("the difference is created");
 		
-			Collection<Integer> dif = logical.symetricDifference(l1and2, l1and3);
+			Collection<Integer> dif = CollectionHelper.symetricDifference(l1and2, l1and3);
 		
 		then("we expect only "+l2and3);
 		
-			assertSameSize(dif, l2and3);
-			assertContainsAll(dif, l2and3);
+			TestHelperCollections.assertSameSize(dif, l2and3);
+			TestHelperCollections.assertContainsAll(dif, l2and3);
 		
 		and("an the same for the otherway arround");
 		
-			dif = logical.symetricDifference(l1and3, l1and2);		
+			dif = CollectionHelper.symetricDifference(l1and3, l1and2);		
 
-			assertSameSize(dif, l2and3);
-			assertContainsAll(dif, l2and3);
+			TestHelperCollections.assertSameSize(dif, l2and3);
+			TestHelperCollections.assertContainsAll(dif, l2and3);
 	
 		successFullStory();
 		
 	}
 	
-	/**
-	 * asserts that all elements of all parts are contained in all (possibly more)
-	 * @param <T>
-	 * @param all
-	 * @param parts
-	 */
-	private <T> void assertContainsAll(final Collection<T> all, final Collection<T>... parts){
-		for(Collection<T> part:parts){
-			for(T val: part){
-				assertTrue(all.contains(val));
-			}
-		}		
-	}
-	
-	/**
-	 * asserts that all (starts with) the values from parts in the same order as provided
-	 * @param <T>
-	 * @param all
-	 * @param parts
-	 */
-	private <T> void assertInSameOrder(final Collection<T> all, final Collection<T>... parts){
-		Iterator<T> iterator = all.iterator();
-		for(Collection<T> part:parts){
-			for(T val: part){
-				T allVal = iterator.next();
-				assertEquals( val,allVal);
-			}
-		}		
-	}
-	
 
-	private <T> void assertSameSize(final Collection<T> res,final Collection<T>... parts) {
-		int size = 0;
-		for(Collection<T> part:parts){
-			size += part.size();
-		}
-		assertEquals(size, res.size());
-	}
-	
-
-	private <T> void assertEmpty(final Collection<T> union) {
-		assertNotNull(union);
-		assertTrue("should be empty, not "+union,union.isEmpty());
-	}
 	
 }

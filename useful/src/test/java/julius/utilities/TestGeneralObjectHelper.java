@@ -43,4 +43,47 @@ public class TestGeneralObjectHelper extends BDDTestCase{
 		assertFalse(GeneralObjectHelper.equalsNotNull(null, null));
 		
 	}
+	
+	public void testSameInstance(){
+		
+		note("different objects should return false");
+		Integer o1 = 1;
+		Integer o2 = 2;
+		assertFalse(GeneralObjectHelper.areSameInstance(o1, o2));
+		assertTrue(GeneralObjectHelper.areNotSameInstance(o1, o2));
+		
+		note("two refs for the same object should return true");
+		
+		Integer o1_c = o1;
+		assertTrue(GeneralObjectHelper.areSameInstance(o1, o1_c));
+		assertFalse(GeneralObjectHelper.areNotSameInstance(o1, o1_c));
+		
+		note("equal objects but different instances should return false");
+		o2 = new Integer(1);
+		assertTrue(o1.equals(o2));
+		assertFalse(GeneralObjectHelper.areSameInstance(o1, o2));
+		assertTrue(GeneralObjectHelper.areNotSameInstance(o1, o2));
+		
+		
+		note("should be null safe");
+		assertTrue(GeneralObjectHelper.areSameInstance(null, null));
+		assertFalse(GeneralObjectHelper.areNotSameInstance(null, null));
+		
+		note("self compare should return ok");
+		assertTrue(GeneralObjectHelper.areSameInstance(o1, o1));
+		assertFalse(GeneralObjectHelper.areNotSameInstance(o1, o1));
+		
+	}
+	
+	public void testNull(){
+		note("null should return isnull true, other values false");
+		assertTrue(GeneralObjectHelper.isNull(null));
+		assertFalse(GeneralObjectHelper.isNull(5));
+		assertTrue(GeneralObjectHelper.isNotNull(5));
+		assertFalse(GeneralObjectHelper.isNotNull(null));
+		
+	}
+	
+	
+	
 }

@@ -30,8 +30,7 @@ import nl.testclasses.MultiParent;
 import nl.testclasses.Parent;
 
 
-public class TestTestHelper extends BDDTestCase {
-
+public class TestTestHelper  extends BDDTestCase {	
 	public void testallmostequals(){
 		note("exact equal numbers should go alongs fine");
 		TestHelper.allmostEquals(10, 10, 10);

@@ -55,7 +55,7 @@ public final class GeneralObjectHelper {
 	 * @return 
 	 */
 	public static boolean nullSafeEquals(final Object one, final Object two){
-		if(one == two){ // works for equal refs, or null==null
+		if(areSameInstance(one, two)){ // works for equal refs, or null==null
 			return true;
 		}
 		if (one == null || two == null){
@@ -94,4 +94,39 @@ public final class GeneralObjectHelper {
 	public static boolean equalsNotNull(final Object one, final Object two){
 		return nullSafeEqualsAndNotNull(one, two);
 	}
+	
+	/**
+	 * DSL version of == null
+	 * @return
+	 */
+	public static  boolean isNull(final Object o){
+		return o == null;
+	}
+	
+	/**
+	 * DSL version of != null
+	 * @return
+	 */
+	public static  boolean isNotNull(final Object o){
+		return o != null;
+	}
+	
+	/**
+	 * DSL version of o1 == o2
+	 * although is seldom needed, most of the time you want equals
+	 * @return
+	 */
+	public static  boolean areSameInstance(final Object o1, final Object o2){
+		return o1 == o2;
+	}
+	
+	/**
+	 * DSL version of o1 != o2
+	 * although is seldom needed, most of the time you want equals
+	 * @return
+	 */
+	public static boolean areNotSameInstance(final Object o1, final Object o2){
+		return o1 != o2;
+	}	
+	
 }

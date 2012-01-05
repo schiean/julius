@@ -16,7 +16,6 @@
 
 package julius.benchmark;
 
-import julius.benchmark.StopWatch;
 import julius.test.BDDTestCase;
 import julius.utilities.Sleep;
 
@@ -83,11 +82,11 @@ public class TestStopWatch extends BDDTestCase{
 		
 		StopWatch sw = new StopWatch();
 		sw.start();
-		Sleep.sleep.milliseconds(500).and().seconds(2);
+		Sleep.sleep.milliseconds(510).and().seconds(2);
 		sw.stop();
 	
 		assertAboutEqual(2500, sw.elapsedInMillis());
-		assertEquals(2, sw.elapsedInSeconds());
+		assertEquals(3, sw.elapsedInSeconds());
 	}
 	
 	public void reset(){

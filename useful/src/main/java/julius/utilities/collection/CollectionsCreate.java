@@ -16,6 +16,7 @@
 
 package julius.utilities.collection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +33,39 @@ import julius.utilities.CollectionHelper;
  * utilities to create collections
  */
 public class CollectionsCreate {
+	
+	/**
+     * @see CollectionsCreate#createLinkedList()
+     */
+    public <T> List<T> createDefaultListType() {
+        return createLinkedList();
+    }
+    
+    /**
+     * @see CollectionsCreate#createHashSet()
+     */
+    public <T> Set<T> createDefaultSetType(){
+    	return createHashSet();
+    }
+	
+	/**
+	 * Creates a list based on the collection(keeping order) where items are copied, but only their first occurrence
+	 * leading to collection with the same contents as HashSet(collection) but in original ordering.
+	 * @param <T>
+	 * @param collection
+	 * @return
+	 */
+	public <T> List<T> createListWithoutDoubleValues(final Collection<T> collection){
+		List<T> result = new ArrayList<T>();
+		Set<T> vals = createHashSet();
+		for(T val: CollectionHelper.getOrEmpty(collection)){
+			if(!vals.contains(val)){
+				result.add(val);
+				vals.add(val);
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * this method will wrap the collection element with a Numbered Type,
@@ -76,7 +110,7 @@ public class CollectionsCreate {
      * @param <T>
      * @return
      */
-    public  <T> List<T> createLinkedList() {
+    public  <T> LinkedList<T> createLinkedList() {
         return new LinkedList<T>();
     }
     
@@ -110,7 +144,7 @@ public class CollectionsCreate {
      * @param <T>
      * @return
      */
-    public  <T> Set<T> createHashSet() {
+    public  <T> HashSet<T> createHashSet() {
         return new HashSet<T>();
     }
     

@@ -50,6 +50,8 @@ public final class TestHelper {
     private static List<Object> processed = new LinkedList<Object>();
     private static NumberHelper numberHelper = new NumberHelper();
     
+	
+    
     /**
      * Allows for comparisons where the result should be in the range of some value not particular exactly the expected value.
      * This makes sense for heuristic algorithms or benchmark tests.

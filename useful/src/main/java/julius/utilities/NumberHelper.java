@@ -29,6 +29,67 @@ public class NumberHelper {
 	private static final String PLACEHOLDER = "TEMP";
 	
 	/**
+	 * Simple class that should be used as alternative for extends Integer which is not allowed
+	 */
+	public static class NumberWrapper{
+		private final int value;
+
+		/**
+		 * @param value
+		 */
+		public NumberWrapper(final int value) {
+			super();
+			this.value = value;
+		}
+
+		/**
+		 * @return value
+		 */
+		public int value() {
+			return value;
+		}
+		
+		/**
+		 * @return value
+		 */
+		public int getValue() {
+			return value;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + value;
+			return result;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			NumberWrapper other = (NumberWrapper) obj;
+			if (value != other.value) {
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return ""+getClass().getSimpleName().toString()+"[" + value + "]";
+		}
+		
+	}
+	
+	/**
 	 * formats the provided number by grouping with ,
 	 * and if the number was not long or integer it will also keep the first x decimal numbers upto the first 0 (if it is a round number one 0 is written)
 	 * 

@@ -16,8 +16,11 @@
 
 package julius.utilities.collection;
 
+import static julius.validation.Assertions.argument;
+
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -162,4 +165,44 @@ public class CollectionsFunctional {
     	return fullList.get(fullList.size()-1);
     }
 
+
+    /**
+     * Should contain two adjacent Values of a an collection 
+     */
+    public static class Window<T> extends Pair<T, T>{    	
+		private static final long serialVersionUID = -5773276830256872529L;
+		/**
+		 * @param current
+		 * @param next
+		 */
+		public Window(final T current, final T next) {
+			super(current, next);
+		}
+	};
+	
+	/**
+	 *  (a,b,c,d,e) => (a,b)(b,c)(c,d)(d,e)
+	 *  this is useful if you would like to check two consecutive items
+	 *  (each item of the original list will be part of two Window objects, except the first and last because they have one neighbour)
+	 *  
+	 *  for(Window w: getMovingWindow){
+	 *  	if(w.first() > w.second()){
+	 *  		// going up
+	 *  	}
+	 *  }
+	 *  
+	 * @param <T>
+	 * @param collection
+	 * @return
+	 */
+	public <T> List<Window<T>> getMovingWindow(final List<T> collection){
+		argument.assertTrue(query.getOrEmpty(collection).size() > 2, "to get a window we need at least 2 items");
+		List<Window<T>> result = new LinkedList<Window<T>>();
+		T current = first(collection);
+		for(T next : allExceptFirst(collection)){
+			result.add(new Window<T>(current, next));
+			current = next;
+		}
+		return result;
+	}
 }

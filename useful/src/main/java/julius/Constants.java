@@ -22,14 +22,14 @@ package julius;
 public interface Constants {
 
 	/** number of milliseconds in a second*/
-	public static final int MILLIS_IN_SEC = 1000;
+	  final int MILLIS_IN_SEC = 1000;
 	/** number of seconds per minute */
-	public static final int SEC_IN_MIN = 60;
+	  final int SEC_IN_MIN = 60;
 	/** number of minutes per hour */
-	public static final int MIN_IN_HOUR = 60;
+	  final int MIN_IN_HOUR = 60;
 
 	/** number of bytes in a kilobyte */
-	public static final int BYTES_IN_KILOBYTE = 1024;
+	  final int BYTES_IN_KILOBYTE = 1024;
 	/** number of kilobytes in a megabyte */
-	public static final int KILOBYTES_IN_MEGABYTE = 1024;
+	  final int KILOBYTES_IN_MEGABYTE = 1024;
 }

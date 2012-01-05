@@ -16,7 +16,7 @@
 
 package julius.benchmark;
 
-import julius.Constants;
+import julius.utilities.DateHelper;
 import julius.validation.Assertions;
 
 /**
@@ -105,7 +105,7 @@ public class StopWatch {
 	 * @return
 	 */
 	public long elapsedInSeconds(){
-		return elapsedInMillis() / Constants.MILLIS_IN_SEC;
+		return DateHelper.millisToSeconds(elapsedInMillis());
 	}
 	
 	private long calculateProgress(final long end) {
