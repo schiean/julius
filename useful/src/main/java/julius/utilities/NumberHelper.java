@@ -18,6 +18,7 @@ package julius.utilities;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import julius.validation.Assertions;
 
@@ -96,29 +97,35 @@ public class NumberHelper {
 	 * @param num null safe
 	 * @return formatted number or 'null'
 	 */
-	public String toString(final Number num){
-		if(num==null){
-			return "null";
-		}
-		if(num instanceof Integer || num instanceof Long){
-			NumberFormat format = new DecimalFormat(",###");
-			return format.format(num);	
-		}else{
-			NumberFormat format = new DecimalFormat(",###.0############################");
-			return format.format(num);			
-		}
-	}
-	
-	/**
-	 * @see #toString(Number)
-	 * but with , and . used they other way, like in the dutch language
-	 * @param num
-	 * @return
-	 */
-	public String toDutchString(final Number num){
-		return toString(num).replace(".", PLACEHOLDER).replace(",", ".").replace(PLACEHOLDER, ",");
-	}
-	
+	public String toString(final Number num) {
+        return toString(num, Locale.US);
+    }
+
+    private String toString(final Number num, final Locale loc) {
+        if (num == null) {
+            return "null";
+        }
+        if (num instanceof Integer || num instanceof Long) {
+            DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(loc);
+            return df.format(num);
+        } else {
+            DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(loc);
+            df.setMinimumFractionDigits(1);
+            df.setMaximumFractionDigits(100);
+            return df.format(num);
+        }
+    }
+
+    /**
+     * @see #toString(Number) but with , and . used they other way, like in the dutch language
+     * @param num
+     * @return
+     */
+    public String toDutchString(final Number num) {
+        return toString(num, Locale.GERMAN);
+    }
+
+ 
 	/**
 	 * true IF value2 BETWEEN value1 + x % AND value1 - x %
 	 * @param value1

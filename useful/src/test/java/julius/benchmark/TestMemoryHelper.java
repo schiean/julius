@@ -24,9 +24,9 @@ public class TestMemoryHelper extends BDDTestCase{
 		MemoryHelper mh = new MemoryHelper();
 		long some1 = mh.getUsedMB();
 
-		note("we expect a memory usage between 0.1 and 10 MB");
-		assertTrue(some1 > 1);
-		assertTrue(some1 < 10);
+		note("we expect a memory usage between 0.1 and 25 MB");
+		assertTrue(some1 >= 1);
+		assertTrue(some1 <= 25);
 		
 		note("calling report should not decrease it(no GC)");
 		System.out.println(mh.getReport(false));

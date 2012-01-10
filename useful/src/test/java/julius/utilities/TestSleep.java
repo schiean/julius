@@ -18,6 +18,7 @@ package julius.utilities;
 
 import static julius.utilities.Sleep.sleep;
 import julius.test.BDDTestCase;
+import julius.test.TestHelper;
 
 public class TestSleep extends BDDTestCase{
 
@@ -25,20 +26,20 @@ public class TestSleep extends BDDTestCase{
 		long d = System.currentTimeMillis();
 		sleep.milliseconds(700);
 		long d2 = System.currentTimeMillis();
-		assertTrue(d2-d >= 700);
+		TestHelper.allmostEquals( 700,d2-d, 20);
 	}
 	
 	public void testSeconds(){
 		long d = System.currentTimeMillis();
 		sleep.seconds(3);
 		long d2 = System.currentTimeMillis();
-		assertTrue(d2-d >= 3000);
+		TestHelper.allmostEquals( 3000,d2-d, 10);
 	}
 	
 	public void testAnd(){
 		long d = System.currentTimeMillis();
 		sleep.seconds(3).and().milliseconds(500);
 		long d2 = System.currentTimeMillis();
-		assertTrue(d2-d >= 3500);
+		TestHelper.allmostEquals( 3500,d2-d, 10);
 	}
 }

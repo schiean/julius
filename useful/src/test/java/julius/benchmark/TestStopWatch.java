@@ -17,6 +17,7 @@
 package julius.benchmark;
 
 import julius.test.BDDTestCase;
+import julius.test.TestHelper;
 import julius.utilities.Sleep;
 
 public class TestStopWatch extends BDDTestCase{
@@ -137,9 +138,6 @@ public class TestStopWatch extends BDDTestCase{
 
 	
 	public void assertAboutEqual(final long expected, final long actual){
-		long max = (long)(expected * 1.025);
-		long min = (long)(expected * 0.975);
-		assertTrue("expected "+expected+" upto "+min+", got "+actual, actual > min);
-		assertTrue("expected "+expected+" upto "+max+", got "+actual, actual < max);
+		TestHelper.allmostEquals(expected, actual, 10);
 	}
 }
