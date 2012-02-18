@@ -16,6 +16,8 @@
 
 package julius.utilities.collection;
 
+import static julius.utilities.CollectionHelper.values;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +29,6 @@ import java.util.TreeSet;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
-
 
 //TODO LOW: should use proper given/when/then
 public class TestCollectionsQuery extends BDDTestCase {
@@ -57,25 +58,74 @@ public class TestCollectionsQuery extends BDDTestCase {
 		given("collection:"+col);
 		when("queried for exact same object == ");
 		then("return true");
-			assertTrue(CollectionHelper.containsObjectByRef(col, i1));
-			assertTrue(CollectionHelper.containsObjectByRef(col, i2));
+			assertTrue(CollectionHelper.containsAnyByRef(col, i1));
+			assertTrue(CollectionHelper.containsAnyByRef(col, i2));
 		
 		when("queried for not exact same object ==, but equal ");
 		then("return false");
 		
 			Item i3 = new Item(1);
 			assertTrue(i1.equals(i3));
-			assertFalse(CollectionHelper.containsObjectByRef(col, i3));
+			assertFalse(CollectionHelper.containsAnyByRef(col, i3));
 		
 		
 		when("queried for not exact same object ==, also not equal ");
 		then("return false");
 		
 			Item i4 = new Item(4);
-			assertFalse(CollectionHelper.containsObjectByRef(col, i4));
+			assertFalse(CollectionHelper.containsAnyByRef(col, i4));
 	
+		note("should work with collections");
+			assertTrue(CollectionHelper.containsAnyByRef(col, CollectionHelper.list( i2, i4)));						
+		
+			
 		successFullStory();
 	}
+	
+	
+	public void testContainsAny(){
+		Item i1 = new Item(1);
+		Item i2 = new Item(2);
+		Item i3 = new Item(3);
+		Item i4 = new Item(4);
+		Item i5 = new Item(5);
+		
+		Collection<Item> col = CollectionHelper.createList(i1,i2,i3,i4,i5);
+		
+		given("collection:"+col);
+		when("queried for exact same object == ");
+		then("return true");
+			assertTrue(CollectionHelper.containsAny(col, i1));
+			assertTrue(CollectionHelper.containsAny(col, i2));
+		
+		when("queried for not exact same object ==, but equal ");
+		then("return true");
+		
+			Item i1copy = new Item(1);
+			assertTrue(i1.equals(i1copy));
+			assertTrue(CollectionHelper.containsAny(col, i1copy));
+		
+			
+		when("queried with multiple values");
+		then("return true");
+			
+			assertTrue(CollectionHelper.containsAny(col, i1copy, i2));
+			assertTrue(CollectionHelper.containsAny(col, values( i2, i1copy)));						
+			assertTrue(CollectionHelper.containsAny(col, values( null, i2, i1copy)));						
+			assertFalse(CollectionHelper.containsAny(col, (Item)null));						
+		
+		when("queried for not exact same object ==, also not equal ");
+		then("return false");
+		
+			Item i10 = new Item(10);
+			assertFalse(CollectionHelper.containsAny(col, i10));
+	
+		note("should work with collections");
+			assertTrue(CollectionHelper.containsAny(col, CollectionHelper.list( i2, i1copy)));						
+		
+		successFullStory();
+	}
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void testModifiable(){

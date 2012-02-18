@@ -28,6 +28,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import julius.annotations.Experimental;
+import julius.utilities.GeneralObjectHelper;
 
 /**
  * Contains methods to query a collection
@@ -79,25 +80,6 @@ public class CollectionsQuery {
 	public <T> boolean isImmutable(final Collection<T> collection){
 		return immutableCollections.contains(collection.getClass());
 	}
-	
-	
-
-	/**
-	 * Will check if the exact object instance is in the collection
-	 * @param <T>
-	 * @param collection
-	 * @param item
-	 * @return true if at least one object in the collection has (item == collectionItem)
-	 */
-	public <T> boolean containsObjectByRef(final Collection<T> collection, final T item) {
-        for (T t : collection) {
-            if (item == t) {
-                return true;
-            }
-        }
-        return false;
-    }
-	
 	
     /**
      * will either return the original collection or an empty immutable collection.
@@ -210,5 +192,47 @@ public class CollectionsQuery {
     public <E> boolean isEmpty(final Collection<E> list) {
         return list == null || list.isEmpty();
     }    
+    
 
+	/**
+	 * Will check if the exact object instance is in the collection
+	 * @param <T>
+	 * @param collection
+	 * @param values
+	 * @return true if at least one object in the collection has (value == collectionItem)
+	 */
+	public <T> boolean containsAnyByRef(final Collection<T> collection, final T... values) {
+		if(values==null){
+			return false;
+		}
+        for (T el : collection) {
+        	for(T val: values){
+        		if (el == val) {
+                    return true;
+                }	
+        	}            
+        }
+        return false;
+    }
+	
+    
+    /**
+     * @param <E>
+     * @param collection (null safe)
+     * @param values (null safe)
+     * @return true if any of the values is in the collection (el == null && val == null) or (el.equals(val))
+     */
+    public <E> boolean containsAny(final Collection<E> collection, final E... values){
+    	if(values == null ){
+    		return false;
+    	}
+    	for(E el:getOrEmpty(collection)){
+    		for(E val:values){
+    			if(GeneralObjectHelper.nullSafeEquals(el, val)){
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
 }

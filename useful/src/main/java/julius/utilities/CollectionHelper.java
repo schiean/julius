@@ -272,11 +272,45 @@ public final class CollectionHelper {
     }
 
     /**
-     * @see CollectionsQuery#containsObjectByRef(Collection, Object)
+     * this method is useful to make the containsAny methods better readable
+     * does not create any object so no overhead 
+     * 
+     * containsAny(col, 1, 3) =>  containsAny(col, values(1,2,3,4));
+     * 
      */
-    public static <T> boolean containsObjectByRef(final Collection<T> collection, final T item) {
-    	   return query.containsObjectByRef(collection,item);
-    	    
+    public static <T> T[] values(final T... vals){
+    	return vals;
+    }
+    
+    /**
+     * @see CollectionsQuery#containsAnyByRef(Collection, Object[])
+     */
+    public static <T> boolean containsAnyByRef(final Collection<T> collection, final T... items) {
+    	   return query.containsAnyByRef(collection,items);    	    
+    }
+    
+    /**
+     * @see CollectionsQuery#containsAnyByRef(Collection, Object[])
+     */
+    @SuppressWarnings("unchecked")
+	public static <T> boolean containsAnyByRef(final Collection<T> collection, final Collection<T> items) {
+    	   return query.containsAnyByRef(collection, (T[])getOrEmpty(items).toArray());    	    
+    }
+    
+    
+    /**
+     * @see CollectionsQuery#containsAny(Collection, Object[])
+     */
+    public static <T> boolean containsAny(final Collection<T> collection, final T... items) {
+    	   return query.containsAny(collection,items);    	    
+    }
+    
+    /**
+     * @see CollectionsQuery#containsAny(Collection, Object[])
+     */
+    @SuppressWarnings("unchecked")
+	public static <T> boolean containsAny(final Collection<T> collection, final Collection<T> items) {
+    	   return query.containsAny(collection,(T[])getOrEmpty(items).toArray());    	    
     }
 
     /**
@@ -362,29 +396,33 @@ public final class CollectionHelper {
     /**
      * @see CollectionsLogical#union(Collection...)
      */
-    public static <T> List<T> union(final Collection<T>... others){
-		return logical.union(others);
+    @SuppressWarnings("unchecked")
+	public static <T> List<T> union(final Collection<T> col1, final Collection<T> col2){
+		return logical.union(col1, col2);
 	}
 	
 	/**
      * @see CollectionsLogical#unionAsSet(Collection...)
      */
-    public static <T> Set<T> unionAsSet(final Collection<T>... others){
-		return logical.unionAsSet(others);
+    @SuppressWarnings("unchecked")
+	public static <T> Set<T> unionAsSet(final Collection<T> col1, final Collection<T> col2){
+		return logical.unionAsSet(col1, col2);
 	}
 	
 	/**
      * @see CollectionsLogical#intersection(Collection...)
      */
-    public static <T> List<T> intersection(final Collection<T>... others){
-		return logical.intersection(others);
+    @SuppressWarnings("unchecked")
+	public static <T> List<T> intersection(final Collection<T> col1, final Collection<T> col2){
+		return logical.intersection(col1, col2);
 	}
 	
 	/**
      * @see CollectionsLogical#intersectionAsSet(Collection...)
      */
-    public static <T> Set<T> intersectionAsSet(final Collection<T>... others){
-		return logical.intersectionAsSet(others);
+    @SuppressWarnings("unchecked")
+	public static <T> Set<T> intersectionAsSet(final Collection<T> col1, final Collection<T> col2){
+		return logical.intersectionAsSet(col1, col2);
 	}
 	
 	/**
@@ -402,10 +440,11 @@ public final class CollectionHelper {
 	}
 	
 	/**
-     * @see CollectionsLogical#symetricDifference(Collection...)
+     * @see CollectionsLogical#symmetricDifference(Collection...)
      */
-    public static <T> Collection<T> symetricDifference(final Collection<T>... others){
-		return logical.symetricDifference(others);
+    @SuppressWarnings("unchecked")
+	public static <T> Collection<T> symmetricDifference(final Collection<T> col1, final Collection<T> col2){
+		return logical.symmetricDifference(col1, col2);
 	}
 
     

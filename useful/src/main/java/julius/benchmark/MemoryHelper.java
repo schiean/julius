@@ -17,6 +17,7 @@
 package julius.benchmark;
 
 import julius.Constants;
+import julius.annotations.Experimental;
 import julius.utilities.Sleep;
 
 /**
@@ -25,6 +26,7 @@ import julius.utilities.Sleep;
  * KEEP IN MIND THAT USING THIS CLASS DOES INTERFERE WITH THE GARBAGE COLLECTOR AND MIGHT HURT PERFORMANCE
  * DON'T USE IN PRODUCTION WHERE PERFORMANCE IS IMPORTANT
  */
+@Experimental("obtrusive, only use in debug environment")
 public class MemoryHelper {
 	
 

@@ -137,7 +137,7 @@ public class CollectionsLogical {
 	 * @param others
 	 * @return
 	 */
-	public <T> Collection<T> symetricDifference(final Collection<T>... others){
+	public <T> Collection<T> symmetricDifference(final Collection<T>... others){
 		Collection<T> unionL  =  union(others);
 		Collection<T> intersectionL = intersection(others);
 		return relativeComplement(intersectionL, unionL);

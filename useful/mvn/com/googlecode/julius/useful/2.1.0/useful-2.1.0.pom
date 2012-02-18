@@ -3,14 +3,9 @@
 	<groupId>com.googlecode.julius</groupId>
 	<artifactId>useful</artifactId>
 	<packaging>jar</packaging>
-	<version>3.1.1</version>
+	<version>2.1.0</version>
 	<name>useful</name>
 	<url>http://maven.apache.org</url>
-	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	
 	<build>
 
 		<plugins>
@@ -36,15 +31,6 @@
 					</execution>
 				</executions>
 			</plugin>
-						<!-- set the java compiler on 1.6 -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			
 		</plugins>
 
 	</build>
@@ -58,7 +44,7 @@
 				<configuration>
 					<xmlOutput>true</xmlOutput>
 						</configuration>
-			</plugin>
+			</plugin><!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
@@ -71,12 +57,12 @@
 					</rulesets>
 				</configuration>
 			</plugin> 
-			<plugin>
+			--><plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<format>xml</format>
+					<format>html</format>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -94,18 +80,6 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		<dependency>
-			<groupId>net.jcip</groupId>
-			<artifactId>jcip-annotations</artifactId>
-			<version>1.0</version>
-		</dependency>
-		            
-		<dependency>
-			<groupId>org.jpatterns</groupId>
-			<artifactId>jpatterns</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-            
 	</dependencies>
 
 </project>

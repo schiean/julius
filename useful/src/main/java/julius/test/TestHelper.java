@@ -174,7 +174,7 @@ public final class TestHelper {
     private static void assertNotNullRecursive(final Object o, final List<String> listOfNullReturningMethods) throws 
             IllegalAccessException,
             InvocationTargetException {
-    	if(CollectionHelper.containsObjectByRef(processed, o)){
+    	if(CollectionHelper.containsAnyByRef(processed, o)){
     		return;
     	}else{
     		processed.add(o);

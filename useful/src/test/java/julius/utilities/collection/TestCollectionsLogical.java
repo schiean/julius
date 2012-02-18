@@ -110,26 +110,26 @@ public class TestCollectionsLogical extends BDDTestCase{
 
 	public void testNullUnion(){
 		note("should support null union");
-		TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST));
+		//TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST,NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.union(NULL_LIST,new LinkedList<Integer>()));
-		TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET));
+		//TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET));
 		TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET,NULL_SET));
 		TestHelperCollections.assertEmpty(CollectionHelper.unionAsSet(NULL_SET,new LinkedList<Integer>()));
 		
-		TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST));
+		//TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST,NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.intersection(NULL_LIST,new LinkedList<Integer>()));
-		TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST));
+		//TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST,NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.intersectionAsSet(NULL_LIST,new LinkedList<Integer>()));
 		
 		TestHelperCollections.assertEmpty(CollectionHelper.relativeComplement(NULL_LIST,NULL_LIST));
 		TestHelperCollections.assertEmpty(CollectionHelper.relativeComplement(NULL_LIST,new LinkedList<Integer>()));
 		
-		TestHelperCollections.assertEmpty(CollectionHelper.symetricDifference(NULL_LIST));
-		TestHelperCollections.assertEmpty(CollectionHelper.symetricDifference(NULL_LIST,NULL_LIST));
-		TestHelperCollections.assertEmpty(CollectionHelper.symetricDifference(NULL_LIST,new LinkedList<Integer>()));
+		//TestHelperCollections.assertEmpty(CollectionHelper.symmetricDifference(NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.symmetricDifference(NULL_LIST,NULL_LIST));
+		TestHelperCollections.assertEmpty(CollectionHelper.symmetricDifference(NULL_LIST,new LinkedList<Integer>()));
 		
 		assertNotNull(CollectionHelper.histogram(NULL_LIST));
 		assertNotNull(CollectionHelper.histogram(CollectionHelper.list(NULL_LIST)));
@@ -284,11 +284,11 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 	}
 	
-	public void testSymetricDifference(){
+	public void testSymmetricDifference(){
 		given("the collections "+l1and2+" "+l1and3);
 		when("the difference is created");
 		
-			Collection<Integer> dif = CollectionHelper.symetricDifference(l1and2, l1and3);
+			Collection<Integer> dif = CollectionHelper.symmetricDifference(l1and2, l1and3);
 		
 		then("we expect only "+l2and3);
 		
@@ -297,7 +297,7 @@ public class TestCollectionsLogical extends BDDTestCase{
 		
 		and("an the same for the otherway arround");
 		
-			dif = CollectionHelper.symetricDifference(l1and3, l1and2);		
+			dif = CollectionHelper.symmetricDifference(l1and3, l1and2);		
 
 			TestHelperCollections.assertSameSize(dif, l2and3);
 			TestHelperCollections.assertContainsAll(dif, l2and3);
