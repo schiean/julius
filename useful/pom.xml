@@ -1,16 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.julius</groupId>
 	<artifactId>useful</artifactId>
 	<packaging>jar</packaging>
-	<version>3.1.1</version>
+	<version>3.1.2</version>
 	<name>useful</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<build>
 
 		<plugins>
@@ -36,7 +37,7 @@
 					</execution>
 				</executions>
 			</plugin>
-						<!-- set the java compiler on 1.6 -->
+			<!-- set the java compiler on 1.6 -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -44,12 +45,24 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.code.maven-svn-wagon</groupId>
+						<artifactId>maven-svn-wagon</artifactId>
+						 <version>1.4</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 
 	</build>
-	
-		<reporting>
+
+	<reporting>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -57,7 +70,7 @@
 				<version>2.3.1</version>
 				<configuration>
 					<xmlOutput>true</xmlOutput>
-						</configuration>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -70,7 +83,7 @@
 					<rulesets>
 					</rulesets>
 				</configuration>
-			</plugin> 
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
@@ -81,8 +94,8 @@
 			</plugin>
 		</plugins>
 	</reporting>
-	
-	
+
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -99,13 +112,22 @@
 			<artifactId>jcip-annotations</artifactId>
 			<version>1.0</version>
 		</dependency>
-		            
+
 		<dependency>
 			<groupId>org.jpatterns</groupId>
 			<artifactId>jpatterns</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-            
-	</dependencies>
 
+	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>yourproject.googlecode.com</id>
+			<url>svn:https://julius.googlecode.com/svn/repo/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>yourproject.googlecode.com</id>
+			<url>svn:https://julius.googlecode.com/svn/repo/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

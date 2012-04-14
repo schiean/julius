@@ -35,6 +35,22 @@ import julius.Constants;
  * Alternatively use Joda Time
  */
 public final class DateHelper {
+	
+	// DatatypeFactories are not thread-safe per se, but we don't want the price of a factory-object-creation per date-conversion
+	// we use thread local to limit the creation of datatype factories of 1 per thread
+	private static final ThreadLocal<DatatypeFactory> dataFactory = new ThreadLocal<DatatypeFactory>() {
+		@Override
+		protected DatatypeFactory initialValue() {
+			DatatypeFactory dataTypeFactory;
+			try {
+				dataTypeFactory = DatatypeFactory.newInstance();
+			} catch (final DatatypeConfigurationException e) {
+				throw new IllegalStateException(e);
+			}
+			return dataTypeFactory;
+		}
+	};
+
 
     private DateHelper() {
         // no instances needed
@@ -111,7 +127,7 @@ public final class DateHelper {
         if (date == null) {
             return null;
         }
-        return createFactory().newXMLGregorianCalendar(toGregorian(date, zone));
+        return dataFactory.get().newXMLGregorianCalendar(toGregorian(date, zone));
     }
 
 
@@ -134,7 +150,7 @@ public final class DateHelper {
         if (date == null) {
             return null;
         }
-        XMLGregorianCalendar xmlGC = createFactory().newXMLGregorianCalendar(toGregorian(date, zone));
+        XMLGregorianCalendar xmlGC = dataFactory.get().newXMLGregorianCalendar(toGregorian(date, zone));
         // @XmlSchemaType(name = "date")
         // http://blog.jonasbandi.net/2009/05/jaxb-quicktip-xmlgregoriancalendar.html
         if (zone == null) {
@@ -201,18 +217,6 @@ public final class DateHelper {
             gc.setTimeZone(zone);
         }
         return gc;
-    }
-
-    private static DatatypeFactory createFactory() {
-        DatatypeFactory dataTypeFactory;
-        try {
-            dataTypeFactory = DatatypeFactory.newInstance();
-        } catch (final DatatypeConfigurationException e) {
-            throw new IllegalStateException(e);
-        }
-        return dataTypeFactory;
-    }
-
- 
+    } 
 
 }
