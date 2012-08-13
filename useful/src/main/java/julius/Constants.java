@@ -21,7 +21,7 @@ package julius;
  */
 public interface Constants {
 
-	/** number of milliseconds in a second*/
+	/** number of milliseconds in a second */
 	  final int MILLIS_IN_SEC = 1000;
 	/** number of seconds per minute */
 	  final int SEC_IN_MIN = 60;
