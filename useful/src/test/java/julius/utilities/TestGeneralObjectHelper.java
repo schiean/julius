@@ -84,6 +84,13 @@ public class TestGeneralObjectHelper extends BDDTestCase{
 		
 	}
 	
+	public void testGetOrDefault(){
+		note("should use val if not null");
+		assertEquals("", GeneralObjectHelper.getOrDefault("", "asd"));
+		note("should use _default if val==null");
+		assertEquals("asd", GeneralObjectHelper.getOrDefault(null, "asd"));		
+	}
+	
 	
 	
 }

@@ -129,4 +129,38 @@ public final class GeneralObjectHelper {
 		return o1 != o2;
 	}	
 	
+	/**
+	 * return either val or _default depending on the nullness of val
+	 * keep in mind that calling this getOrDefault("asd", doSome());
+	 * is not lazy and will always perform doSome(), so don't use side-effects
+	 * 
+	 * actually it is mostly aimed at this behavior
+	 * 
+	 * return getOrDefault(result, 0);
+	 * return getOrDefault(result, "not found");
+	 * return getOrDefault(result, new Date());
+	 * 
+	 * as alternative for
+	 * if(result==null){
+	 *    return 0;
+	 * }else{
+	 *    return result;
+	 * }
+	 * 
+	 * use CollectionHelper#getOrEmpty() for handling null collections
+	 * 
+	 * @param val 
+	 * 				(null or not null)
+	 * @param _default 
+	 * 				default value to use as alternative for val
+	 *              calling it with _default==null is allowed but makes no sense
+	 * @return val or _default(in case val == null)
+	 */
+	public static <T> T getOrDefault(final T val, final T _default){
+		if( val != null ){
+			return val;
+		}else{
+			return _default;
+		}
+	}
 }
