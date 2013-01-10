@@ -143,6 +143,24 @@ public class NumberHelper {
 		return (value2 >= lower && value2 <= upper);
 	}
 	
+
+	/**
+	 * true IF value2 BETWEEN value1 + x % AND value1 - x %
+	 * @param value1
+	 * @param value2
+	 * @param percentageTo1
+	 * @return
+	 */
+	public boolean almostEqual(final double value1, final double value2, final int percentageTo1){
+		Assertions.argument.assertTrue(percentageTo1 > 0, "only values larger then 0 are allowed");
+		if(value1==value2){
+			return true;
+		}
+		double upper = addXPercent(value1, percentageTo1);
+		double lower = addXPercent(value1,-percentageTo1);
+		return (value2 >= lower && value2 <= upper);
+	}
+	
 	/**
 	 * @param val
 	 * @param xPercentage (can be + or -)
@@ -152,4 +170,12 @@ public class NumberHelper {
 		return val * (_100_PERC + xPercentage) / _100_PERC;
 	}
 	
+	/**
+	 * @param val
+	 * @param xPercentage (can be + or -)
+	 * @return value + xPercentage
+	 */
+	public double addXPercent(final double val, final int xPercentage){
+		return val * (_100_PERC + xPercentage) / _100_PERC;
+	}
 }

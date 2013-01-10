@@ -20,8 +20,6 @@ import java.util.List;
 
 import julius.test.BDDTestCase;
 import julius.utilities.CollectionHelper;
-import julius.validation.Validatable;
-import julius.validation.ValidationException;
 import julius.validation.internal.Asserter;
 import julius.validation.internal.BaseAsserter;
 
@@ -174,6 +172,20 @@ public class TestAsserter extends BDDTestCase {
         
         note("true should pass");
         runAssert.assertTrue(true, "should pass");
+    }
+
+    
+    public void testAssertFalse(){
+    	note("true should fail");
+    	try {
+    		runAssert.assertFalse(true, "should fail");
+        	
+            fail("exception expected");
+        } catch (RuntimeException e) {
+        }
+        
+        note("false should pass");
+        runAssert.assertFalse(false, "should pass");
     }
 
 }

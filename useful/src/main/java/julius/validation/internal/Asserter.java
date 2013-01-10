@@ -85,5 +85,13 @@ public interface Asserter {
 	 */
     void assertTrue(final boolean condition, final String msg);
 
+    /**
+	 * check for false
+	 * @param condition
+	 * @param msg
+	 * @throws RuntimeException
+	 * 				for true values
+	 */
+    void assertFalse(final boolean condition, final String msg);
 
 }

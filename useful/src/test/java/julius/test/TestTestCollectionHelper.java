@@ -28,6 +28,9 @@ public class TestTestCollectionHelper extends BDDTestCase {
 	Collection<Integer> oneTwo = CollectionHelper.list(1,2);
 	Collection<Integer> three = CollectionHelper.list(3);
 	Collection<Integer> oneTwoThree = CollectionHelper.list(1,2,3);
+	Collection<Integer> oneTwoTwoThree = CollectionHelper.list(1,2,2,3);
+	Collection<Integer> oneTwoThreeThree = CollectionHelper.list(1,2,3,3);
+	Collection<Integer> oneThreeTwoThree = CollectionHelper.list(1,2,3,3);
 	Collection<Integer> threeTwoOne = CollectionHelper.list(3,2,1);
 	Collection<Integer> oneTwoThreeFour = CollectionHelper.list(1,2,3,4);
 
@@ -130,4 +133,34 @@ public class TestTestCollectionHelper extends BDDTestCase {
 	}
 
 
+	public void testAssertSameElementsAndSize(){
+		TestHelperCollections.assertSameElementsAndSize(oneTwoThree, threeTwoOne);
+		
+		boolean raisedException = true;
+		try{
+			TestHelperCollections.assertSameElementsAndSize(oneTwoThree, oneTwoThreeFour);
+			raisedException = false;
+		}catch(AssertionFailedError e){
+		}
+		assertTrue(raisedException);
+		
+		raisedException = true;
+		try{
+			TestHelperCollections.assertSameElementsAndSize(oneTwoTwoThree, oneTwoThreeThree);
+			raisedException = false;
+		}catch(AssertionFailedError e){
+		}
+		assertTrue(raisedException);
+		
+		raisedException = true;
+		try{
+			TestHelperCollections.assertSameElementsAndSize(oneTwoThreeThree, oneTwoTwoThree);
+			raisedException = false;
+		}catch(AssertionFailedError e){
+		}
+		assertTrue(raisedException);
+		
+			TestHelperCollections.assertSameElementsAndSize(oneTwoThreeThree, oneThreeTwoThree);
+		
+	}
 }

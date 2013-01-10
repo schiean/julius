@@ -16,7 +16,10 @@
 
 package julius.utilities.collection;
 
+import java.util.Collection;
 import java.util.HashMap;
+
+import julius.utilities.CollectionHelper;
 
 /**
  * Map of T to Integer with a register method
@@ -27,6 +30,17 @@ public class Histogram<T> extends HashMap<T,Integer> {
 	
 	private static final long serialVersionUID = -5683996183844690282L;
 
+	/**
+	 * transform a collection into the hashmap.
+	 * Does not clear the current contents (so it is possible to add multiple collection into one histogram)
+	 * @param values
+	 */
+	public void register(final Collection<T> values){
+		for(T v:CollectionHelper.getOrEmpty(values)){
+			register(v);
+		}
+	}
+	
 	/**
 	 * increase the count for the 'key' in the map
 	 * @param key

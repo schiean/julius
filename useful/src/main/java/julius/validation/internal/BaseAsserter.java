@@ -87,4 +87,14 @@ public abstract class BaseAsserter implements Asserter {
     		throw createException(msg);
     	}
     }
+    
+    /* (non-Javadoc)
+	 * @see julius.validation.AsserterInterface#assertFalse(boolean, java.lang.String)
+	 */
+    @Override
+	public void assertFalse(final boolean condition, final String msg){
+    	if(condition){
+    		throw createException(msg);
+    	}
+    }
 }

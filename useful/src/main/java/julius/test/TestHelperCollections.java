@@ -19,6 +19,7 @@ package julius.test;
 import java.util.Collection;
 import java.util.Iterator;
 
+import julius.utilities.collection.Histogram;
 import junit.framework.Assert;
 
 /** methods to assert collections */
@@ -58,6 +59,12 @@ public final class TestHelperCollections {
     	assertSameSize(actual, expected);
     	assertContainsAll(expected, actual);
     	assertContainsAll(actual, expected);
+    	Histogram<T> a = new Histogram<T>();
+    	a.register(actual);
+    	Histogram<T> b = new Histogram<T>();
+    	b.register(expected);
+    	Assert.assertEquals(a,b);
+    	
     }
     
 	/**

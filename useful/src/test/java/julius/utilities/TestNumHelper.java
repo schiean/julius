@@ -115,6 +115,39 @@ public class TestNumHelper extends BDDTestCase{
 			assertTrue(numhelper.almostEqual(1, 2, 0));
 			fail("only percentage > 0");
 		}catch(IllegalArgumentException e){}
+		
+		
+		note("little to high");
+		assertTrue(numhelper.almostEqual(100.5, 103.5, 5));
+		assertFalse(numhelper.almostEqual(100.5, 106.5, 5));
+		
+		note("little to low");
+		assertTrue(numhelper.almostEqual(100.5, 97.5, 5));
+		assertFalse(numhelper.almostEqual(100.5, 94.5, 5));
+
+		note("exact");
+		assertTrue(numhelper.almostEqual(100.5, 100.5, 5));
+		note("large %");
+		assertTrue(numhelper.almostEqual(1.5, 2.5, 100));
+	
+		try{
+			assertTrue(numhelper.almostEqual(1.6, 2, 0));
+			fail("only percentage > 0");
+		}catch(IllegalArgumentException e){}
+		
+		try{
+			assertTrue(numhelper.almostEqual(1.88, 2, 0));
+			fail("only percentage > 0");
+		}catch(IllegalArgumentException e){}
+		
+		
+		try{
+			assertTrue(numhelper.almostEqual(1.99, 2, 0));
+			fail("only percentage > 0");
+		}catch(IllegalArgumentException e){}
+		
+
+			assertTrue(numhelper.almostEqual(1.99, 2, 1));
 	}
 	
 }
