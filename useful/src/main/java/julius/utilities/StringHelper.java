@@ -18,6 +18,8 @@ package julius.utilities;
 
 import java.util.List;
 
+import julius.reflection.BeanTraverser;
+import julius.reflection.ToStringTask;
 import julius.validation.Assertions;
 
 /**
@@ -106,6 +108,32 @@ public final class StringHelper {
 			pos = wholeString.indexOf(expression,pos+1);
 		}
 		return pos;
+	}
+	
+	/**
+	 * recursively traverse getters and collections to create a string for root
+	 * supports multiple object occurrence(only print once)
+	 * @param root
+	 * @return
+	 */
+	public static String toStringRecursive(final Object root){
+		ToStringTask task = new ToStringTask();
+		BeanTraverser.traverseRecursive(task, root);
+		return task.toString();
+	}
+	
+	/**
+	 * 
+	 * recursively traverse getters and collections to create a string for root
+	 * supports multiple object occurrence(only print once)
+	 * @param root
+	 * @param maxDepth prevent to large trees
+	 * @return
+	 */
+	public static String toStringRecursive(final Object root, final int maxDepth){
+		ToStringTask task = new ToStringTask(maxDepth);
+		BeanTraverser.traverseRecursive(task, root);
+		return task.toString();
 	}
 	
 	

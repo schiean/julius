@@ -16,9 +16,16 @@
 
 package julius.utilities;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import julius.test.BDDTestCase;
+import nl.testclasses.Child;
+import nl.testclasses.Cycle;
+import nl.testclasses.MultiParent;
+import nl.testclasses.MultiParentList;
+import nl.testclasses.Parent;
 
 public class TestStringHelper extends BDDTestCase{
 
@@ -107,4 +114,130 @@ public class TestStringHelper extends BDDTestCase{
 		
 	}
 	
+	
+	public void testPrintCyclic(){
+		Cycle c1 = new Cycle(1);
+		c1.setCycle(c1);
+		Cycle c2 =new Cycle(2);
+		c2.setCycle(c1);
+
+//		System.out.println(StringHelper.toStringRecursive(c1));
+//		System.out.println(StringHelper.toStringRecursive(c2));
+		
+		
+		Cycle c3 = new Cycle(3);
+		Cycle c4 = new Cycle(4);
+		Cycle c5 = new Cycle(5);
+		c3.setCycle(c4);
+		c4.setCycle(c5);
+		c5.setCycle(c2);
+		c1.setCycle(c3);
+//		System.out.println(StringHelper.toStringRecursive(c1));
+//		System.out.println(StringHelper.toStringRecursive(c2));
+//		System.out.println(StringHelper.toStringRecursive(c3));
+//		System.out.println(StringHelper.toStringRecursive(c4));
+		System.out.println(StringHelper.toStringRecursive(c5));
+		String res =StringHelper.toStringRecursive(c5);
+		assertTrue(containsOnce(res,"getI: 1"));
+		assertTrue(containsOnce(res,"getI: 2"));
+		assertTrue(containsOnce(res,"getI: 3"));
+		assertTrue(containsOnce(res,"getI: 4"));
+		assertTrue(containsOnce(res,"getI: 5"));
+	}
+	
+	public boolean containsOnce(final String res, final String part){
+		return res.indexOf(part) >-1 && res.indexOf(part, res.indexOf(part)+1)==-1;
+	}
+	
+	
+    public void testPrintRecursive() {
+        note("should support partial filled object");
+
+        Child c = new Child();
+        c.setVal(1);
+        c.setVal2(2);
+        String res = StringHelper.toStringRecursive(c);
+
+        assertTrue(containsOnce(res,"Child"));
+        assertTrue(containsOnce(res,"getVal: 1"));
+        assertTrue(containsOnce(res,"getVal2: 2"));
+
+        c.setVal(null);
+        c.setVal2(null);
+        
+        res = StringHelper.toStringRecursive(c);
+
+        assertTrue(containsOnce(res,"Child"));
+        assertTrue(containsOnce(res,"getVal: null"));
+        
+        note("a fully filled object with filled sub object should print");
+
+        Parent p = new Parent();
+        p.setVal(1);
+        p.setC(c);
+        
+        res = StringHelper.toStringRecursive(p);
+        System.out.println(res);
+        assertTrue(containsOnce(res,"Parent"));
+        assertTrue(containsOnce(res,"getC: "));
+        assertTrue(containsOnce(res,"getVal: null"));
+        
+        res = StringHelper.toStringRecursive(p,1);
+        System.out.println(res);
+
+        assertTrue(containsOnce(res,"Parent"));
+        assertTrue(containsOnce(res,"getC: "));
+        assertFalse(containsOnce(res,"getVal: null"));
+
+       note("a (multi) parent class with empty list of children should print");
+
+        MultiParent mp = new MultiParent();
+        mp.setVal(1);
+        mp.setC(new HashSet<Child>());
+        
+        res = StringHelper.toStringRecursive(mp);
+        System.out.println(res);
+        assertTrue(containsOnce(res,"MultiParent"));
+        assertTrue(containsOnce(res,"getC: []"));
+        assertTrue(containsOnce(res,"getVal: 1"));
+        
+        note("a (multi) parent class with list of filled children should print");
+        mp.setC(new HashSet<Child>());
+        c.setVal(1);
+        c.setVal2(2);
+        mp.getC().add(c);
+
+        res = StringHelper.toStringRecursive(mp);
+        System.out.println(res);
+        assertTrue(containsOnce(res,"MultiParent"));
+        assertTrue(containsOnce(res,"getC: [nl."));
+
+        note("a (multi) parent class with list of filled children and null should print");
+        
+        mp.getC().add(null);
+        Child c2 = new Child();
+        c2.setVal(3);
+        mp.getC().add(c2);
+        
+        res = StringHelper.toStringRecursive(mp);
+        System.out.println(res);
+        assertTrue(containsOnce(res,"MultiParent"));
+        assertTrue(containsOnce(res,"getC: [n"));
+        assertTrue(containsOnce(res,"getVal2: 2"));
+
+        note("a (multi) parent class with list of filled children [DOUBLE] and null should print");
+        MultiParentList mpl = new MultiParentList();
+        mpl.setVal(1123);
+        mpl.setC(new LinkedList<Child>());
+        mpl.getC().add(c);
+        mpl.getC().add(c2);
+        mpl.getC().add(null);
+        mpl.getC().add(c2);
+        
+        res = StringHelper.toStringRecursive(mpl);
+        System.out.println(res);
+        assertTrue(containsOnce(res,"MultiParentList"));
+        assertTrue(containsOnce(res,"skip"));
+    }
+
 }

@@ -18,16 +18,14 @@ package julius.test;
 
 import static julius.test.JuliusTestOut.print;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import julius.reflection.BeanTraverser;
+import julius.reflection.NullOrEmptyTraverseTask;
 import julius.reflection.ReflectionHelper;
 import julius.reflection.ReflectionHelperImpl;
 import julius.utilities.CollectionHelper;
@@ -37,7 +35,6 @@ import julius.utilities.NumberHelper;
  * TODO needs some clean up and should support more then just "nl.*"
  * 
  * Some smarter 'not null'-assert methods for junit
- * NOT THREAD SAFE since there is a static object container
  */
 public final class TestHelper {
 
@@ -47,7 +44,6 @@ public final class TestHelper {
 
     private static ReflectionHelper reflectionHelper = new ReflectionHelperImpl();
 
-    private static List<Object> processed = new LinkedList<Object>();
     private static NumberHelper numberHelper = new NumberHelper();
     
 	
@@ -119,21 +115,21 @@ public final class TestHelper {
      *            0 or more methodnames for which no error will be thrown in case their return value == null
      */
     public static void assertNotNullRecursiveWithAllowed(final Object o, final String... allowedItems) {
-    	processed.clear();
-    	List<String> allowed = CollectionHelper.getOrEmpty(Arrays.asList(allowedItems));
-        List<String> nullReturningMethods = new LinkedList<String>();
-        try {
-            if (o == null) {
-                nullReturningMethods.add("(no method: provided object was null)");
-            } else if (o instanceof Collection) {
-                handleCollection(o, nullReturningMethods, "(provided object collection)");
-            } else {
-                assertNotNullRecursive(o, nullReturningMethods);
-            }
-        } catch (Exception e) {
-        	throw new IllegalArgumentException(e);
-        }
-        handleResults(allowed, nullReturningMethods);
+    	NullOrEmptyTraverseTask task = new NullOrEmptyTraverseTask();
+    	BeanTraverser.traverseRecursive(task, o);
+        handleResults(CollectionHelper.asList(CollectionHelper.asCollection(allowedItems)), task.getNullReturningMethods());
+    }
+
+
+    /**
+     * This method traverses all getters (recursive) on an object prints a list of methods that return null and if this list is not
+     * empty it throws an assertion error (this method could be used to see if an mapper maps all fields)
+     * 
+     * @param o
+     */
+    public static void assertNotNullRecursive(final Object o) {
+        // this is actually the same as notNullRecursiveWithAllowed(Nothing)
+        assertNotNullRecursiveWithAllowed(o, new String[0]);
     }
 
     private static void handleResults(final List<String> allowed, final List<String> nullReturningMethods) {
@@ -160,62 +156,4 @@ public final class TestHelper {
         }
     }
 
-    /**
-     * This method traverses all getters (recursive) on an object prints a list of methods that return null and if this list is not
-     * empty it throws an assertion error (this method could be used to see if an mapper maps all fields)
-     * 
-     * @param o
-     */
-    public static void assertNotNullRecursive(final Object o) {
-        // this is actually the same as notNullRecursiveWithAllowed(Nothing)
-        assertNotNullRecursiveWithAllowed(o, new String[0]);
-    }
-
-    private static void assertNotNullRecursive(final Object o, final List<String> listOfNullReturningMethods) throws 
-            IllegalAccessException,
-            InvocationTargetException {
-    	if(CollectionHelper.containsAnyByRef(processed, o)){
-    		return;
-    	}else{
-    		processed.add(o);
-    	}
-    	if(o.getClass().getPackage()==null){ // classes loaded by a different class loader have no package
-    		return;
-    	}
-        // check if we support the object
-        String packageNM = o.getClass().getPackage().toString();
-        if (!packageNM.startsWith("package nl.")) {
-            return; // probably a framework or java internal class, dont check getters
-        }
-        for (Method method : reflectionHelper.getAllDeclaredMethods(o.getClass())) {
-            if (reflectionHelper.isGetter(method) && !method.getName().equals("getClass")) {
-                Object retval = method.invoke(o, (Object[]) null);
-                if (retval == null) {
-                    listOfNullReturningMethods.add(method.getName());
-                } else if (retval instanceof Collection) {
-                    handleCollection(retval, listOfNullReturningMethods, method.getName());
-                } else {
-                	if(!retval.getClass().getSimpleName().contains("CGLIB")){ // CG lib is for generated classes like mockito which we dont check
-                		assertNotNullRecursive(retval, listOfNullReturningMethods);
-                	}
-                }
-            }
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    private static void handleCollection(final Object collection,
-            final List<String> listOfNullReturningMethods,
-            final String methodName) throws IllegalAccessException, InvocationTargetException {
-        for (Object c : (Collection) collection) {
-            if (c == null) {
-                listOfNullReturningMethods.add(methodName);
-            } else {
-                assertNotNullRecursive(c, listOfNullReturningMethods);
-            }
-        }
-        if (((Collection) collection).isEmpty()) {
-            listOfNullReturningMethods.add(methodName);
-        }
-    }
 }
