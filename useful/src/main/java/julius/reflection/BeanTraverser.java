@@ -36,7 +36,7 @@ public class BeanTraverser {
 
     
     /**
-     * Will recursively traverse root and call task methods for the apropriate cases.
+     * Will recursively traverse root and call task methods for the appropriate cases.
      * 
      * Will call all getters to traverse, unless CGLIB, not starting with nl.* or when already traversed in the tree
      * 
@@ -48,7 +48,7 @@ public class BeanTraverser {
     	int depth=0;
         try {
         	task.handle(root, "this", depth);     
-            if(task.shouldTraverse(root, "root", depth+1)){
+            if(task.shouldTraverse(getClassName(root), "root", root, depth+1)){
 	            if (root instanceof Collection) {
 	                traverseCollection(task, (Collection)root, processed, "(provided object collection)",depth+1);
 	            } 
@@ -88,21 +88,29 @@ public class BeanTraverser {
     	
     	
         for (Method method : reflectionHelper.getAllDeclaredMethods(o.getClass())) {
-            if (reflectionHelper.isGetter(method) && !method.getName().equals("getClass")) {
-                Object retval = method.invoke(o, (Object[]) null);
-                task.handle(retval, method.getName(), depth);
-                if(task.shouldTraverse(retval, method.getName(), depth+1)){
-	                if (retval instanceof Collection) {
-	                    traverseCollection(task, (Collection)retval, processed, method.getName(), depth+1);
-	                } else if( retval!=null){ 
-	                	traverseObject(task, retval, processed, depth+1);                	
+            if (reflectionHelper.isGetter(method) && reflectionHelper.isPublic(method) && !method.getName().equals("getClass")) {
+                try{
+	            	Object retval = method.invoke(o, (Object[]) null);
+	                task.handle(retval, method.getName(), depth);
+	                if(task.shouldTraverse(getClassName(o), method.getName(), retval, depth+1)){
+		                if (retval instanceof Collection) {
+		                    traverseCollection(task, (Collection)retval, processed, method.getName(), depth+1);
+		                } else if( retval!=null){ 
+		                	traverseObject(task, retval, processed, depth+1);                	
+		                }
 	                }
+                }catch(InvocationTargetException e){
+                	task.handleException(e.getCause().getClass().getCanonicalName(), method.getName(), depth);
                 }
             }
         }
     }
 
-    // TODO this should be part of a task?
+	private static String getClassName(final Object o) {
+		return o.getClass().toString();
+	}
+
+    // TODO this should be part of a task? caching also ?
 	private static boolean isNormalClass(final Object o) {
     	// check if we support the object        
     	if(o.getClass().getPackage()==null){ // classes loaded by a different class loader have no package
@@ -145,7 +153,7 @@ public class BeanTraverser {
     	for (Object c : collection) {
         	
         	task.handle(c, methodName, depth);
-        	 if(task.shouldTraverse(c, "part of "+methodName, depth+1)){  	           
+        	 if(task.shouldTraverse(getClassName(collection), "part of "+methodName, c, depth+1)){  	           
 	            if( c instanceof Collection){
 	            	traverseCollection(task, (Collection)c,  processed, "part of "+methodName, depth+1) ;
 	            } else if (c != null) {

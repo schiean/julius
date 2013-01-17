@@ -23,6 +23,8 @@ import java.util.List;
 import julius.test.BDDTestCase;
 import nl.testclasses.Child;
 import nl.testclasses.Cycle;
+import nl.testclasses.ExceptionBean;
+import nl.testclasses.GrandParent;
 import nl.testclasses.MultiParent;
 import nl.testclasses.MultiParentList;
 import nl.testclasses.Parent;
@@ -182,7 +184,7 @@ public class TestStringHelper extends BDDTestCase{
         assertTrue(containsOnce(res,"getC: "));
         assertTrue(containsOnce(res,"getVal: null"));
         
-        res = StringHelper.toStringRecursive(p,1);
+        res = StringHelper.toStringRecursive(p,1, new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
         System.out.println(res);
 
         assertTrue(containsOnce(res,"Parent"));
@@ -238,6 +240,45 @@ public class TestStringHelper extends BDDTestCase{
         System.out.println(res);
         assertTrue(containsOnce(res,"MultiParentList"));
         assertTrue(containsOnce(res,"skip"));
+        
+        note("support surpress exceptions");
+        ExceptionBean b = new ExceptionBean(1, "a");
+        res = StringHelper.toStringRecursive(b);
+        System.out.println(res);
+        assertTrue(containsOnce(res,"ExceptionBean"));
+        assertTrue(containsOnce(res,"FakeBeanMethod: threw"));
+        
+        note("support skip types");
+        Parent parent = new Parent();
+        parent.setVal(10);
+        parent.setC(new Child(8,9));
+        
+        res = StringHelper.toStringRecursive(parent, 1024, new HashSet<String>(), new HashSet<String>(), CollectionHelper.set("Child"));
+        System.out.println(res);
+        assertTrue(containsOnce(res,"Parent"));
+        assertTrue(containsOnce(res,"getVal: 10"));
+        assertFalse(containsOnce(res,"getVal: 8"));
+        
+        note("support skip methods");
+        
+        res = StringHelper.toStringRecursive(parent, 1024, new HashSet<String>(), CollectionHelper.set("getC"), new HashSet<String>());
+        System.out.println(res);
+        assertTrue(containsOnce(res,"Parent"));
+        assertTrue(containsOnce(res,"getVal: 10"));
+        assertFalse(containsOnce(res,"getVal: 8"));
+        
+        note("support skip methods on certain types");
+        GrandParent gp = new GrandParent();
+        gp.setC(parent);
+        
+        res = StringHelper.toStringRecursive(gp, 1024, CollectionHelper.set("nl.testclasses.Parent.getC"), new HashSet<String>(), new HashSet<String>());
+        System.out.println(res);
+        assertTrue(containsOnce(res,"nl.testclasses.GrandParent"));
+        assertTrue(containsOnce(res,"nl.testclasses.Parent")); // tostring and members
+        assertTrue(containsOnce(res,"getVal: 10"));
+        assertTrue(containsOnce(res,"nl.testclasses.Child")); // only toString not members
+        assertFalse(containsOnce(res,"getVal: 8"));
+        
     }
 
 }

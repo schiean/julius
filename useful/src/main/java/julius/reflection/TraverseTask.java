@@ -38,13 +38,24 @@ public  interface TraverseTask{
 	 */
 	public void handle(Object o, String methodName, int depth);
 	
+	
+	/**
+	 * called for each getter that threw an exception
+	 * @param errorName
+	 * @param methodName
+	 * @param depth
+	 */
+	public void handleException(String errorName, String methodName, int depth);
+
 	/**
 	 * useful to exclude types or certain methods or depths
-	 * @param o
+	 * @param objectName
 	 * @param methodName
+	 * @param returnValue
 	 * @param depth
 	 * @return true if the o itself should be inspected
 	 */
-	public boolean shouldTraverse(Object o, String methodName, int depth);
+	public boolean shouldTraverse(String objectName, String methodName, Object returnValue, int depth);
+	
 }
 

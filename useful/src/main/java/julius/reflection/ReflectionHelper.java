@@ -90,7 +90,7 @@ public interface ReflectionHelper {
      * private)
      * 
      * @param clasz
-     * @return list of all methods (posibly with double methods if overrides are there)
+     * @return list of all methods (possibly with double methods if overrides are there)
      */
     List<Method> getAllDeclaredMethods(final Class clasz);
 }

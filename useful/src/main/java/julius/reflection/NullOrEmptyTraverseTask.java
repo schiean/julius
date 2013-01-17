@@ -49,12 +49,17 @@ public class NullOrEmptyTraverseTask implements TraverseTask{
 	}
 
 	@Override
-	public boolean shouldTraverse(final Object o, final String methodName, final int depth) {
+	public boolean shouldTraverse(final String objectName, final String methodName, final Object returnValue, final int depth){
 		return true;
 	}
 
 	@Override
 	public void handleAlreadyProcessed(final Object o, final String methodName, final int depth) {
+		// nothing		
+	}
+
+	@Override
+	public void handleException(final String errorName, final String methodName, final int depth) {
 		// nothing		
 	}
 }

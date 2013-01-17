@@ -17,6 +17,7 @@
 package julius.utilities;
 
 import java.util.List;
+import java.util.Set;
 
 import julius.reflection.BeanTraverser;
 import julius.reflection.ToStringTask;
@@ -128,10 +129,13 @@ public final class StringHelper {
 	 * supports multiple object occurrence(only print once)
 	 * @param root
 	 * @param maxDepth prevent to large trees
+	 * @param skipPaths
+	 * @param skipMethods
+	 * @param skipClasses
 	 * @return
 	 */
-	public static String toStringRecursive(final Object root, final int maxDepth){
-		ToStringTask task = new ToStringTask(maxDepth);
+	public static String toStringRecursive(final Object root, final int maxDepth, final Set<String> skipPaths, final Set<String> skipMethods, final Set<String> skipClasses){
+		ToStringTask task = new ToStringTask(maxDepth, skipPaths, skipMethods, skipClasses);
 		BeanTraverser.traverseRecursive(task, root);
 		return task.toString();
 	}

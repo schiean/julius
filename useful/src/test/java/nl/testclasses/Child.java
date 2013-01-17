@@ -23,7 +23,15 @@ public class Child {
     private Integer val;
     private Integer val2;
 
-    public Integer getVal2() {
+    public Child(){};
+    
+    public Child(final Integer val, final Integer val2) {
+		super();
+		this.val = val;
+		this.val2 = val2;
+	}
+
+	public Integer getVal2() {
         return val2;
     }
 
