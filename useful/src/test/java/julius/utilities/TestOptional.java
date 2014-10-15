@@ -18,28 +18,28 @@ package julius.utilities;
 
 import julius.test.BDDTestCase;
 
-public class TestOptional extends BDDTestCase{
+public class TestOptional extends BDDTestCase {
 
-	public void testValue(){
-		Optional<Integer> o = Optional.create(4);
-		assertTrue(o.hasValue());
-		assertEquals(4, o.getValue().intValue());
-	}
-	
-	public void testNoValue(){
-		Optional<Integer> o = Optional.create(null);
-		assertFalse(o.hasValue());
-		try{
-			o.getValue().intValue();		
-		}catch(IllegalStateException e){}
-	}
-	
-	public void testNesting(){		
-		Optional<Optional<Integer>> o1 = Optional.create(Optional.create(4));
-		assertTrue(o1.hasValue());
-		assertTrue(o1.getValue().hasValue());
-		assertEquals(4, (int) o1.getValue().getValue());
-	}
-	
-	
+    public void testValue() {
+        Optional<Integer> o = Optional.create(4);
+        assertTrue(o.hasValue());
+        assertEquals(4, o.getValue().intValue());
+    }
+
+    public void testNoValue() {
+        Optional<Integer> o = Optional.createEmpty();
+        assertFalse(o.hasValue());
+        try {
+            o.getValue().intValue();
+        } catch (IllegalStateException e) {
+        }
+    }
+
+    public void testNesting() {
+        Optional<Optional<Integer>> o1 = Optional.create(Optional.create(4));
+        assertTrue(o1.hasValue());
+        assertTrue(o1.getValue().hasValue());
+        assertEquals(4, (int) o1.getValue().getValue());
+    }
+
 }

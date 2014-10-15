@@ -23,23 +23,22 @@ import julius.utilities.CollectionHelper;
 import julius.validation.internal.Asserter;
 import julius.validation.internal.BaseAsserter;
 
- 
 /**
  * checks the behavior of the generic base assert class
  * 
  */
 public class TestAsserter extends BDDTestCase {
 
-	private final Asserter runAssert = new BaseAsserter(){
+    private final Asserter runAssert = new BaseAsserter() {
 
-		@Override
-		public RuntimeException createException(final String msg) {
-			return new RuntimeException(msg);
-		}
-		
-	};
-	
-	class A implements Validatable {
+        @Override
+        public RuntimeException createException(final String msg) {
+            return new RuntimeException(msg);
+        }
+
+    };
+
+    class A implements Validatable {
 
         private final boolean v;
 
@@ -48,7 +47,7 @@ public class TestAsserter extends BDDTestCase {
         }
 
         @Override
-        public void assertValid(){
+        public void assertValid() {
             if (v) {
                 throw new RuntimeException("hi");
             }
@@ -148,6 +147,33 @@ public class TestAsserter extends BDDTestCase {
         runAssert.assertNotEmpty(l, "");
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void testAssertEmpty() throws ValidationException {
+        note("null list should fail");
+
+        try {
+            runAssert.assertEmpty((List) null, "");
+
+            fail("exception expected");
+        } catch (RuntimeException e) {
+        }
+
+        note("non empty list should fail");
+
+        try {
+            List<Object> l = CollectionHelper.createLinkedList();
+            l.add(1);
+            runAssert.assertEmpty(l, "");
+
+            fail("exception expected");
+        } catch (RuntimeException e) {
+        }
+
+        note(" empty list should pass");
+        runAssert.assertEmpty(CollectionHelper.createLinkedList(), "");
+
+    }
+
     public void testAssertNotNull() {
         note("null should fail");
         try {
@@ -160,30 +186,42 @@ public class TestAsserter extends BDDTestCase {
         note("non null should pass");
         runAssert.assertNotNull(5, "");
     }
-    
-    public void testAssertTrue(){
-    	note("false should fail");
-    	try {
-    		runAssert.assertTrue(false, "");
-        	
+
+    public void testAssertNull() {
+        note("not null should fail");
+        try {
+            runAssert.assertNull(5, "");
+
             fail("exception expected");
         } catch (RuntimeException e) {
         }
-        
+
+        note("null should pass");
+        runAssert.assertNull(null, "");
+    }
+
+    public void testAssertTrue() {
+        note("false should fail");
+        try {
+            runAssert.assertTrue(false, "");
+
+            fail("exception expected");
+        } catch (RuntimeException e) {
+        }
+
         note("true should pass");
         runAssert.assertTrue(true, "should pass");
     }
 
-    
-    public void testAssertFalse(){
-    	note("true should fail");
-    	try {
-    		runAssert.assertFalse(true, "should fail");
-        	
+    public void testAssertFalse() {
+        note("true should fail");
+        try {
+            runAssert.assertFalse(true, "should fail");
+
             fail("exception expected");
         } catch (RuntimeException e) {
         }
-        
+
         note("false should pass");
         runAssert.assertFalse(false, "should pass");
     }

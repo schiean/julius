@@ -70,6 +70,9 @@ import static julius.validation.Assertions.state;
  */
 public class Optional<T> {
 
+	@SuppressWarnings("rawtypes")
+    private static Optional EMPTY = new Optional(null);
+
 	private final T value;
 	
 	/**
@@ -84,6 +87,14 @@ public class Optional<T> {
 	 */
 	public static <T> Optional<T> create(final T t){
 		return new Optional<T>(t);
+	}
+	
+	
+	/**
+	 * @return an empty Optional
+	 */
+	public static <T> Optional<T> createEmpty(){
+		return (Optional<T>)EMPTY;
 	}
 	
 	/**

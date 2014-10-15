@@ -18,83 +18,116 @@ package julius.validation.internal;
 
 import static julius.utilities.CollectionHelper.getOrEmpty;
 import static julius.utilities.CollectionHelper.isEmpty;
+import static julius.utilities.CollectionHelper.isNotEmpty;
 
 import java.util.Collection;
 
 import julius.validation.Validatable;
 
-
 /**
- * Base implementation of the asserter interface.
- * Which uses a factory method to instantiate the actual runtime derived exception
- * This makes it easy to create multiple types of asserters with different 
- * exceptions (i.e state asserter, argument asserter)
+ * Base implementation of the asserter interface. Which uses a factory method to instantiate the actual runtime derived exception
+ * This makes it easy to create multiple types of asserters with different exceptions (i.e state asserter, argument asserter)
  * 
  */
 public abstract class BaseAsserter implements Asserter {
 
-	/** factory method to create exceptions */
-	public abstract RuntimeException createException(String msg);
-	
+    /** factory method to create exceptions */
+    public abstract RuntimeException createException(String msg);
 
-    /* (non-Javadoc)
-	 * @see julius.validation.AsserterInterface#assertAllNotNull(java.util.Collection, java.lang.String)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertAllNotNull(java.util.Collection, java.lang.String)
+     */
     @Override
-	public <T> void assertAllNotNull(final Collection<T> collection, final String objectName) {
+    public <T> void assertAllNotNull(final Collection<T> collection, final String objectName) {
         for (T t : getOrEmpty(collection)) {
             assertNotNull(t, objectName);
         }
     }
 
-    /* (non-Javadoc)
-	 * @see julius.validation.AsserterInterface#assertAllValidNotNull(java.util.Collection, java.lang.String)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertAllValidNotNull(java.util.Collection, java.lang.String)
+     */
     @Override
-	public <T extends Validatable> void assertAllValidNotNull(final Collection<T> collection, final String objectName){
+    public <T extends Validatable> void assertAllValidNotNull(final Collection<T> collection, final String objectName) {
         for (T t : getOrEmpty(collection)) {
             assertNotNull(t, objectName);
             t.assertValid();
         }
     }
 
-    /* (non-Javadoc)
-	 * @see julius.validation.AsserterInterface#assertNotEmpty(java.util.Collection, java.lang.String)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertNotEmpty(java.util.Collection, java.lang.String)
+     */
     @Override
-	public <T> void assertNotEmpty(final Collection<T> collection, final String objectName){
+    public <T> void assertNotEmpty(final Collection<T> collection, final String objectName) {
         if (isEmpty(collection)) {
             throw createException(objectName + " should not be empty");
         }
     }
 
-    /* (non-Javadoc)
-	 * @see julius.validation.AsserterInterface#assertNotNull(java.lang.Object, java.lang.String)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertEmpty(java.util.Collection, java.lang.String)
+     */
     @Override
-	public void assertNotNull(final Object object, final String objectName){
+    public <T> void assertEmpty(final Collection<T> collection, final String objectName) {
+        if (isNotEmpty(collection) || collection == null) {
+            throw createException(objectName + " should  be empty");
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertNotNull(java.lang.Object, java.lang.String)
+     */
+    @Override
+    public void assertNotNull(final Object object, final String objectName) {
         if (object == null) {
             throw createException(objectName + " should not be null");
         }
     }
-    
-    /* (non-Javadoc)
-	 * @see julius.validation.AsserterInterface#assertTrue(boolean, java.lang.String)
-	 */
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertNull(java.lang.Object, java.lang.String)
+     */
     @Override
-	public void assertTrue(final boolean condition, final String msg){
-    	if(!condition){
-    		throw createException(msg);
-    	}
+    public void assertNull(final Object object, final String objectName) {
+        if (object != null) {
+            throw createException(objectName + " should be null");
+        }
     }
-    
-    /* (non-Javadoc)
-	 * @see julius.validation.AsserterInterface#assertFalse(boolean, java.lang.String)
-	 */
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertTrue(boolean, java.lang.String)
+     */
     @Override
-	public void assertFalse(final boolean condition, final String msg){
-    	if(condition){
-    		throw createException(msg);
-    	}
+    public void assertTrue(final boolean condition, final String msg) {
+        if (!condition) {
+            throw createException(msg);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see julius.validation.AsserterInterface#assertFalse(boolean, java.lang.String)
+     */
+    @Override
+    public void assertFalse(final boolean condition, final String msg) {
+        if (condition) {
+            throw createException(msg);
+        }
     }
 }

@@ -20,25 +20,67 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * Interface to ReflectionHelperImpl 
+ * Interface to ReflectionHelperImpl
  */
 @SuppressWarnings("rawtypes")
 public interface ReflectionHelper {
 
-	/**
-	 * Will turn a settername into a gettername
-	 * setNumber => getNumber
-	 * (javabean standard supports both isBoolean and setBoolean, this method doesnt know types and allways returns setXXX)
-	 * @param setterMethodName
-	 * @return getterName
-	 */
-     String getGetterName(final String setterMethodName);
+    /**
+     * @param o
+     * @param getter
+     * @return the returned value by getter
+     */
+    <T> T callGetter(Object o, String getter);
 
     /**
-     * Will return true for methods with one argument of abstract type
-     * will use T in case of generic type Set<T>
+     * Call setter on o with value T
+     * 
+     * @param o
+     * @param setter
+     * @param value
+     */
+    <T> void callSetter(Object o, String setter, T value);
+
+    /**
+     * 
+     * @return method with name
+     */
+    Method findMethod(final Class clasz, String name);
+
+    /**
+     * @return List of all methods for which isGetter() is true
+     */
+    List<Method> getGetters(Class clasz);
+
+    /**
+     * @return List of all methods for which isSetter() is true
+     */
+    List<Method> getSetters(Class clasz);
+
+    /**
+     * @return a method for which isGetter() is true and the name matches (getXXX setXXX)
+     */
+    Method getGetter(final Class clasz, Method setter);
+
+    /**
+     * @return a method for which isSetter() is true and the name matches (getXXX setXXX)
+     */
+    Method getSetter(final Class clasz, Method getter);
+
+    /**
+     * Will turn a settername into a gettername setNumber => getNumber (javabean standard supports both isBoolean and setBoolean,
+     * this method doesnt know types and allways returns setXXX)
+     * 
+     * @param setterMethodName
+     * @return getterName
+     */
+    String getGetterName(final String setterMethodName);
+
+    /**
+     * Will return true for methods with one argument of abstract type will use T in case of generic type Set<T>
      * 
      * this method is useful to determine of you can call a reflective constructor for the type
+     * 
      * @param aClass
      * @param methodName
      * @return
@@ -66,7 +108,7 @@ public interface ReflectionHelper {
 
     /**
      * @param method
-     * @return true for all methods with name starting with 'get'and 0 args
+     * @return true for all methods with name starting with 'get' or 'is' and 0 args
      */
     boolean isGetter(final Method method);
 

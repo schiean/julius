@@ -17,6 +17,8 @@
 package julius.utilities.collection;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,69 +28,92 @@ import julius.test.BDDTestCase;
 import julius.test.TestHelperCollections;
 import julius.utilities.CollectionHelper;
 
-public class TestCollectionsTransform extends BDDTestCase{
-    
-	Collection<Integer> originalWrapped = CollectionHelper.list(1,2,3,4,5);
-	Collection<Integer> originalList = new LinkedList<Integer>(originalWrapped);
-	Collection<Integer> originalSet = new HashSet<Integer>(originalWrapped);
-	Integer[] orginalArray = {1,2,3,4,5};
-	
-	public void testAsList(){
-		note("should return original when it is a requested type and mutable");		
-		assertSame(originalList, CollectionHelper.asList(originalList)); 
-		
-		note("else should return decoupled copy");
-		List<Integer> res = CollectionHelper.asList(originalWrapped);
-		assertNotSame(originalWrapped, res);
-		TestHelperCollections.assertSameOrderAndSize(originalWrapped, res);
-		assertDecoupledAndMutable(originalWrapped, res);
-		
-	}
-	
-	public void testAsSet(){
-		note("should return original when it is a requested type and mutable");		
-		assertSame(originalSet, CollectionHelper.asSet(originalSet)); 
-		
-		note("else should return decoupled copy");
-		Set<Integer> res = CollectionHelper.asSet(originalWrapped);
-		assertNotSame(originalWrapped, res);
-		TestHelperCollections.assertSameElementsAndSize(originalWrapped, res);
-		assertDecoupledAndMutable(originalWrapped, res);
-	}
+public class TestCollectionsTransform extends BDDTestCase {
 
-	public void testAsLinkedList(){
-		note("should return original when it is a requested type and mutable");		
-		assertSame(originalList, CollectionHelper.asLinkedList(originalList)); 
-		
-		note("else should return decoupled copy");
-		LinkedList<Integer> res = CollectionHelper.asLinkedList(originalWrapped);
-		assertNotSame(originalWrapped, res);
-		TestHelperCollections.assertSameOrderAndSize(originalWrapped, res);
-		assertDecoupledAndMutable(originalWrapped, res);
-	}
-	
-	public void testAsHashSet(){
-		note("should return original when it is a requested type and mutable");		
-		assertSame(originalSet, CollectionHelper.asHashSet(originalSet)); 
-		
-		note("else should return decoupled copy");
-		Set<Integer> res = CollectionHelper.asHashSet(originalWrapped);
-		assertNotSame(originalWrapped, res);
-		TestHelperCollections.assertSameElementsAndSize(originalWrapped, res);
-		assertDecoupledAndMutable(originalWrapped, res);
-	}
-	    
-	public void testAsCollection(){
-		note("array to collection should return decoupled copy in the same order");
-		Collection<Integer> res = CollectionHelper.asCollection(orginalArray);
-		TestHelperCollections.assertSameOrderAndSize(originalWrapped, res);
-		assertDecoupledAndMutable(originalWrapped, res);		
-	}
+    Collection<Integer> originalWrapped = CollectionHelper.list(1, 2, 3, 4, 5);
+    Collection<Integer> originalList = new LinkedList<Integer>(originalWrapped);
+    Collection<Integer> originalSet = new HashSet<Integer>(originalWrapped);
+    Integer[] orginalArray = { 1, 2, 3, 4, 5 };
 
-	public void assertDecoupledAndMutable(final Collection<Integer> original, final Collection<Integer> result){
-		Integer o = 99999;
-		result.add(o);
-		assertFalse(original.contains(o));
-		assertTrue(result.contains(o));
-	}
+    public void testAsList() {
+        note("should return original when it is a requested type and mutable");
+        assertSame(originalList, CollectionHelper.asList(originalList));
+
+        note("else should return decoupled copy");
+        List<Integer> res = CollectionHelper.asList(originalWrapped);
+        assertNotSame(originalWrapped, res);
+        TestHelperCollections.assertSameOrderAndSize(originalWrapped, res);
+        assertDecoupledAndMutable(originalWrapped, res);
+
+    }
+
+    public void testAsSet() {
+        note("should return original when it is a requested type and mutable");
+        assertSame(originalSet, CollectionHelper.asSet(originalSet));
+
+        note("else should return decoupled copy");
+        Set<Integer> res = CollectionHelper.asSet(originalWrapped);
+        assertNotSame(originalWrapped, res);
+        TestHelperCollections.assertSameElementsAndSize(originalWrapped, res);
+        assertDecoupledAndMutable(originalWrapped, res);
+    }
+
+    public void testAsLinkedList() {
+        note("should return original when it is a requested type and mutable");
+        assertSame(originalList, CollectionHelper.asLinkedList(originalList));
+
+        note("else should return decoupled copy");
+        LinkedList<Integer> res = CollectionHelper.asLinkedList(originalWrapped);
+        assertNotSame(originalWrapped, res);
+        TestHelperCollections.assertSameOrderAndSize(originalWrapped, res);
+        assertDecoupledAndMutable(originalWrapped, res);
+    }
+
+    public void testAsHashSet() {
+        note("should return original when it is a requested type and mutable");
+        assertSame(originalSet, CollectionHelper.asHashSet(originalSet));
+
+        note("else should return decoupled copy");
+        Set<Integer> res = CollectionHelper.asHashSet(originalWrapped);
+        assertNotSame(originalWrapped, res);
+        TestHelperCollections.assertSameElementsAndSize(originalWrapped, res);
+        assertDecoupledAndMutable(originalWrapped, res);
+    }
+
+    public void testAsCollection() {
+        note("array to collection should return decoupled copy in the same order");
+        Collection<Integer> res = CollectionHelper.asCollection(orginalArray);
+        TestHelperCollections.assertSameOrderAndSize(originalWrapped, res);
+        assertDecoupledAndMutable(originalWrapped, res);
+    }
+
+    public void testSort() {
+        note("should sort a copy of the list not the original");
+        Collection<Integer> nums = Collections.unmodifiableCollection(CollectionHelper.list(5, 3, 2, 1, 4));
+        TestHelperCollections.assertSameOrderAndSize(CollectionHelper.sortCopy(nums), CollectionHelper.list(1, 2, 3, 4, 5));
+    }
+
+    public void testSortWithComparator() {
+        note("should sort a copy of the list not the original");
+        Collection<Integer> nums = Collections.unmodifiableCollection(CollectionHelper.list(5, 3, 2, 1, 4));
+        TestHelperCollections.assertSameOrderAndSize(CollectionHelper.sortCopy(nums, new Comparator<Integer>() {
+            @Override
+            public int compare(final Integer o1, final Integer o2) {
+                return o1.compareTo(o2) * -1;
+            }
+        }), CollectionHelper.list(5, 4, 3, 2, 1));
+    }
+
+    public void testReverse() {
+        note("should reverse a copy of the list not the original");
+        List<Integer> nums = Collections.unmodifiableList(CollectionHelper.list(5, 3, 2, 1, 4));
+        TestHelperCollections.assertSameOrderAndSize(CollectionHelper.reverseCopy(nums), CollectionHelper.list(4, 1, 2, 3, 5));
+    }
+
+    public void assertDecoupledAndMutable(final Collection<Integer> original, final Collection<Integer> result) {
+        Integer o = 99999;
+        result.add(o);
+        assertFalse(original.contains(o));
+        assertTrue(result.contains(o));
+    }
 }

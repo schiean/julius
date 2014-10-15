@@ -34,61 +34,61 @@ import julius.utilities.GeneralObjectHelper;
  * Contains methods to query a collection
  */
 public class CollectionsQuery {
-	
-	/**
-	 * contains all Class objects for the immutable collection types
-	 */
-	@SuppressWarnings("rawtypes")
-	private final Set<Class> immutableCollections;
-	
-	/**
-	 * constructor
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public CollectionsQuery(){
-		// since the JDK does not publish unmodifiable collection types we extract them,
-		// one minor problem is that we cannot use instanceOf UnmoddifiableCollection 
-		// but have to check all of them
-		immutableCollections = new HashSet<Class>();
-		immutableCollections.add(Collections.unmodifiableCollection(new LinkedList()).getClass());
-		immutableCollections.add(Collections.unmodifiableList(new ArrayList()).getClass());
-		immutableCollections.add(Collections.unmodifiableList(new LinkedList()).getClass());
-		immutableCollections.add(Collections.unmodifiableMap(new HashMap()).getClass());
-		immutableCollections.add(Collections.unmodifiableSet(new HashSet()).getClass());
-		immutableCollections.add(Collections.unmodifiableSortedMap(new TreeMap()).getClass());
-		immutableCollections.add(Collections.unmodifiableSortedSet(new TreeSet()).getClass());
-	}
-	
-	/**
-	 * The JDK has some methods to wrap collections to unmodifiable ones.  this method detects if it is wrapped by such wrapper
-	 * @param <T>
-	 * @param collection
-	 * @return true if wrapped
-	 */	
-	@Experimental("workaround for JDK problem, not sure if it works for all types")
-	public <T> boolean isMutable(final Collection<T> collection){
-		return !isImmutable(collection);
-	}	
-	
-	/**
-	 * The JDK has some methods to wrap collections to unmodifiable ones.  this method detects if it is wrapped by such wrapper
-	 * @param <T>
-	 * @param collection
-	 * @return true if wrapped
-	 */
-	@Experimental("workaround for JDK problem, not sure if it works for all types")
-	public <T> boolean isImmutable(final Collection<T> collection){
-		return immutableCollections.contains(collection.getClass());
-	}
-	
+
+    /**
+     * contains all Class objects for the immutable collection types
+     */
+    @SuppressWarnings("rawtypes")
+    private final Set<Class> immutableCollections;
+
+    /**
+     * constructor
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public CollectionsQuery() {
+        // since the JDK does not publish unmodifiable collection types we extract them,
+        // one minor problem is that we cannot use instanceOf UnmoddifiableCollection
+        // but have to check all of them
+        immutableCollections = new HashSet<Class>();
+        immutableCollections.add(Collections.unmodifiableCollection(new LinkedList()).getClass());
+        immutableCollections.add(Collections.unmodifiableList(new ArrayList()).getClass());
+        immutableCollections.add(Collections.unmodifiableList(new LinkedList()).getClass());
+        immutableCollections.add(Collections.unmodifiableMap(new HashMap()).getClass());
+        immutableCollections.add(Collections.unmodifiableSet(new HashSet()).getClass());
+        immutableCollections.add(Collections.unmodifiableSortedMap(new TreeMap()).getClass());
+        immutableCollections.add(Collections.unmodifiableSortedSet(new TreeSet()).getClass());
+    }
+
+    /**
+     * The JDK has some methods to wrap collections to unmodifiable ones. this method detects if it is wrapped by such wrapper
+     * 
+     * @param <T>
+     * @param collection
+     * @return true if wrapped
+     */
+    @Experimental("workaround for JDK problem, not sure if it works for all types")
+    public <T> boolean isMutable(final Collection<T> collection) {
+        return !isImmutable(collection);
+    }
+
+    /**
+     * The JDK has some methods to wrap collections to unmodifiable ones. this method detects if it is wrapped by such wrapper
+     * 
+     * @param <T>
+     * @param collection
+     * @return true if wrapped
+     */
+    @Experimental("workaround for JDK problem, not sure if it works for all types")
+    public <T> boolean isImmutable(final Collection<T> collection) {
+        return immutableCollections.contains(collection.getClass());
+    }
+
     /**
      * will either return the original collection or an empty immutable collection.
      * 
      * This is useful for null-safe collection iteration with the for each loop
      * 
-     * for(SubItem subItem: getOrEmpty(items)){ 
-     * 		subItem.setItem(this); 
-     * }
+     * for(SubItem subItem: getOrEmpty(items)){ subItem.setItem(this); }
      * 
      * @param <E>
      *            Collection
@@ -109,9 +109,8 @@ public class CollectionsQuery {
      * 
      * This is useful for null-safe collection iteration with the for each loop
      * 
-     * for(SubItem subItem: getOrEmpty(items)){ 
-     * 		subItem.setItem(this); 
-     * }
+     * for(SubItem subItem: getOrEmpty(items)){ subItem.setItem(this); }
+     * 
      * @param <E>
      *            Listtype
      * @param list
@@ -131,9 +130,7 @@ public class CollectionsQuery {
      * 
      * This is useful for null-safe collection iteration with the for each loop
      * 
-     * for(SubItem subItem: getOrEmpty(items)){ 
-     * 		subItem.setItem(this); 
-     * }
+     * for(SubItem subItem: getOrEmpty(items)){ subItem.setItem(this); }
      * 
      * @param <E>
      *            Set-type
@@ -150,8 +147,7 @@ public class CollectionsQuery {
     }
 
     /**
-     * Returns null if the input Set is empty, otherwise the input Set itself. 
-     * This is useful if the object is to be transformed in
+     * Returns null if the input Set is empty, otherwise the input Set itself. This is useful if the object is to be transformed in
      * XML and has the rule 'either a Set with more then one item' or Null
      * 
      * @param set
@@ -166,8 +162,7 @@ public class CollectionsQuery {
     }
 
     /**
-     * Returns null if the input List is empty, otherwise the input List itself. 
-     * This is useful if the object is to be transformed
+     * Returns null if the input List is empty, otherwise the input List itself. This is useful if the object is to be transformed
      * in XML and has the rule 'either a List with more then one item' or Null
      * 
      * @param list
@@ -191,48 +186,50 @@ public class CollectionsQuery {
      */
     public <E> boolean isEmpty(final Collection<E> list) {
         return list == null || list.isEmpty();
-    }    
-    
+    }
 
-	/**
-	 * Will check if the exact object instance is in the collection
-	 * @param <T>
-	 * @param collection
-	 * @param values
-	 * @return true if at least one object in the collection has (value == collectionItem)
-	 */
-	public <T> boolean containsAnyByRef(final Collection<T> collection, final T... values) {
-		if(values==null){
-			return false;
-		}
+    /**
+     * Will check if the exact object instance is in the collection
+     * 
+     * @param <T>
+     * @param collection
+     * @param values
+     * @return true if at least one object in the collection has (value == collectionItem)
+     */
+    public <T> boolean containsAnyByRef(final Collection<T> collection, final T... values) {
+        if (values == null) {
+            return false;
+        }
         for (T el : collection) {
-        	for(T val: values){
-        		if (el == val) {
+            for (T val : values) {
+                if (el == val) {
                     return true;
-                }	
-        	}            
+                }
+            }
         }
         return false;
     }
-	
-    
+
     /**
      * @param <E>
-     * @param collection (null safe)
-     * @param values (null safe)
+     * @param collection
+     *            (null safe)
+     * @param values
+     *            (null safe)
      * @return true if any of the values is in the collection (el == null && val == null) or (el.equals(val))
      */
-    public <E> boolean containsAny(final Collection<E> collection, final E... values){
-    	if(values == null ){
-    		return false;
-    	}
-    	for(E el:getOrEmpty(collection)){
-    		for(E val:values){
-    			if(GeneralObjectHelper.nullSafeEquals(el, val)){
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
+    public <E> boolean containsAny(final Collection<E> collection, final E... values) {
+        if (values == null) {
+            return false;
+        }
+        for (E el : getOrEmpty(collection)) {
+            for (E val : values) {
+                if (GeneralObjectHelper.nullSafeEquals(el, val)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
+
 }

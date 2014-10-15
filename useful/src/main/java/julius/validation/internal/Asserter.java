@@ -25,73 +25,100 @@ import julius.validation.Validatable;
  */
 public interface Asserter {
 
-	/**
-	 * check all elements on the list to be != null
-	 * 
-	 * @param <T>
-	 * @param collection
-	 *            (null safe: null and empty list will pass)
-	 * @param objectName
-	 *            descriptive name of the collection
-	 * @throws RuntimeException
-	 *             if one of the list elements is null
-	 */
-	 <T> void assertAllNotNull(final Collection<T> collection, final String objectName);
+    /**
+     * check all elements on the list to be != null
+     * 
+     * @param <T>
+     * @param collection
+     *            (null safe: null and empty list will pass)
+     * @param objectName
+     *            descriptive name of the collection
+     * @throws RuntimeException
+     *             if one of the list elements is null
+     */
+    <T> void assertAllNotNull(final Collection<T> collection, final String objectName);
 
-	/**
-	 * check all elements on the list to be valid
-	 * 
-	 * @param <T>
-	 * @param collection
-	 *            (null safe: null and empty list will pass)
-	 * @param objectName
-	 *            descriptive name of the collection
-	 * @throws RuntimeException
-	 *             if one of the list elements is null
-	 */
-	<T extends Validatable> void assertAllValidNotNull(final Collection<T> collection, final String objectName);
+    /**
+     * check all elements on the list to be valid
+     * 
+     * @param <T>
+     * @param collection
+     *            (null safe: null and empty list will pass)
+     * @param objectName
+     *            descriptive name of the collection
+     * @throws RuntimeException
+     *             if one of the list elements is null
+     */
+    <T extends Validatable> void assertAllValidNotNull(final Collection<T> collection, final String objectName);
 
-	/**
-	 * check for empty collections
-	 * 
-	 * @param <T>
-	 * @param collection 
-	 * 				(null safe, but null or empty will throw runtime-exception)
-	 * @param objectName
-	 *            descriptive name of the collection
-	 * 
-	 * @throws RuntimeException
-	 *             for null or empty collections
-	 */
-	<T> void assertNotEmpty(final Collection<T> collection, final String objectName);
+    /**
+     * check for non empty collections
+     * 
+     * @param <T>
+     * @param collection
+     *            (null safe, but null or empty will throw runtime-exception)
+     * @param objectName
+     *            descriptive name of the collection
+     * 
+     * @throws RuntimeException
+     *             for null or empty collections
+     */
+    <T> void assertNotEmpty(final Collection<T> collection, final String objectName);
 
-	/**
-	 * check for null value
-	 * 
-	 * @param object
-	 * @param objectName
-	 *            descriptive name of the object
-	 * @throws RuntimeException
-	 *             for null values
-	 */
-	void assertNotNull(final Object object, final String objectName);
-	
-	/**
-	 * check for true
-	 * @param condition
-	 * @param msg
-	 * @throws RuntimeException
-	 * 				for false values
-	 */
+    /**
+     * check for empty collections
+     * 
+     * @param <T>
+     * @param collection
+     *            (null safe, but null or empty will throw runtime-exception)
+     * @param objectName
+     *            descriptive name of the collection
+     * 
+     * @throws RuntimeException
+     *             for null or not empty collections
+     */
+    <T> void assertEmpty(final Collection<T> collection, final String objectName);
+
+    /**
+     * check for not null value
+     * 
+     * @param object
+     * @param objectName
+     *            descriptive name of the object
+     * @throws RuntimeException
+     *             for null values
+     */
+    void assertNotNull(final Object object, final String objectName);
+
+    /**
+     * check for null value
+     * 
+     * @param object
+     * @param objectName
+     *            descriptive name of the object
+     * @throws RuntimeException
+     *             for not null values
+     */
+    void assertNull(final Object object, final String objectName);
+
+    /**
+     * check for true
+     * 
+     * @param condition
+     * @param msg
+     * @throws RuntimeException
+     *             for false values
+     */
     void assertTrue(final boolean condition, final String msg);
 
     /**
-	 * check for false
-	 * @param condition
-	 * @param msg
-	 * @throws RuntimeException
-	 * 				for true values
-	 */
+     * check for false
+     * 
+     * @param condition
+     * @param msg
+     * @throws RuntimeException
+     *             for true values
+     */
     void assertFalse(final boolean condition, final String msg);
 
 }

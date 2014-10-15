@@ -19,34 +19,31 @@ package julius.statistics;
 import julius.test.BDDTestCase;
 import julius.utilities.Sleep;
 
-public class PeriodicSignalSampleHolderTest extends BDDTestCase{
-	long num=0;
-	int count=0;
-	
-	public void testNormal(){
-		PeriodicSignalSampler sampler = new PeriodicSignalSampler();
-		
-		sampler.registerSignalSamplerSec("id", new SignalSampleCallback(){
+public class PeriodicSignalSampleHolderTest extends BDDTestCase {
+    long num = 0;
+    int count = 0;
 
-			@Override
-			public void handleSample(final String id, final long signalCount,
-					final long durationInMs) {
-				System.out.println("print:"+id+" count:"+signalCount+" "+durationInMs);
-				num = signalCount;
-				count++;
-			}}, 1);
-		int y=0;
-		for(int i=0;i<20000000;i++){
-			sampler.count("id");
-		}
-		
-		Sleep.sleep.milliseconds(500);
-		sampler.count("id");
-		
-		note("on average we process 10.000.000 counts per second with print");
-		note("so we expect at least 2 counts");
-		assertTrue(num > 7000000);
-		assertTrue(count>=2);
-	}
+    public void testNormal() {
+        PeriodicSignalSampler sampler = new PeriodicSignalSampler();
+
+        sampler.registerSignalSamplerSec("id", new SignalSampleCallback() {
+
+            @Override
+            public void handleSample(final String id, final long signalCount, final long durationInMs) {
+                System.out.println("print:" + id + " count:" + signalCount + " " + durationInMs);
+                num = signalCount;
+                count++;
+            }
+        }, 1);
+
+        for (int i = 0; i < 2100; i++) {
+            sampler.count("id");
+            Sleep.sleep.milliseconds(1);
+        }
+
+        note("We call every msec for 2 seconds, so we expect 2 rotations (because resolution was set to 1sec)");
+        assertTrue(num > 50);
+        assertTrue(count >= 2);
+    }
 
 }

@@ -4,7 +4,7 @@
 	<groupId>com.googlecode.julius</groupId>
 	<artifactId>useful</artifactId>
 	<packaging>jar</packaging>
-	<version>3.1.6</version>
+	<version>3.1.7</version>
 	<name>useful</name>
 	<url>http://maven.apache.org</url>
 
