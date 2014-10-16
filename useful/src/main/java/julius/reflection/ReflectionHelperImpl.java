@@ -20,11 +20,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import julius.utilities.CollectionHelper;
+import julius.utilities.Optional;
 import julius.validation.Assertions;
 
 /**
@@ -39,8 +41,19 @@ public class ReflectionHelperImpl implements ReflectionHelper {
     @Override
     public String getGetterName(final String setterMethodName) {
         Assertions.argument.assertNotNull(setterMethodName, "setterMethodName");
-        Assertions.argument.assertTrue(setterMethodName.startsWith("set"), "method should start with 'set'");
+        Assertions.argument.assertTrue(setterMethodName.startsWith("set"), "method should start with 'set' " + setterMethodName);
         return "get" + setterMethodName.substring(3);
+    }
+
+    @Override
+    public String getSetterName(final String getterMethodName) {
+        Assertions.argument.assertNotNull(getterMethodName, "getterMethodName");
+        if (getterMethodName.startsWith("get")) {
+            return "set" + getterMethodName.substring(3);
+        } else if (getterMethodName.startsWith("is")) {
+            return "set" + getterMethodName.substring(2);
+        }
+        throw new IllegalStateException("method should start with 'get' or 'is' " + getterMethodName);
     }
 
     @Override
@@ -62,11 +75,8 @@ public class ReflectionHelperImpl implements ReflectionHelper {
                     clasz = cs[0];
                 }
                 if (clasz != null && !clasz.isPrimitive()) {
-                    ok = Modifier.isAbstract(clasz.getModifiers()) && !clasz.isArray() && clasz != byte.class; // there was a bug
-                                                                                                               // with byte[]
-                    // being classified as abstract,
-                    // not sure if this is the best
-                    // fix
+                    ok = Modifier.isAbstract(clasz.getModifiers()) && !clasz.isArray() && clasz != byte.class;
+                    // there was a bug with byte[] being classified as abstract, not sure if this is the best fix
                 }
             }
 
@@ -95,6 +105,19 @@ public class ReflectionHelperImpl implements ReflectionHelper {
             return false;
         }
         return isGetter(m);
+    }
+
+    @Override
+    public boolean hasSetter(final Class aClass, final String setterMethodName) {
+        Assertions.argument.assertNotNull(aClass, "aClass");
+        Assertions.argument.assertNotNull(setterMethodName, "setterMethodName");
+        Method m = null;
+        try {
+            m = getMethod(aClass, setterMethodName);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+        return isSetter(m);
     }
 
     @Override
@@ -176,7 +199,6 @@ public class ReflectionHelperImpl implements ReflectionHelper {
     @Override
     public List<Method> getAllDeclaredMethods(final Class aClass) {
         Assertions.argument.assertNotNull(aClass, "aClass");
-
         List<Method> methods = new LinkedList<Method>();
         Class claszIter = aClass; // used to traverse the inheritance hierarchy
         while (claszIter != null) {
@@ -188,8 +210,9 @@ public class ReflectionHelperImpl implements ReflectionHelper {
 
     @Override
     public List<Method> getGetters(final Class clasz) {
+        Assertions.argument.assertNotNull(clasz, "clasz");
         List<Method> methods = CollectionHelper.list();
-        for (Method m : clasz.getMethods()) {
+        for (Method m : getAllDeclaredMethods(clasz)) {
             if (isGetter(m)) {
                 methods.add(m);
             }
@@ -199,8 +222,9 @@ public class ReflectionHelperImpl implements ReflectionHelper {
 
     @Override
     public List<Method> getSetters(final Class clasz) {
+        Assertions.argument.assertNotNull(clasz, "clasz");
         List<Method> methods = CollectionHelper.list();
-        for (Method m : clasz.getMethods()) {
+        for (Method m : getAllDeclaredMethods(clasz)) {
             if (isSetter(m)) {
                 methods.add(m);
             }
@@ -210,30 +234,28 @@ public class ReflectionHelperImpl implements ReflectionHelper {
 
     @Override
     public Method getGetter(final Class clasz, final Method setter) {
-        String getter = "get" + setter.getName().substring(3);
-        for (Method m : clasz.getMethods()) {
-            if (m.getName().equals(getter) && isGetter(m)) {
-                return m;
-            }
-        }
-        throw new IllegalStateException("no getter found");
+        Assertions.argument.assertNotNull(clasz, "clasz");
+        Assertions.argument.assertTrue(isSetter(setter), "setter");
+        Method getter = getMethod(clasz, getGetterName(setter.getName()));
+        Assertions.argument.assertTrue(isGetter(getter), "getter");
+        return getter;
+
     }
 
     @Override
     public Method getSetter(final Class clasz, final Method getter) {
-        String setter = "set" + getter.getName().substring(3);
-        for (Method m : clasz.getMethods()) {
-            if (m.getName().equals(setter) && isSetter(m)) {
-                return m;
-            }
-        }
-        throw new IllegalStateException("no setter found");
+        Assertions.argument.assertNotNull(clasz, "clasz");
+        Assertions.argument.assertTrue(isGetter(getter), "getter");
+        Method setter = getMethod(clasz, getSetterName(getter.getName()));
+        Assertions.argument.assertTrue(isSetter(setter), "setter");
+        return setter;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T callGetter(final Object o, final String getterName) {
-        Method getter = findMethod(o.getClass(), getterName);
+        Assertions.argument.assertNotNull(o, "obj");
+        Method getter = getMethod(o.getClass(), getterName);
         Object res;
         try {
             res = getter.invoke(o, (Object[]) null);
@@ -245,7 +267,8 @@ public class ReflectionHelperImpl implements ReflectionHelper {
 
     @Override
     public <T> void callSetter(final Object o, final String setterName, final T value) {
-        Method setter = findMethod(o.getClass(), setterName);
+        Assertions.argument.assertNotNull(o, "obj");
+        Method setter = getMethod(o.getClass(), setterName);
         try {
             setter.invoke(o, value);
         } catch (Exception e) {
@@ -254,13 +277,39 @@ public class ReflectionHelperImpl implements ReflectionHelper {
     }
 
     @Override
-    public Method findMethod(final Class clasz, final String name) {
-        for (Method m : clasz.getMethods()) {
-            if (m.getName().equals(name)) {
-                return m;
+    public Optional<?> getValueForType(final Class<?> type) {
+        if (type.isEnum()) {
+            return Optional.create(type.getEnumConstants()[0]);
+        } else if (type == boolean.class || type == Boolean.class) {
+            return Optional.create(new Boolean(true));
+        } else if (type == byte.class || type == Byte.class) {
+            return Optional.create(new Byte((byte) 0));
+        } else if (type == byte[].class) {
+            return Optional.create("asd".getBytes());
+        } else if (type == char.class) {
+            return Optional.create(new Character('0'));
+        } else if (type == short.class || type == Short.class) {
+            return Optional.create(new Short((short) 0));
+        } else if (type == int.class || type == Integer.class) {
+            return Optional.create(new Integer(0));
+        } else if (type == long.class || type == Long.class) {
+            return Optional.create(new Long(0));
+        } else if (type == float.class || type == Float.class) {
+            return Optional.create(new Float(0f));
+        } else if (type == double.class || type == Double.class) {
+            return Optional.create(new Double(0d));
+        } else if (type == String.class) {
+            return Optional.create("asd");
+        } else if (type == List.class) {
+            return Optional.create(new ArrayList());
+        } else {
+            try {
+                return Optional.create(type.newInstance());
+            } catch (Exception e1) {
+                return Optional.createEmpty();
             }
         }
-        throw new IllegalArgumentException("method not found");
+
     }
 
 }

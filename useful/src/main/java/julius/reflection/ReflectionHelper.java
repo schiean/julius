@@ -19,6 +19,8 @@ package julius.reflection;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import julius.utilities.Optional;
+
 /**
  * Interface to ReflectionHelperImpl
  */
@@ -42,12 +44,6 @@ public interface ReflectionHelper {
     <T> void callSetter(Object o, String setter, T value);
 
     /**
-     * 
-     * @return method with name
-     */
-    Method findMethod(final Class clasz, String name);
-
-    /**
      * @return List of all methods for which isGetter() is true
      */
     List<Method> getGetters(Class clasz);
@@ -68,13 +64,21 @@ public interface ReflectionHelper {
     Method getSetter(final Class clasz, Method getter);
 
     /**
-     * Will turn a settername into a gettername setNumber => getNumber (javabean standard supports both isBoolean and setBoolean,
-     * this method doesnt know types and allways returns setXXX)
+     * Will turn a settername into a gettername setNumber => getNumber (javabean standard supports both isBoolean and getBoolean,
+     * this method doesn't know types and allways returns getXXX)
      * 
      * @param setterMethodName
      * @return getterName
      */
     String getGetterName(final String setterMethodName);
+
+    /**
+     * Will turn a gettername into a settername getNumber => setNumber
+     * 
+     * @param getterMethodName
+     * @return setterName
+     */
+    String getSetterName(final String getterMethodName);
 
     /**
      * Will return true for methods with one argument of abstract type will use T in case of generic type Set<T>
@@ -99,6 +103,13 @@ public interface ReflectionHelper {
      * @return true if the method exists
      */
     boolean hasGetter(final Class aClass, final String getterMethodName);
+
+    /**
+     * @param aClass
+     * @param setterMethodName
+     * @return true if the method exists
+     */
+    boolean hasSetter(final Class aClass, final String setterMethodName);
 
     /**
      * @param method
@@ -135,4 +146,11 @@ public interface ReflectionHelper {
      * @return list of all methods (possibly with double methods if overrides are there)
      */
     List<Method> getAllDeclaredMethods(final Class clasz);
+
+    /**
+     * 
+     * @param clasz
+     * @return an Object of type clasz
+     */
+    Optional<?> getValueForType(Class<?> clasz);
 }
