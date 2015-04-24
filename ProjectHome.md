@@ -1,0 +1,1 @@
+a set of small useful classes with little to no dependencies, which makes it easy to reuse on a lot of projects
