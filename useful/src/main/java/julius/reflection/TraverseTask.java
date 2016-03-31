@@ -17,12 +17,12 @@
 package julius.reflection;
 
 /**
- * Task for recursive travering object trees
+ * Task for recursive traversing object trees
  */
 public  interface TraverseTask{
 	/**
 	 * called when o is already processed once
-	 * 
+	 *
 	 * @param o object to handle
 	 * @param methodName method that returns o
 	 * @param depth level of recursion
@@ -31,14 +31,13 @@ public  interface TraverseTask{
 
 	/**
 	 * called for each result of a getter
-	 * 
+	 *
 	 * @param o object to handle
 	 * @param methodName method that returns o
 	 * @param depth level of recursion
 	 */
 	public void handle(Object o, String methodName, int depth);
-	
-	
+
 	/**
 	 * called for each getter that threw an exception
 	 * @param errorName
@@ -56,6 +55,6 @@ public  interface TraverseTask{
 	 * @return true if the o itself should be inspected
 	 */
 	public boolean shouldTraverse(String objectName, String methodName, Object returnValue, int depth);
-	
+
 }
 

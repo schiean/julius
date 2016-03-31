@@ -23,33 +23,26 @@ import java.util.Set;
  * Recursive printing of an object, does indenting while recursively walking along getters and collections
  * objects are only printed once, per task.
  */
-public class ToStringTask implements TraverseTask{
+public class ToStringTask extends BaseTraverseTask{
 
 	private final StringBuilder sb = new StringBuilder();
 
-	private final int maxDepth;
-	private final Set<String> skipPaths;
-	private final Set<String> skipMethods;
-	private final Set<String> skipClasses;
-	
 	public ToStringTask(){
-		this(1024, new HashSet<String>(),new HashSet<String>(),new HashSet<String>());		
+		super();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param maxDepth optional to prevent extremely large trees
 	 * @param skipPaths
 	 * @param skipMethods
 	 * @param skipClasses
+	 * @param packagesOfInterest
 	 */
-	public ToStringTask(final int maxDepth, final Set<String> skipPaths, final Set<String> skipMethods, final Set<String> skipClasses){
-		this.maxDepth = maxDepth;
-		this.skipPaths = skipPaths;
-		this.skipMethods = skipMethods;
-		this.skipClasses = skipClasses;
+	public ToStringTask(final int maxDepth, final Set<String> skipPaths, final Set<String> skipMethods, final Set<String> skipClasses,Set<String> packagesOfInterest){
+		super(maxDepth, skipPaths,skipMethods,skipClasses,packagesOfInterest);
 	}
-	
+
 	@Override
 	public void handle(final Object o, final String methodName, final int depth) {
 		for(int i=0;i<depth;i++){
@@ -65,30 +58,10 @@ public class ToStringTask implements TraverseTask{
 	public String toString(){
 		return sb.toString();
 	}
-	
-	@Override
-	public boolean shouldTraverse(final String objectName, final String methodName, final Object returnValue, final int depth){
-		boolean typeOk = true;
-		if(returnValue != null){
-			for(String s: skipClasses){
-				typeOk = typeOk && !returnValue.getClass().getName().contains(s);
-			}
-		}
-		boolean pathOk = true;
-		for(String s: skipPaths){
-			pathOk = pathOk && !(objectName+"."+methodName).contains(s);
-		}
-		boolean methodOk = true;
-		for(String s: skipMethods){
-			methodOk = methodOk && !methodName.contains(s);
-		}
-		return depth <= maxDepth && methodOk && pathOk && typeOk;
-	}
 
 	@Override
 	public void handleAlreadyProcessed(final Object o, final String methodName, final int depth) {
 		handle(o, methodName, depth);
-		
 	}
 
 	@Override

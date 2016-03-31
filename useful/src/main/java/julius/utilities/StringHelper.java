@@ -18,6 +18,7 @@ package julius.utilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ import julius.validation.Assertions;
 
 /**
  * provides methods to parse text (to easily parse valid.invalid html for example) or flatten a List<Object> to String
- * 
+ *
  * @author AJG van Schie
  * @author Yosuf Haydary
  */
@@ -51,9 +52,9 @@ public final class StringHelper {
 
     /**
      * puts all items of the list separated by separator in a string
-     * 
+     *
      * alternatively use apache commons
-     * 
+     *
      * @param list
      *            null/empty safe
      * @param separator
@@ -75,15 +76,15 @@ public final class StringHelper {
 
     /**
      * takes the substring between the Nth occurrence of startExpression and the next endExpression
-     * 
+     *
      * example <code>
      * <html><body><p>useless</p><p>important</p></body></html>
-     * 
+     *
      * start='<p>' and end ='</p' nr=2 should return 'important'
-     * 
+     *
      * alternatively use regexp's
      * </code>
-     * 
+     *
      * @param wholeString
      * @param startExpression
      * @param endExpression
@@ -104,7 +105,7 @@ public final class StringHelper {
 
     /**
      * finds the Nth occurrence of the expression in the wholeString and returns its position or -1
-     * 
+     *
      * @param wholeString
      * @param expression
      * @param nrOfOccurence
@@ -124,7 +125,7 @@ public final class StringHelper {
 
     /**
      * recursively traverse getters and collections to create a string for root supports multiple object occurrence(only print once)
-     * 
+     *
      * @param root
      * @return
      */
@@ -135,9 +136,9 @@ public final class StringHelper {
     }
 
     /**
-     * 
+     *
      * recursively traverse getters and collections to create a string for root supports multiple object occurrence(only print once)
-     * 
+     *
      * @param root
      * @param maxDepth
      *            prevent to large trees
@@ -151,7 +152,7 @@ public final class StringHelper {
             final Set<String> skipPaths,
             final Set<String> skipMethods,
             final Set<String> skipClasses) {
-        ToStringTask task = new ToStringTask(maxDepth, skipPaths, skipMethods, skipClasses);
+        ToStringTask task = new ToStringTask(maxDepth, skipPaths, skipMethods, skipClasses, CollectionHelper.set("nl"));
         BeanTraverser.traverseRecursive(task, root);
         return task.toString();
     }
@@ -159,12 +160,12 @@ public final class StringHelper {
     /**
      * A useful method to format the lines to line up neatly the columns which are separated by a tab for example. Example: <code>
      * Given : ["4444\t333\t22" , "1\t22\t4444" ] with "\t" as splitter
-     * 
+     *
      * Return: ["4444\t333\t22  " , "1   \t22 \t4444" ]
-     * 
+     *
      * Which can be nicely printed
      * </code>
-     * 
+     *
      * @param lines
      *            (not null)
      * @param splitter
@@ -201,12 +202,12 @@ public final class StringHelper {
 
     /**
      * For the list of given lines this method determines what the maximum length of characters per split of each index can be.
-     * 
+     *
      * Example: line 1: "abc,a,da" line 2: "a,bc" splitChar: ","
-     * 
+     *
      * Result: [3,2,2] because the zeroth index of first line has the max chars; the first index of second line has max characters;
      * and only the first line has second index
-     * 
+     *
      * @param lines
      *            (not null)
      * @param splitter
@@ -244,7 +245,7 @@ public final class StringHelper {
 
     /**
      * Creates a string existing out of white spaces for the given count.
-     * 
+     *
      * @param count
      * @return (not null), but maybe empty
      */

@@ -25,10 +25,10 @@ import julius.utilities.CollectionHelper;
 /**
  * Keeps list of null or empty collection returning methods
  */
-public class NullOrEmptyTraverseTask implements TraverseTask{
+public class NullOrEmptyTraverseTask extends BaseTraverseTask{
 
 	protected final List<String> nulls = CollectionHelper.list();
-	
+
 	@Override
 	public void handle(final Object o, final String methodName, final int depth) {
 		if(o==null || isEmptyCollection(o)){
@@ -39,7 +39,7 @@ public class NullOrEmptyTraverseTask implements TraverseTask{
 	public List<String> getNullReturningMethods(){
 		return new LinkedList<String>(nulls);
 	}
-	
+
 	private boolean isEmptyCollection(final Object o) {
 		if(o instanceof Collection){
 			Collection oc = (Collection)o;
@@ -48,18 +48,14 @@ public class NullOrEmptyTraverseTask implements TraverseTask{
 		return false;
 	}
 
-	@Override
-	public boolean shouldTraverse(final String objectName, final String methodName, final Object returnValue, final int depth){
-		return true;
-	}
 
 	@Override
 	public void handleAlreadyProcessed(final Object o, final String methodName, final int depth) {
-		// nothing		
+		// nothing
 	}
 
 	@Override
 	public void handleException(final String errorName, final String methodName, final int depth) {
-		// nothing		
+		// nothing
 	}
 }
